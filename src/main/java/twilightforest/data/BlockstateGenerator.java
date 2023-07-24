@@ -175,6 +175,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		perFaceBlock(TFBlocks.TROLLSTEINN.get(), blockTexture(TFBlocks.TROLLSTEINN.get()), prefix("block/" + TFBlocks.TROLLSTEINN.getId().getPath() + "_light"));
 		simpleBlockWithRenderType(TFBlocks.WISPY_CLOUD.get(), TRANSLUCENT);
 		simpleBlock(TFBlocks.FLUFFY_CLOUD.get());
+		simpleBlock(TFBlocks.RAINY_CLOUD.get());
+		simpleBlock(TFBlocks.SNOWY_CLOUD.get());
 		simpleBlock(TFBlocks.GIANT_COBBLESTONE.get(), models().withExistingParent(TFBlocks.GIANT_COBBLESTONE.getId().getPath(), new ResourceLocation("block/block"))
 				.texture("particle", blockTexture(Blocks.COBBLESTONE))
 				.texture("all", blockTexture(Blocks.COBBLESTONE))

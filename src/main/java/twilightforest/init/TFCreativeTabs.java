@@ -339,6 +339,8 @@ public class TFCreativeTabs {
 				output.accept(TFBlocks.HUGE_MUSHGLOOM_STEM.get());
 				output.accept(TFBlocks.WISPY_CLOUD.get());
 				output.accept(TFBlocks.FLUFFY_CLOUD.get());
+				output.accept(TFBlocks.RAINY_CLOUD.get());
+				output.accept(TFBlocks.SNOWY_CLOUD.get());
 				output.accept(TFBlocks.GIANT_COBBLESTONE.get());
 				output.accept(TFBlocks.GIANT_LOG.get());
 				output.accept(TFBlocks.GIANT_LEAVES.get());

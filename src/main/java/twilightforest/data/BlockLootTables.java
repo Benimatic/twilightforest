@@ -76,6 +76,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TROLLSTEINN.get());
 		dropWhenSilkTouch(TFBlocks.WISPY_CLOUD.get());
 		dropSelf(TFBlocks.FLUFFY_CLOUD.get());
+		dropSelf(TFBlocks.RAINY_CLOUD.get());
+		dropSelf(TFBlocks.SNOWY_CLOUD.get());
 		dropSelf(TFBlocks.GIANT_COBBLESTONE.get());
 		dropSelf(TFBlocks.GIANT_LOG.get());
 		dropSelf(TFBlocks.GIANT_LEAVES.get());

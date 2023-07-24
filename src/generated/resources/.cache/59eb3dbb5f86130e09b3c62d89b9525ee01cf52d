@@ -1,4 +1,4 @@
-// 1.20.1	2023-06-14T11:14:13.6990359	Loot Tables
+// 1.20.1	2023-07-22T15:10:51.610791	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_tables/blocks/acacia_banister.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 3f04f0369241cf99202c72b4d56bc5368396e367 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -280,6 +280,7 @@ b7e318ae6927478087018b960f224cad8145efb6 data/twilightforest/loot_tables/blocks/
 188ce825162aa7f13d716fbf2c14e7521c83c6ba data/twilightforest/loot_tables/blocks/quest_ram_wall_trophy.json
 3eb5036b021281f4b15a99ad42dcddff86445edd data/twilightforest/loot_tables/blocks/rainbow_oak_leaves.json
 d4cf2ba1c9d5ad6b35a2ef1b173496f27a7c789f data/twilightforest/loot_tables/blocks/rainbow_oak_sapling.json
+775f8f7ca2f7f51f67f229bae271f569d16a081b data/twilightforest/loot_tables/blocks/rainy_cloud.json
 8925b3aaf598480c0d947ca559eaf2c765d2f44e data/twilightforest/loot_tables/blocks/reappearing_block.json
 6575da0cee084bff5caab6b006d0b86fe22001b1 data/twilightforest/loot_tables/blocks/red_thread.json
 7a1a62c933a562e1ad0abff252fb72d3a8c5dc33 data/twilightforest/loot_tables/blocks/root.json
@@ -287,6 +288,7 @@ d4cf2ba1c9d5ad6b35a2ef1b173496f27a7c789f data/twilightforest/loot_tables/blocks/
 ef904a158987dbd9963909ef8fb80667071025b7 data/twilightforest/loot_tables/blocks/skeleton_skull_candle.json
 ae6d7a73102bfb46c3fe678debd0a35187e9125f data/twilightforest/loot_tables/blocks/skeleton_wall_skull_candle.json
 b7336d3399cc73483a2b33de9185b17f64d19c1d data/twilightforest/loot_tables/blocks/smoker.json
+358ed83d512f26a1dda0ab29047792e465020783 data/twilightforest/loot_tables/blocks/snowy_cloud.json
 b1e3901cfaa3a38522179ac1f7338841754f13f9 data/twilightforest/loot_tables/blocks/snow_queen_trophy.json
 29b8308cd96cd2f1c97ff485debf988e3defd32a data/twilightforest/loot_tables/blocks/snow_queen_wall_trophy.json
 7b140db526bb684f477ea3c0ec2cea971d547a74 data/twilightforest/loot_tables/blocks/sorting_banister.json

@@ -47,13 +47,13 @@ import java.util.Random;
  */
 public class TFWeatherRenderer {
 
-	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
-	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
+	public static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
+	public static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
 
 	private static final ResourceLocation SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
 
-	private static final float[] rainxs = new float[1024];
-	private static final float[] rainzs = new float[1024];
+	public static final float[] rainxs = new float[1024];
+	public static final float[] rainzs = new float[1024];
 
 	private static int rendererUpdateCount;
 	private static BoundingBox protectedBox;
@@ -83,6 +83,7 @@ public class TFWeatherRenderer {
 	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, LightTexture lightmap, double camX, double camY, double camZ) {
 		Minecraft mc = Minecraft.getInstance();
 		// do normal weather rendering
+
 		renderNormalWeather(lightmap, level, partialTicks, camX, camY, camZ, Math.max(urGhastRain, level.getRainLevel(partialTicks)));
 
 		if (LandmarkUtil.isProgressionEnforced(level) && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {

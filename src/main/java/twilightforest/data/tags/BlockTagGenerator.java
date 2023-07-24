@@ -533,7 +533,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
 
-		tag(BlockTags.DAMPENS_VIBRATIONS).add(TFBlocks.ARCTIC_FUR_BLOCK.get(), TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get());
+		tag(BlockTags.DAMPENS_VIBRATIONS).add(TFBlocks.ARCTIC_FUR_BLOCK.get(), TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 
 		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
@@ -551,7 +551,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
 
 		tag(PENGUINS_SPAWNABLE_ON).add(Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE);
-		tag(GIANTS_SPAWNABLE_ON).add(TFBlocks.WISPY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get());
+		tag(GIANTS_SPAWNABLE_ON).add(TFBlocks.WISPY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
 
 		tag(BlockTags.MINEABLE_WITH_AXE).add(
 				TFBlocks.HEDGE.get(),

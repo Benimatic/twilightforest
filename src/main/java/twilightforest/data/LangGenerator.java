@@ -232,6 +232,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.TROLLBER, "Trollber");
 		this.addBlock(TFBlocks.TROLLSTEINN, "Trollsteinn");
 		this.addBlock(TFBlocks.FLUFFY_CLOUD, "Fluffy Cloud");
+		this.addBlock(TFBlocks.RAINY_CLOUD, "Rainy Cloud");
+		this.addBlock(TFBlocks.SNOWY_CLOUD, "Snowy Cloud");
 		this.addBlock(TFBlocks.WISPY_CLOUD, "Wispy Cloud");
 		this.addBlock(TFBlocks.GIANT_LEAVES, "Giant Leaves");
 		this.addBlock(TFBlocks.GIANT_LOG, "Giant Log");

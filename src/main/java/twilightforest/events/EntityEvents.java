@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -42,10 +43,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.AbstractLightableBlock;
-import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.block.SkullCandleBlock;
-import twilightforest.block.WallSkullCandleBlock;
+import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.enchantment.ChillAuraEnchantment;
@@ -281,5 +279,26 @@ public class EntityEvents {
 		}
 
 		return amount;
+	}
+
+	@SubscribeEvent
+	public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null && canSpawnCloudParticles(living)) {
+			CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, false);
+		}
+	}
+
+	public static boolean canSpawnCloudParticles(LivingEntity living) {
+		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0) return false;
+		return living.tickCount % 2 == 0 && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock;
+	}
+
+	@SubscribeEvent
+	public static void onLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null && living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
+			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+		}
 	}
 }

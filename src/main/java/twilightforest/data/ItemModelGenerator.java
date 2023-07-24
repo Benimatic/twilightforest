@@ -69,6 +69,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 						.texture("all", prefix("block/trollsteinn"));
 		toBlock(TFBlocks.WISPY_CLOUD.get());
 		toBlock(TFBlocks.FLUFFY_CLOUD.get());
+		toBlock(TFBlocks.RAINY_CLOUD.get());
+		toBlock(TFBlocks.SNOWY_CLOUD.get());
 		toBlockModel(TFBlocks.GIANT_COBBLESTONE.get(), new ResourceLocation("block/cobblestone"));
 		toBlockModel(TFBlocks.GIANT_LOG.get(), new ResourceLocation("block/oak_log"));
 		toBlockModel(TFBlocks.GIANT_LEAVES.get(), new ResourceLocation("block/oak_leaves"));

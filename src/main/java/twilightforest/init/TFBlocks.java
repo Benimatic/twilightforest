@@ -5,6 +5,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -157,8 +158,12 @@ public class TFBlocks {
 	public static final RegistryObject<Block> CRACKED_DEADROCK = register("cracked_deadrock", () -> new Block(BlockBehaviour.Properties.copy(DEADROCK.get())));
 	public static final RegistryObject<Block> WEATHERED_DEADROCK = register("weathered_deadrock", () -> new Block(BlockBehaviour.Properties.copy(DEADROCK.get())));
 	public static final RegistryObject<Block> TROLLSTEINN = register("trollsteinn", () -> new TrollsteinnBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).randomTicks().requiresCorrectToolForDrops().sound(SoundType.STONE).strength(2.0F, 6.0F)));
-	public static final RegistryObject<Block> WISPY_CLOUD = register("wispy_cloud", () -> new AbstractGlassBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).mapColor(MapColor.SNOW).noOcclusion().pushReaction(PushReaction.DESTROY).replaceable().sound(SoundType.WOOL).strength(0.3F, 0.0F)) {});
-	public static final RegistryObject<Block> FLUFFY_CLOUD = register("fluffy_cloud", () -> new Block(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL).strength(0.8F, 0.0F)));
+
+	public static final RegistryObject<Block> WISPY_CLOUD = register("wispy_cloud", () -> new WispyCloudBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).mapColor(MapColor.SNOW).noOcclusion().pushReaction(PushReaction.DESTROY).replaceable().sound(SoundType.WOOL).strength(0.3F, 0.0F).forceSolidOff(), Biome.Precipitation.NONE));
+	public static final RegistryObject<Block> FLUFFY_CLOUD = register("fluffy_cloud", () -> new CloudBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL).strength(0.8F, 0.0F).randomTicks(), null));
+	public static final RegistryObject<Block> RAINY_CLOUD = register("rainy_cloud", () -> new CloudBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL).strength(0.8F, 0.0F).randomTicks(), Biome.Precipitation.RAIN));
+	public static final RegistryObject<Block> SNOWY_CLOUD = register("snowy_cloud", () -> new CloudBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.HAT).mapColor(MapColor.ICE).pushReaction(PushReaction.DESTROY).sound(SoundType.WOOL).strength(0.8F, 0.0F).randomTicks(), Biome.Precipitation.SNOW));
+
 	public static final RegistryObject<Block> GIANT_COBBLESTONE = register("giant_cobblestone", () -> new GiantBlock(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(128.0F, 50.0F)));
 	public static final RegistryObject<Block> GIANT_LOG = register("giant_log", () -> new GiantBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().strength(128.0F, 30.0F)));
 	public static final RegistryObject<Block> GIANT_LEAVES = register("giant_leaves", () -> new GiantLeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).noOcclusion().pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.AZALEA_LEAVES).strength(0.2F * 64.0F, 15.0F)));

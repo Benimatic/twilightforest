@@ -207,6 +207,24 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(Tags.Items.NUGGETS_GOLD)
 				.unlockedBy("has_item", has(TFItems.LIVEROOT.get()))
 				.save(consumer, TwilightForestMod.prefix("material/" + TFItems.RAW_IRONWOOD.getId().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.RAINY_CLOUD.get(), 8)
+				.pattern("ccc")
+				.pattern("cbc")
+				.pattern("ccc")
+				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.get()))
+				.define('b', Ingredient.of(Items.WATER_BUCKET))
+				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.get()))
+				.save(consumer, TwilightForestMod.prefix("rainy_cloud"));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.SNOWY_CLOUD.get(), 8)
+				.pattern("ccc")
+				.pattern("cbc")
+				.pattern("ccc")
+				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.get()))
+				.define('b', Ingredient.of(Items.POWDER_SNOW_BUCKET))
+				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.get()))
+				.save(consumer, TwilightForestMod.prefix("snowy_cloud"));
 	}
 
 	private void darkTowerRecipes(Consumer<FinishedRecipe> consumer) {

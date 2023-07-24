@@ -329,6 +329,15 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
+			cloudBlockPrecipitationRender = builder.
+					translation(config + "cloud_block_precipitation_render").
+					comment("Renders rain and snow underneath cloud blocks. Turn this off if you're experiencing poor performance.").
+					define("cloudBlockPrecipitationRender", true);
+			cloudBlockRainParticles = builder.
+					translation(config + "cloud_block_rain_particles").
+					comment("Spawns rain particles underneath cloud blocks. Turn this off if you're experiencing poor performance.").
+					define("cloudBlockRainParticles", true);
+
 		}
 
 		public final ForgeConfigSpec.BooleanValue silentCicadas;
@@ -338,6 +347,8 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ForgeConfigSpec.BooleanValue cloudBlockPrecipitationRender;
+		public final ForgeConfigSpec.BooleanValue cloudBlockRainParticles;
 	}
 
 	private static final String config =  "config." + TwilightForestMod.ID;
