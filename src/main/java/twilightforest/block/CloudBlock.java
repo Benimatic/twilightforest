@@ -81,6 +81,8 @@ public class CloudBlock extends Block {
     @Override
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.isAreaLoaded(pos, 1)) return;
+
         Pair<Biome.Precipitation, Float> pair = this.getCurrentPrecipitation(pos, level, level.getRainLevel(1.0F));
         if (pair.getRight() > 0.0F) {
             Biome.Precipitation precipitation = pair.getLeft();
