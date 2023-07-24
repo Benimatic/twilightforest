@@ -10,11 +10,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
@@ -93,12 +94,36 @@ public class CloudBlock extends Block {
                     else break;
                 }
                 if (highestRainyBlock > level.getMinBuildHeight()) {
+                    if (precipitation == Biome.Precipitation.SNOW) {
+                        int snowHeight = level.getGameRules().getInt(GameRules.RULE_SNOW_ACCUMULATION_HEIGHT);
+                        BlockPos snowOnPos = pos.atY(highestRainyBlock + 1); // We check the position above our last block
+                        if (snowHeight > 0 && CloudBlock.shouldSnow(level, snowOnPos)) {
+                            BlockState snowOnState = level.getBlockState(snowOnPos);
+                            if (snowOnState.is(Blocks.SNOW)) {
+                                int k = snowOnState.getValue(SnowLayerBlock.LAYERS);
+                                if (k < Math.min(snowHeight, 8)) {
+                                    BlockState snowLayerState = snowOnState.setValue(SnowLayerBlock.LAYERS, k + 1);
+                                    Block.pushEntitiesUp(snowOnState, snowLayerState, level, snowOnPos);
+                                    level.setBlockAndUpdate(snowOnPos, snowLayerState);
+                                }
+                            } else level.setBlockAndUpdate(snowOnPos, Blocks.SNOW.defaultBlockState());
+                        }
+                    }
+
                     BlockPos rainOnPos = pos.atY(highestRainyBlock);
                     BlockState rainOnState = level.getBlockState(rainOnPos);
                     rainOnState.getBlock().handlePrecipitation(rainOnState, level, rainOnPos, precipitation);
                 }
             }
         }
+    }
+
+    public static boolean shouldSnow(LevelReader level, BlockPos pos) {
+        if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
+            BlockState blockstate = level.getBlockState(pos);
+            return (blockstate.isAir() || blockstate.is(Blocks.SNOW)) && Blocks.SNOW.defaultBlockState().canSurvive(level, pos);
+        }
+        return false;
     }
 
     @Override
