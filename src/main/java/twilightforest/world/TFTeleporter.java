@@ -33,6 +33,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.custom.Restrictions;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -353,7 +354,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {
-		return TFGenerationSettings.isBiomeSafeFor(world.getBiome(pos).value(), entity);
+		return Restrictions.isBiomeSafeFor(world.getBiome(pos).value(), entity);
 	}
 
 	@Nullable

@@ -68,6 +68,10 @@ public class PlayerHelper {
 		}
 	}
 
+	public static boolean doesPlayerHaveRequiredAdvancements(Player player, List<ResourceLocation> requiredAdvancements) {
+		return PlayerHelper.playerHasRequiredAdvancements(player, requiredAdvancements);
+	}
+
 	public static boolean doesPlayerHaveRequiredAdvancements(Player player, ResourceLocation... requiredAdvancements) {
 		return PlayerHelper.playerHasRequiredAdvancements(player, List.of(requiredAdvancements));
 	}

@@ -17,7 +17,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,9 +35,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBiomes;
+import twilightforest.init.custom.Enforcement;
+import twilightforest.util.Restriction;
+import twilightforest.init.custom.Restrictions;
 import twilightforest.util.LandmarkUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -254,8 +254,8 @@ public class TFWeatherRenderer {
 					Biome biome = level.getBiome(blockpos$mutableblockpos).value();
 
 					// TF - check for our own biomes
-					if (!TFGenerationSettings.isBiomeSafeFor(biome, player)) {
-
+					Restriction restriction = Restrictions.getRestrictionForBiome(biome, player);
+					if (restriction != null) {
 						int groundY = 0; // TF - extend through full height
 						int minY = y0 - range;
 						int maxY = y0 + range;
@@ -275,7 +275,7 @@ public class TFWeatherRenderer {
 							random.setSeed((long) x * x * 3121 + x * 45238971L ^ (long) z * z * 418711 + z * 13761L);
 
 							// TF - replace temperature check with biome check
-							RenderType nextType = getRenderType(biome);
+							RenderType nextType = getRenderType(restriction);
 							if (nextType == null) {
 								continue;
 							}
@@ -484,7 +484,7 @@ public class TFWeatherRenderer {
 		for (int z = pz - range; z <= pz + range; ++z) {
 			for (int x = px - range; x <= px + range; ++x) {
 				Biome biome = world.getBiome(pos.set(x, 0, z)).value();
-				if (!TFGenerationSettings.isBiomeSafeFor(biome, viewEntity)) {
+				if (!Restrictions.isBiomeSafeFor(biome, viewEntity)) {
 					return true;
 				}
 			}
@@ -505,21 +505,12 @@ public class TFWeatherRenderer {
 		TFWeatherRenderer.protectedBox = protectedBox;
 	}
 
-	private static @Nullable RenderType getRenderType(Biome b) {
-		if (Minecraft.getInstance().level == null)
-			return null;
-		ResourceLocation biome = Minecraft.getInstance().level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b);
-		if (TFBiomes.SNOWY_FOREST.location().equals(biome) || TFBiomes.GLACIER.location().equals(biome)) {
-			return RenderType.BLIZZARD;
-		} else if (TFBiomes.SWAMP.location().equals(biome)) {
-			return RenderType.MOSQUITO;
-		} else if (TFBiomes.FIRE_SWAMP.location().equals(biome)) {
-			return RenderType.ASHES;
-		} else if (TFBiomes.DARK_FOREST.location().equals(biome) || TFBiomes.DARK_FOREST_CENTER.location().equals(biome)) {
-			return random.nextInt(2) == 0 ? RenderType.DARK_STREAM : null;
-		} else if (TFBiomes.HIGHLANDS.location().equals(biome) || TFBiomes.THORNLANDS.location().equals(biome) || TFBiomes.FINAL_PLATEAU.location().equals(biome)) {
-			return RenderType.BIG_RAIN;
-		}
+	private static @Nullable RenderType getRenderType(Restriction restriction) {
+		if (restriction.enforcement().equals(Enforcement.FROST.getKey())) return RenderType.BLIZZARD;
+		else if (restriction.enforcement().equals(Enforcement.HUNGER.getKey())) return RenderType.MOSQUITO;
+		else if (restriction.enforcement().equals(Enforcement.FIRE.getKey())) return RenderType.ASHES;
+		else if (restriction.enforcement().equals(Enforcement.DARKNESS.getKey())) return random.nextBoolean() ? RenderType.DARK_STREAM : null;
+		else if (restriction.enforcement().equals(Enforcement.ACID_RAIN.getKey())) return RenderType.BIG_RAIN;
 		return null;
 	}
 

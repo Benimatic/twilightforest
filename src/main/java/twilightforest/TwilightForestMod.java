@@ -38,6 +38,7 @@ import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
+import twilightforest.util.Restriction;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
@@ -124,6 +125,8 @@ public class TwilightForestMod {
 		DwarfRabbitVariant.DWARF_RABBITS.register(modbus);
 		TinyBirdVariant.TINY_BIRDS.register(modbus);
 		WoodPalettes.WOOD_PALETTES.register(modbus);
+		Enforcement.ENFORCEMENTS.register(modbus);
+		Restrictions.RESTRICTIONS.register(modbus);
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(this::init);
@@ -143,6 +146,7 @@ public class TwilightForestMod {
 	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
 		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
 		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
+		event.dataPackRegistry(Restrictions.RESTRICTION_KEY, Restriction.CODEC, Restriction.CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {
