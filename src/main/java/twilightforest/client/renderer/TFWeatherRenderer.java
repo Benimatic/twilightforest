@@ -40,6 +40,7 @@ import twilightforest.util.Restriction;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.util.LandmarkUtil;
 
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -254,8 +255,8 @@ public class TFWeatherRenderer {
 					Biome biome = level.getBiome(blockpos$mutableblockpos).value();
 
 					// TF - check for our own biomes
-					Restriction restriction = Restrictions.getRestrictionForBiome(biome, player);
-					if (restriction != null) {
+					Optional<Restriction> restriction = Restrictions.getRestrictionForBiome(biome, player);
+					if (restriction.isPresent()) {
 						int groundY = 0; // TF - extend through full height
 						int minY = y0 - range;
 						int maxY = y0 + range;
@@ -275,7 +276,7 @@ public class TFWeatherRenderer {
 							random.setSeed((long) x * x * 3121 + x * 45238971L ^ (long) z * z * 418711 + z * 13761L);
 
 							// TF - replace temperature check with biome check
-							RenderType nextType = getRenderType(restriction);
+							RenderType nextType = getRenderType(restriction.get());
 							if (nextType == null) {
 								continue;
 							}

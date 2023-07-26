@@ -18,7 +18,6 @@ import twilightforest.init.TFSounds;
 import twilightforest.util.Restriction;
 import twilightforest.world.components.structures.util.StructureHints;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public record Enforcement(TriConsumer<Player, ServerLevel, Restriction> consumer) {
@@ -60,12 +59,14 @@ public record Enforcement(TriConsumer<Player, ServerLevel, Restriction> consumer
     }));
 
     public static void enforceBiomeProgression(Player player, ServerLevel level) {
-        Optional.ofNullable(Restrictions.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player)).ifPresent(restriction ->
-                Optional.ofNullable(ENFORCEMENT_REGISTRY.get().getValue(restriction.enforcement().location())).ifPresent(enforcement -> {
-                    enforcement.consumer().accept(player, level, restriction);
-                    if (restriction.hintStructureKey() != null) {
-                        StructureHints.tryHintForStructure(player, level, restriction.hintStructureKey());
-                    }
-                }));
+        Restrictions.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player).ifPresent(restriction -> {
+            Enforcement enforcement = ENFORCEMENT_REGISTRY.get().getValue(restriction.enforcement().location());
+            if (enforcement != null) {
+                enforcement.consumer().accept(player, level, restriction);
+                if (restriction.hintStructureKey() != null) {
+                    StructureHints.tryHintForStructure(player, level, restriction.hintStructureKey());
+                }
+            }
+        });
     }
 }

@@ -13,6 +13,8 @@ import twilightforest.util.Restriction;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.util.LandmarkUtil;
 
+import java.util.Optional;
+
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
 public class LockedBiomeListener {
 
@@ -29,11 +31,11 @@ public class LockedBiomeListener {
 		if(level.isClientSide() && event.phase == TickEvent.Phase.END && player.tickCount % 5 == 0
 				&& LandmarkUtil.isProgressionEnforced(level)
 				&& !player.isCreative() && !player.isSpectator() && !TFConfig.CLIENT_CONFIG.disableLockedBiomeToasts.get()) {
-			Restriction restriction = Restrictions.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
-			if (restriction != null && restriction.lockedBiomeToast() != null) {
+			Optional<Restriction> restriction = Restrictions.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
+			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;
 				if(!shownToast && timeUntilToast <= 0) {
-					Minecraft.getInstance().getToasts().addToast(new LockedBiomeToast(restriction.lockedBiomeToast()));
+					Minecraft.getInstance().getToasts().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast()));
 					shownToast = true;
 				}
 			} else {

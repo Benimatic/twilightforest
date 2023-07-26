@@ -24,8 +24,8 @@ import twilightforest.init.TFStructures;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.Restriction;
 
-import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class Restrictions {
     public static final ResourceKey<Registry<Restriction>> RESTRICTION_KEY = ResourceKey.createRegistryKey(TwilightForestMod.namedRegistry("restrictions"));
@@ -66,22 +66,21 @@ public class Restrictions {
         return new ItemStack(itemLike);
     }
 
-    @Nullable
-    public static Restriction getRestrictionForBiome(Biome biome, Entity entity) {
+    public static Optional<Restriction> getRestrictionForBiome(Biome biome, Entity entity) {
         if (entity instanceof Player player) {
             RegistryAccess access = entity.level().registryAccess();
             ResourceLocation biomeLocation = access.registryOrThrow(Registries.BIOME).getKey(biome);
             if (biomeLocation != null) {
                 Restriction restrictions = player.level().registryAccess().registryOrThrow(RESTRICTION_KEY).get(biomeLocation);
                 if (restrictions != null && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
-                    return restrictions;
+                    return Optional.of(restrictions);
                 }
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-        return getRestrictionForBiome(biome, entity) == null;
+        return getRestrictionForBiome(biome, entity).isPresent();
     }
 }
