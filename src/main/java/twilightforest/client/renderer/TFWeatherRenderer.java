@@ -383,7 +383,6 @@ public class TFWeatherRenderer {
 		if (isNearLockedStructure(xIn, zIn)) {
 			lightmap.turnOnLightLayer();
 			int i = Mth.floor(xIn);
-			int j = Mth.floor(yIn);
 			int k = Mth.floor(zIn);
 			Tesselator tessellator = Tesselator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuilder();
@@ -412,8 +411,8 @@ public class TFWeatherRenderer {
 					if (protectedBox != null && protectedBox.intersects(l1, k1, l1, k1)) {
 						int structureMin = protectedBox.minY() - 4;
 						int structureMax = protectedBox.maxY() + 4;
-						int k2 = j - range;
-						int l2 = j + range * 2;
+						float k2 = (float) yIn - range;
+						float l2 = (float) yIn + range * 2;
 
 						if (k2 < structureMin) {
 							k2 = structureMin;
@@ -446,13 +445,13 @@ public class TFWeatherRenderer {
 								bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 							}
 
-							float d5 = -((rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
+							float d5 = -((l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + rendererUpdateCount + partialTicks) / 32.0F * (3.0F + random.nextFloat()) - k2 * 0.5F;
 							double d6 = l1 + 0.5F - xIn;
 							double d7 = k1 + 0.5F - zIn;
-							float f3 = Mth.sqrt((float) (d6 * d6 + d7 * d7)) / range;
+							float f3 = Math.min(Mth.sqrt((float) (d6 * d6 + d7 * d7)) / range, 1.0F);
 							// TF - "f" was rain strength for alpha
 							float f = random.nextFloat();
-							float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * f;
+							float f4 = Math.min((1.0F - f3 * f3) * 2.0F, 1.0F) * f;
 							int j3 = 15 << 20 | 15 << 4; // TF - fullbright
 							int k3 = j3 >> 16 & 65535;
 							int l3 = j3 & 65535;
