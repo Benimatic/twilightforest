@@ -71,7 +71,7 @@ public class Restrictions {
             RegistryAccess access = entity.level().registryAccess();
             ResourceLocation biomeLocation = access.registryOrThrow(Registries.BIOME).getKey(biome);
             if (biomeLocation != null) {
-                Restriction restrictions = player.level().registryAccess().registryOrThrow(RESTRICTION_KEY).get(biomeLocation);
+                Restriction restrictions = access.registryOrThrow(RESTRICTION_KEY).get(biomeLocation);
                 if (restrictions != null && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, restrictions.advancements())) {
                     return Optional.of(restrictions);
                 }
@@ -81,6 +81,6 @@ public class Restrictions {
     }
 
     public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-        return getRestrictionForBiome(biome, entity).isPresent();
+        return getRestrictionForBiome(biome, entity).isEmpty();
     }
 }
