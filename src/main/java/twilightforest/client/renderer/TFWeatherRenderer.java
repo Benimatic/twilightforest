@@ -269,7 +269,6 @@ public class TFWeatherRenderer {
 							maxY = groundY;
 						}
 
-						int y = Math.max(groundY, y0);
 
 						if (minY != maxY) {
 
@@ -299,7 +298,7 @@ public class TFWeatherRenderer {
 									double d7 = z + 0.5F - zIn;
 									float f3 = Mth.sqrt((float) (d6 * d6 + d7 * d7)) / range;
 									float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F);
-									blockpos$mutableblockpos.set(x, y, z);
+									blockpos$mutableblockpos.set(x, maxY, z);
 									int j3 = LevelRenderer.getLightColor(level, blockpos$mutableblockpos);
 									int k3 = j3 >> 16 & 65535;
 									int l3 = j3 & 65535;
