@@ -1025,6 +1025,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("yeeted", "%1$s was yeeted for the last time");
 		this.addDeathMessage("yeeted.entity", "%1$s was yeeted for the last time by %2$s");
 		this.addDeathMessage("yeeted.item", "%1$s was yeeted for the last time by %2$s while somehow holding %3$s");
+		this.addDeathMessage("acid_rain", "%1$s went dancing in the acid rain");
 
 		this.addStat("blocks_crumbled", "Blocks Crumbled");
 		this.addStat("bugs_squished", "Bugs Squashed");

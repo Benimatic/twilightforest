@@ -13,6 +13,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.util.TriConsumer;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFMobEffects;
 import twilightforest.init.TFSounds;
 import twilightforest.util.Restriction;
@@ -53,8 +54,9 @@ public record Enforcement(TriConsumer<Player, ServerLevel, Restriction> consumer
 
     public static final RegistryObject<Enforcement> ACID_RAIN = ENFORCEMENTS.register("acid_rain", () -> new Enforcement((player, level, restriction) -> {
         if (player.tickCount % 5 == 0) {
-            player.hurt(level.damageSources().magic(), restriction.multiplier()); // TODO custom damage type probably
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+            if (player.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.ACID_RAIN), restriction.multiplier())) {
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+            }
         }
     }));
 

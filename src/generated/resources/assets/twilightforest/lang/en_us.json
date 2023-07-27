@@ -712,6 +712,7 @@
   "container.twilightforest.uncrafting_table": "Uncrafting Table",
   "container.twilightforest.uncrafting_table.disabled": "Uncrafting is disabled via config",
   "container.twilightforest.uncrafting_table.disabled_item": "Uncrafting this item is disabled.",
+  "death.attack.twilightforest.acid_rain": "%1$s went dancing in the acid rain",
   "death.attack.twilightforest.ant": "%1$s was squashed like an ant by %2$s",
   "death.attack.twilightforest.ant.item": "%1$s was squashed like an ant by %2$s holding %3$s",
   "death.attack.twilightforest.axing": "%1$s was chopped up by %2$s",
