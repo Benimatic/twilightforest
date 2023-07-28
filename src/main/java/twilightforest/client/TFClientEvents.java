@@ -1,10 +1,7 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -12,10 +9,8 @@ import net.minecraft.client.Options;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -38,6 +33,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
@@ -51,6 +47,7 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -66,6 +63,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CloudBlock;
+import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.model.block.doors.CastleDoorModelLoader;
@@ -520,10 +518,42 @@ public class TFClientEvents {
 	}
 
 	@SubscribeEvent
-	public static void unrenderMiniStructureHitbox(RenderHighlightEvent.Block event) {
-		BlockState state = event.getCamera().getEntity().level().getBlockState(event.getTarget().getBlockPos());
+	public static void onRenderBlockHighlightEvent(RenderHighlightEvent.Block event) {
+		BlockPos pos = event.getTarget().getBlockPos();
+		BlockState state = event.getCamera().getEntity().level().getBlockState(pos);
+
 		if (state.getBlock() instanceof MiniatureStructureBlock) {
 			event.setCanceled(true);
+			return;
 		}
+
+		LocalPlayer player = Minecraft.getInstance().player;
+		if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
+			event.setCanceled(true);
+			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
+				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
+				renderGiantHitOutline(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.lines()), event.getCamera().getPosition(), offsetPos);
+			}
+		}
+	}
+
+	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
+
+	private static void renderGiantHitOutline(PoseStack poseStack, VertexConsumer consumer, Vec3 cam, BlockPos pos) {
+		PoseStack.Pose last = poseStack.last();
+		float posX = pos.getX() - (float)cam.x();
+		float posY = pos.getY() - (float)cam.y();
+		float posZ = pos.getZ() - (float)cam.z();
+		GIANT_BLOCK.forAllEdges((x, y, z, x1, y1, z1) -> {
+			float xSize = (float)(x1 - x);
+			float ySize = (float)(y1 - y);
+			float zSize = (float)(z1 - z);
+			float sqrt = Mth.sqrt(xSize * xSize + ySize * ySize + zSize * zSize);
+			xSize /= sqrt;
+			ySize /= sqrt;
+			zSize /= sqrt;
+			consumer.vertex(last.pose(), (float)(x + posX), (float)(y + posY), (float)(z + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last.normal(), xSize, ySize, zSize).endVertex();
+			consumer.vertex(last.pose(), (float)(x1 + posX), (float)(y1 + posY), (float)(z1 + posZ)).color(0.0F, 0.0F, 0.0F, 0.45F).normal(last.normal(), xSize, ySize, zSize).endVertex();
+		});
 	}
 }
