@@ -38,6 +38,7 @@ import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
+import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.util.Restriction;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -322,6 +323,11 @@ public class TwilightForestMod {
 			ComposterBlock.add(0.65F, TFItems.MAZE_WAFER.get());
 			ComposterBlock.add(0.85F, TFItems.EXPERIMENT_115.get());
 			ComposterBlock.add(0.85F, TFItems.MAGIC_BEANS.get());
+
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.COBBLESTONE, TFBlocks.GIANT_COBBLESTONE.get().asItem());
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OAK_LOG, TFBlocks.GIANT_LOG.get().asItem());
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.get().asItem());
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.get().asItem());
 		});
 	}
 

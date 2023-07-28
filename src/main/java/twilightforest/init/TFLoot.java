@@ -8,6 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
+import twilightforest.loot.conditions.WasGiantPickUsedCondition;
 import twilightforest.loot.functions.ModItemSwap;
 
 public class TFLoot {
@@ -19,5 +20,6 @@ public class TFLoot {
 
 	public static final RegistryObject<LootItemConditionType> IS_MINION = CONDITIONS.register("is_minion", () -> new LootItemConditionType(new IsMinion.ConditionSerializer()));
 	public static final RegistryObject<LootItemConditionType> MOD_EXISTS = CONDITIONS.register("mod_exists", () -> new LootItemConditionType(new ModExists.ConditionSerializer()));
+	public static final RegistryObject<LootItemConditionType> GIANT_PICK_USED_CONDITION = CONDITIONS.register("giant_pick_used", () -> new LootItemConditionType(new WasGiantPickUsedCondition.ConditionSerializer()));
 
 }
