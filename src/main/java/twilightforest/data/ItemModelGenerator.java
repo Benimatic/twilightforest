@@ -1,14 +1,17 @@
 package twilightforest.data;
 
+import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.loaders.ItemLayerModelBuilder;
+import net.minecraftforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -71,10 +74,38 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.FLUFFY_CLOUD.get());
 		toBlock(TFBlocks.RAINY_CLOUD.get());
 		toBlock(TFBlocks.SNOWY_CLOUD.get());
-		toBlockModel(TFBlocks.GIANT_COBBLESTONE.get(), new ResourceLocation("block/cobblestone"));
-		toBlockModel(TFBlocks.GIANT_LOG.get(), new ResourceLocation("block/oak_log"));
-		toBlockModel(TFBlocks.GIANT_LEAVES.get(), new ResourceLocation("block/oak_leaves"));
-		toBlockModel(TFBlocks.GIANT_OBSIDIAN.get(), new ResourceLocation("block/obsidian"));
+
+		float giant = 4.0F;
+
+		ItemModelBuilder giant_block = withExistingParent("giant_block_base", new ResourceLocation("block/cube")).transforms()
+				.transform(ItemDisplayContext.GROUND).translation( 0.0F, 3.0F, 0.0F).scale(0.25F * giant).end()
+				.transform(ItemDisplayContext.FIXED).scale(0.5F * giant * 0.625F).end()
+				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation( 0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation( 0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation( 0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
+				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0,0,16,16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+
+		ItemModelBuilder gui_giant = withExistingParent("giant_block_gui", new ResourceLocation("block/cube")).transforms()
+				.transform(ItemDisplayContext.GUI).rotation(30.0F, 45.0F, 0.0F).scale(0.625F).end().end()
+				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0,0,4,4).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+
+		toGiantModel(TFBlocks.GIANT_COBBLESTONE.get(), new ResourceLocation("block/cobblestone"), giant_block, gui_giant);
+		toGiantModel(TFBlocks.GIANT_LOG.get(), new ResourceLocation("block/oak_log"), new ResourceLocation("block/oak_log_top"), giant_block, gui_giant);
+		toGiantModel(TFBlocks.GIANT_LEAVES.get(), new ResourceLocation("block/oak_leaves"), giant_block, gui_giant);
+		toGiantModel(TFBlocks.GIANT_OBSIDIAN.get(), new ResourceLocation("block/obsidian"), giant_block, gui_giant);
+
+		ItemModelBuilder giant_tool = withExistingParent("giant_tool_base", new ResourceLocation("item/generated")).transforms()
+				.transform(ItemDisplayContext.GROUND).translation( 0.0F, 2.0F, 0.0F).scale(2.5F).end()
+				.transform(ItemDisplayContext.HEAD).rotation(0.0F, 180.0F, 0.0F).translation( 0.0F, 13.0F, 7.0F).scale(5.0F).end()
+				.transform(ItemDisplayContext.FIXED).rotation(0.0F, 180.0F, 0.0F).scale(5.0F).end()
+				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 55.0F).translation( -0.1F, 24.0F, -5.5F).scale(4.25F).end()
+				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -55.0F).translation( -0.1F, 24.0F, -3.5F).scale(4.25F).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 25.0F).translation(  1.13F, 3.2F, 1.13F).scale(1.7F).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -25.0F).translation( 1.13F, 3.2F, 1.13F).scale(1.7F).end().end();
+
+		toGiantItemModel(TFItems.GIANT_PICKAXE, new ResourceLocation("item/stone_pickaxe"), giant_tool, 7, 2);
+		toGiantItemModel(TFItems.GIANT_SWORD, new ResourceLocation("item/stone_sword"), giant_tool, 3, 5);
+
 		toBlock(TFBlocks.UBEROUS_SOIL.get());
 		toBlock(TFBlocks.HUGE_STALK.get());
 		getBuilder(TFBlocks.HUGE_MUSHGLOOM.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
@@ -768,6 +799,28 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private void toBlockModel(Block b, ResourceLocation model) {
 		withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), model);
+	}
+
+	private void toGiantModel(Block b, ResourceLocation model, ItemModelBuilder base, ItemModelBuilder gui) {
+		toGiantModel(b, model, model, base, gui);
+	}
+
+	private void toGiantModel(Block b, ResourceLocation model, ResourceLocation top, ItemModelBuilder base, ItemModelBuilder gui) {
+		String name = ForgeRegistries.BLOCKS.getKey(b).getPath();
+		withExistingParent(name, model).customLoader(SeparateTransformsModelBuilder::begin)
+				.base(withExistingParent(name + "_base", base.getLocation()).texture("all", model).texture("top", top))
+				.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", model).texture("top", top)).end();
+	}
+
+	private void toGiantItemModel(RegistryObject<Item> item, ResourceLocation parent, ItemModelBuilder base, int x, int y) {
+		String name = item.getId().getPath();
+
+		ItemModelBuilder gui = getBuilder(name + "_gui").texture("all", parent)
+				.element().from(0,0,0).to(16, 16, 0).face(Direction.SOUTH).texture("#all").uvs(x, y, x + 8, y + 8).tintindex(0).end().end();
+
+		withExistingParent(name, parent).customLoader(SeparateTransformsModelBuilder::begin)
+				.base(withExistingParent(name + "_base", base.getLocation()).texture("layer0", parent))
+				.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", parent)).end();
 	}
 
 	@Override
