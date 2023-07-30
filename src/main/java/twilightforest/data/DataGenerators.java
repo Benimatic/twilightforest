@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
-import twilightforest.data.custom.UncraftingRecipeGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
@@ -63,7 +62,6 @@ public class DataGenerators {
 
 		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
-		generator.addProvider(event.includeServer(), new UncraftingRecipeGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
 		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
 						Component.literal("Resources for Twilight Forest"),

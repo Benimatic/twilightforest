@@ -12,6 +12,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.custom.UncraftingGenerator;
 import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -28,6 +29,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	@Override
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		StonecuttingGenerator.buildRecipes(consumer);
+		UncraftingGenerator.buildRecipes(consumer);
 
 		// The Recipe Builder currently doesn't support enchantment-resulting recipes, those must be manually created.
 		blockCompressionRecipes(consumer);
