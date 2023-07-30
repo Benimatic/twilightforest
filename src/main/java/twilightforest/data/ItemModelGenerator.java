@@ -820,7 +820,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 		withExistingParent(name, parent).customLoader(SeparateTransformsModelBuilder::begin)
 				.base(withExistingParent(name + "_base", base.getLocation()).texture("layer0", parent))
-				.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", parent)).end();
+				.perspective(ItemDisplayContext.GUI, gui.texture("all", parent)).end();
 	}
 
 	@Override

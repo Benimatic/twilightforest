@@ -9,7 +9,6 @@
   "loader": "forge:separate_transforms",
   "perspectives": {
     "gui": {
-      "parent": "twilightforest:item/giant_pickaxe_gui",
       "elements": [
         {
           "faces": {

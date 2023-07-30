@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-29T14:58:25.1212091	TwilightForest Item and BlockItem models
+// 1.20.1	2023-07-30T10:21:41.8273388	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -199,12 +199,12 @@ f65c8edb0653e98645e535a61f1b19d47353ff72 assets/twilightforest/models/item/giant
 1363b1e86c9ff51202a8ce04a73aeeaa21e790c0 assets/twilightforest/models/item/giant_obsidian.json
 befd2c74202f9af10022f668ad9b5696ad822d59 assets/twilightforest/models/item/giant_obsidian_base.json
 a9685ba1a99c7109669f84d846a60bdcca49d1be assets/twilightforest/models/item/giant_obsidian_gui.json
-44a34ea7b29d0dccb13508c864f04e9be1004240 assets/twilightforest/models/item/giant_pickaxe.json
+8345995c4e34ce7c9c47f77700a8fd05f96bf33e assets/twilightforest/models/item/giant_pickaxe.json
 3143ff12e27e0c247d02db77b100b891542d5df3 assets/twilightforest/models/item/giant_pickaxe_base.json
-4f22d69f889b5d8608816e2e3a6baf9da8ed53cf assets/twilightforest/models/item/giant_pickaxe_gui.json
-744b05426622a11ea75a311527f268b0c2a566da assets/twilightforest/models/item/giant_sword.json
+4b28163ede8b3310466003025f7940d12456189e assets/twilightforest/models/item/giant_pickaxe_gui.json
+a58555dba4cbda612d34aec04caeda89aa370ef7 assets/twilightforest/models/item/giant_sword.json
 f8f5ca82ad63231d20843c16d43aa090d6cf2616 assets/twilightforest/models/item/giant_sword_base.json
-6ee68a85190860018d0d559b78f0b5ce4e24f586 assets/twilightforest/models/item/giant_sword_gui.json
+469cf125b4026446fa56f1bc19c53d8ac58ce79d assets/twilightforest/models/item/giant_sword_gui.json
 8bfd30883803950fb15b6493d7433f644b9eb431 assets/twilightforest/models/item/giant_tool_base.json
 9d1ea9a2d4af16c34c90f72733fd03b951263c68 assets/twilightforest/models/item/glass_sword.json
 e21b89209c4ae4bdf01ecbbd79a13e5209f36681 assets/twilightforest/models/item/gold_minotaur_axe.json

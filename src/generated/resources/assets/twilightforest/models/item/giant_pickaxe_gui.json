@@ -1,5 +1,4 @@
 {
-  "parent": "twilightforest:item/giant_pickaxe_gui",
   "elements": [
     {
       "faces": {
