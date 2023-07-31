@@ -35,6 +35,7 @@ public class TFPacketHandler {
 		CHANNEL.registerMessage(id++, ThrowPlayerPacket.class, ThrowPlayerPacket::encode, ThrowPlayerPacket::new, ThrowPlayerPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, UncraftingGuiPacket.class, UncraftingGuiPacket::encode, UncraftingGuiPacket::new, UncraftingGuiPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, UpdateFeatherFanFallPacket.class, UpdateFeatherFanFallPacket::encode, UpdateFeatherFanFallPacket::new, UpdateFeatherFanFallPacket.Handler::onMessage);
+		CHANNEL.registerMessage(id++, UpdateGamerulePacket.class, UpdateGamerulePacket::encode, UpdateGamerulePacket::new, UpdateGamerulePacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, UpdateShieldPacket.class, UpdateShieldPacket::encode, UpdateShieldPacket::new, UpdateShieldPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, UpdateTFMultipartPacket.class, UpdateTFMultipartPacket::encode, UpdateTFMultipartPacket::new, UpdateTFMultipartPacket.Handler::onMessage);
 		CHANNEL.registerMessage(id++, UpdateThrownPacket.class, UpdateThrownPacket::encode, UpdateThrownPacket::new, UpdateThrownPacket.Handler::onMessage);

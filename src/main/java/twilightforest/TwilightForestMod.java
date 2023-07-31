@@ -27,6 +27,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -39,6 +40,7 @@ import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
+import twilightforest.network.UpdateGamerulePacket;
 import twilightforest.util.Restriction;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -66,7 +68,7 @@ public class TwilightForestMod {
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)); //Putting it in UPDATES since other world stuff is here
+	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true, (server, enforced) -> TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateGamerulePacket(enforced.get())))); //Putting it in UPDATES since other world stuff is here
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
