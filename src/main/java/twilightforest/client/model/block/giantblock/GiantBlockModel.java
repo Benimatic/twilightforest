@@ -122,7 +122,7 @@ public class GiantBlockModel implements IDynamicBakedModel {
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return false;
+		return true;
 	}
 
 	@Override
