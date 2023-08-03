@@ -87,9 +87,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		for (Map.Entry<List<IItemHandler>, Vec3> inputHandlers : inputMap.entrySet()) {
 			boolean transferred = false;
 			for (IItemHandler inputIItemHandler : inputHandlers.getKey()) {
-				if (transferred) break; // If we transferred the item from this Entry already, we break, since all IItemHandlers in one entry come from the same source
 				for (int i = 0; i < inputIItemHandler.getSlots(); i++) {
-					if (transferred) break; // Again, since we only transfer once per source, break
 					ItemStack inputStack = inputIItemHandler.extractItem(i, 1, true);
 					if (!inputStack.isEmpty()) {
 						Map<Integer, IItemHandler> outputsByCount = new HashMap<>();
@@ -144,7 +142,9 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 							}
 						}
 					}
+					if (transferred) break;// If we transferred the item from this Entry already, we break, since all IItemHandlers in one entry come from the same source
 				}
+				if (transferred) break; // Again, since we only transfer once per source, break
 			}
 		}
 	}
