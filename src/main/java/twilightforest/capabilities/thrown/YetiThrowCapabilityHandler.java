@@ -1,20 +1,26 @@
 package twilightforest.capabilities.thrown;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.network.ThrowPlayerPacket;
 import twilightforest.network.UpdateThrownPacket;
 
 public class YetiThrowCapabilityHandler implements YetiThrowCapability {
+
+	public static final int THROW_COOLDOWN = 200;
 
 	private boolean thrown;
 	private LivingEntity host;
 	@Nullable
 	private LivingEntity thrower;
 	private int throwCooldown;
+	private Vec3 throwVector = Vec3.ZERO;
 
 	@Override
 	public void setEntity(LivingEntity entity) {
@@ -27,10 +33,17 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 			if (player.onGround() || player.isSwimming() || player.isInWater()) {
 				this.setThrown(false, null);
 			}
-		} else {
-			if (this.throwCooldown > 0) {
-				this.throwCooldown--;
+		}
+		if (this.throwCooldown > 0) {
+			if (!this.host.level().isClientSide() && this.throwCooldown == THROW_COOLDOWN - 1) { // Actually throw the victim
+				this.host.push(this.throwVector.x(), this.throwVector.y(), this.throwVector.z());
+
+				if (this.host instanceof ServerPlayer player) {
+					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ThrowPlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
+				}
+				this.throwVector = Vec3.ZERO;
 			}
+			this.throwCooldown--;
 		}
 	}
 
@@ -62,6 +75,11 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 		this.sendUpdatePacket();
 	}
 
+	@Override
+	public void setThrowVector(Vec3 vector) {
+		this.throwVector = vector;
+	}
+
 	private void sendUpdatePacket() {
 		if (!this.host.level().isClientSide()) {
 			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateThrownPacket(this.host, this));
@@ -73,6 +91,9 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 		CompoundTag tag = new CompoundTag();
 		tag.putBoolean("yetiThrown", this.getThrown());
 		tag.putInt("throwCooldown", this.getThrowCooldown());
+		tag.putDouble("throwX", this.throwVector.x());
+		tag.putDouble("throwY", this.throwVector.y());
+		tag.putDouble("throwZ", this.throwVector.z());
 		return tag;
 	}
 
@@ -80,5 +101,6 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 	public void deserializeNBT(CompoundTag nbt) {
 		this.setThrown(nbt.getBoolean("yetiThrown"), null);
 		this.setThrowCooldown(nbt.getInt("throwCooldown"));
+		this.throwVector = new Vec3(nbt.getDouble("throwX"), nbt.getDouble("throwY"), nbt.getDouble("throwZ"));
 	}
 }

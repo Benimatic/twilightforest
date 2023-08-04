@@ -1,6 +1,5 @@
 package twilightforest.entity.ai.goal;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,12 +8,10 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.network.PacketDistributor;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.thrown.YetiThrowCapabilityHandler;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.ThrowPlayerPacket;
 
 public class ThrowRiderGoal extends MeleeAttackGoal {
 
@@ -77,28 +74,18 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public void stop() {
 		if (!this.mob.getPassengers().isEmpty()) {
 			Entity rider = this.mob.getPassengers().get(0);
-			HostileMountEvents.allowDismount = true;
-			rider.stopRiding();
-			HostileMountEvents.allowDismount = false;
+			HostileMountEvents.hostileDismount(rider);
 
-			Vec3 throwVec = this.mob.getLookAngle().scale(2);
-			throwVec = new Vec3(throwVec.x(), 0.9, throwVec.z());
+			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * 2.0D, 0.9, this.mob.getLookAngle().z() * 2.0D);
 
-			rider.push(throwVec.x(), throwVec.y(), throwVec.z());
-
-			if (rider instanceof LivingEntity entity) {
-				entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
-					if (entity instanceof Player)
-						cap.setThrown(true, this.mob);
-					//make it so other yetis wont try to pick us up for a bit, 10 seconds seems fair
-					cap.setThrowCooldown(200);
+			if (rider instanceof LivingEntity living) {
+				living.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
+					if (living instanceof Player) cap.setThrown(true, this.mob);
+					// Make it so other yetis won't try to pick us up for a bit, 10 seconds seems fair
+					cap.setThrowVector(throwVec);
+					cap.setThrowCooldown(YetiThrowCapabilityHandler.THROW_COOLDOWN);
 				});
-			}
-
-			if (rider instanceof ServerPlayer player) {
-				ThrowPlayerPacket message = new ThrowPlayerPacket(throwVec.x(), throwVec.y(), throwVec.z());
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
-			}
+			} else rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 		}
 		super.stop();
 	}

@@ -2,6 +2,7 @@ package twilightforest.events;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -43,6 +44,12 @@ public class HostileMountEvents {
 		if (event.getEntity() instanceof LivingEntity living && isRidingUnfriendly(living)) {
 			event.setCanceled(true);
 		}
+	}
+
+	public static void hostileDismount(Entity rider) {
+		HostileMountEvents.allowDismount = true;
+		rider.stopRiding();
+		HostileMountEvents.allowDismount = false;
 	}
 
 	@SubscribeEvent
