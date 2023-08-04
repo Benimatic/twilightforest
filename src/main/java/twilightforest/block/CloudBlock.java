@@ -33,6 +33,8 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class CloudBlock extends Block {
+    public static final int PRECIPITATION_FALL_DISTANCE = 32;
+
     @Nullable
     protected final Biome.Precipitation precipitation;
 
@@ -89,7 +91,7 @@ public class CloudBlock extends Block {
             Biome.Precipitation precipitation = pair.getLeft();
             if (precipitation == Biome.Precipitation.RAIN || precipitation == Biome.Precipitation.SNOW) {
                 int highestRainyBlock = pos.getY() - 1;
-                for (int y = pos.getY() - 1; y > level.getMinBuildHeight(); y--) {
+                for (int y = pos.getY() - 1; y > pos.getY() - PRECIPITATION_FALL_DISTANCE; y--) {
                     if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos.atY(y)))) highestRainyBlock = y - 1;
                     else break;
                 }

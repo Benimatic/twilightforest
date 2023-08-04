@@ -201,7 +201,7 @@ public class TFClientEvents {
 					mutableBlockPos.set(roofX, camY, roofZ);
 					int lastBadYLevel = Integer.MIN_VALUE;
 
-					for (int roofY = minecraft.level.getMinBuildHeight(); roofY < minecraft.level.getMaxBuildHeight(); roofY++) {
+					for (int roofY = floorY - renderDistance; roofY < floorY + CloudBlock.PRECIPITATION_FALL_DISTANCE + renderDistance; roofY++) {
 						boolean skipLoop = roofY == lastBadYLevel + 1; // Cloud can't rain if there is an invalid blockState right below it, so might as well skip the loop
 						BlockPos pos = new BlockPos(roofX, roofY, roofZ);
 						if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(minecraft.level.getBlockState(pos))) lastBadYLevel = roofY; // Check if we skip next loop
@@ -212,7 +212,7 @@ public class TFClientEvents {
 							if (precipitationRainLevelPair.getLeft() == Biome.Precipitation.NONE) continue; // No rain no gain
 
 							int highestRainyBlock = roofY;
-							for (int y = roofY - 1; y > minecraft.level.getMinBuildHeight(); y--) {
+							for (int y = roofY - 1; y > roofY - CloudBlock.PRECIPITATION_FALL_DISTANCE; y--) {
 								if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(minecraft.level.getBlockState(pos.atY(y)))) highestRainyBlock = y;
 								else break;
 							}
@@ -386,8 +386,7 @@ public class TFClientEvents {
 
 					BlockPos randomPos = camPos.offset(x, 0, z);
 					int lastBadYLevel = Integer.MIN_VALUE;
-					for (int y = mc.level.getMinBuildHeight(); y < mc.level.getMaxBuildHeight(); y++) {
-
+					for (int y = camPos.getY() - 10; y < camPos.getY() + CloudBlock.PRECIPITATION_FALL_DISTANCE; y++) {
 						boolean skipLoop = y == lastBadYLevel + 1; // Cloud can't rain if there is an invalid blockState right below it, so might as well skip the loop
 						BlockPos cloudPos = randomPos.atY(y);
 						if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(cloudPos))) lastBadYLevel = y; // Check if we skip next loop
@@ -397,11 +396,15 @@ public class TFClientEvents {
 							Pair<Biome.Precipitation, Float> pair = cloudBlock.getCurrentPrecipitation(cloudPos, mc.level, mc.level.getRainLevel(partial));
 							if (pair.getLeft() != Biome.Precipitation.RAIN || pair.getRight() <= 0.0F || mc.level.getRandom().nextFloat() >= pair.getRight()) continue;
 							int highestRainyBlock = y;
-							for (int y1 = y - 1; y1 > mc.level.getMinBuildHeight(); y1--) {
+							boolean actuallyCollidedWithSomething = false;
+							for (int y1 = y - 1; y1 > y - CloudBlock.PRECIPITATION_FALL_DISTANCE - 1; y1--) {
 								if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(cloudPos.atY(y1)))) highestRainyBlock = y1;
-								else break;
+								else {
+									actuallyCollidedWithSomething = true; // Check if it ever actually hit a block, so it doesn't make particles and sounds midair
+									break;
+								}
 							}
-							if (highestRainyBlock == y) continue;
+							if (highestRainyBlock == y || !actuallyCollidedWithSomething) continue;
 
 							BlockPos highestRainyPos = cloudPos.atY(highestRainyBlock);
 
