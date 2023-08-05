@@ -95,7 +95,7 @@ steps:
                 value = "$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)"
             },
             [Ordered]@{
-                name = "Forge Version"
+                name = "NeoForge Version"
                 value = "$($env:JAVAPROPS_NEO_VERSION)"
             },
             [Ordered]@{
