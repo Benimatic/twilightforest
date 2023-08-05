@@ -1,119 +1,65 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'maven-publish'
-apply plugin: 'eclipse'
 
-version = (hasProperty("CIRevision") ? CIRevision : mod_version)
+version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = group_name
-archivesBaseName = "${mod_id}-${minecraft_sub_version}"
+
+base {
+    archivesName = "${project.mod_id}-${project.base_minecraft_version}"
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
 
 minecraft {
-    //mappings channel: "official", version: "1.20"
     // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20'
+    mappings channel: mapping_channel, version: mapping_version
 
-    //version = minecraft_version + "-" + forge_version // grab latest forge
-    //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    copyIdeResources = true
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        client {
+        configureEach {
             workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'fml.earlyprogresswindow', 'false'
             property 'mixin.env.disableRefMap', 'true'
 
             mods {
-                twilightforest {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         server {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                twilightforest {
-                    source sourceSets.main
-                }
-            }
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
         }
 
-        gameTestServer {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'twilightforest'
-
-            mods {
-                twilightforest {
-                    source sourceSets.main
-                }
-            }
+       gameTestServer {
+            property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         data {
-            workingDirectory project.file('run')
-
-            properties 'fml.earlyprogresswindow': 'false'
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                twilightforest {
-                    source sourceSets.main
-                }
-            }
-            args '--mod', 'twilightforest', '--all',
-                    '--existing', '"' + file('src/main/resources/') + '"',
-                    '--existing', '"' + file('src/generated/resources/') + '"',
-                    '--output', '"' + file('src/generated/resources/') + '"'
+            workingDirectory project.file('run-data')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
     }
 }
 
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
-}
-
-compileJava {
-    options.encoding = 'UTF-8'
-}
-
-jar {
-    classifier = 'universal'
-    manifest {
-        attributes(["Specification-Title"     : "Twilight Forest",
-                    "Specification-Vendor"    : "TeamTwilight",
-                    "Specification-Version"   : "${version}",
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : "${version}",
-                    "Implementation-Vendor"   : "TeamTwilight",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
-    }
-}
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
@@ -143,13 +89,13 @@ repositories {
 
 dependencies {
     // jared
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_sub_version}-forge:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
 
     // theillusivec4
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}+${project.minecraft_sub_version}")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}+${project.minecraft_version}")
 
     //curse maven
     implementation fg.deobf("curse.maven:jade-324717:4573193")
@@ -159,12 +105,47 @@ dependencies {
     compileOnly fg.deobf("curse.maven:the-one-probe-245211:4613250")
 
     //mods we dont have compat with but are nice to have
-    runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.minecraft_version}-1.0")
+    runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0")
 
-    minecraft "net.minecraftforge:forge:${project.minecraft_sub_version}-${project.forge_version}"
+    //minecraft
+    minecraft "net.neoforged:forge:${project.minecraft_version}-${project.neo_version}"
 }
 
-jar.finalizedBy('reobfJar')
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version: neo_version,
+            neo_version_range: neo_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id,
+            mod_name: mod_name,
+            mod_authors: mod_authors,
+            mod_version: version
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        archiveClassifier = 'universal'
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : "TeamTwilight",
+                'Specification-Version'   : "1",
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : "TeamTwilight",
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    finalizedBy 'reobfJar'
+}
 
 publishing {
     publications {
@@ -189,7 +170,12 @@ publishing {
     }
 }
 
-task sourceJar(type: Jar, dependsOn: 'classes') {
+tasks.register('sourceJar', Jar) {
+    dependsOn 'classes'
     from sourceSets.main.allSource
-    classifier = 'sources'
+    archiveClassifier = 'sources'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
