@@ -10,7 +10,7 @@ version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = group_name
 
 base {
-    archivesName = "${project.mod_id}-${project.base_minecraft_version}"
+    archivesName = "${project.mod_id}-${project.minecraft_version}"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
