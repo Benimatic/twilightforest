@@ -88,7 +88,7 @@ steps:
             },
             [Ordered]@{
                 name = "Minecraft Version"
-                value = "$($env:JAVAPROPS_MINECRAFT_SUB_VERSION)"
+                value = "$($env:JAVAPROPS_MINECRAFT_VERSION)"
             },
             [Ordered]@{
                 name = "Mod Version"
@@ -96,7 +96,7 @@ steps:
             },
             [Ordered]@{
                 name = "Forge Version"
-                value = "$($env:JAVAPROPS_FORGE_VERSION)"
+                value = "$($env:JAVAPROPS_NEO_VERSION)"
             },
             [Ordered]@{
                 name = "Commit"
