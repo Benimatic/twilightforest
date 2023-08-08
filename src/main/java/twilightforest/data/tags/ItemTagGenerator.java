@@ -207,7 +207,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.AURORALIZED_GLASS.get().asItem(),
 				TFBlocks.SLIDER.get().asItem(),
 				TFBlocks.TWISTED_STONE_PILLAR.get().asItem(),
-				TFItems.ORE_METER.get()
+				TFItems.ORE_METER.get(),
+				TFItems.MAGIC_PAINTING.get()
 		);
 
 		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);

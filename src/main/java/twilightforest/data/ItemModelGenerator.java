@@ -446,6 +446,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.LIFEDRAIN_SCEPTER);
 		singleTexTool(TFItems.ZOMBIE_SCEPTER);
 		singleTexTool(TFItems.FORTIFICATION_SCEPTER);
+		singleTex(TFItems.MAGIC_PAINTING);
 		singleTex(TFItems.ORE_METER);
 		singleTex(TFItems.FILLED_MAGIC_MAP);
 		singleTex(TFItems.FILLED_MAZE_MAP);

@@ -41,6 +41,7 @@ import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.UpdateGamerulePacket;
+import twilightforest.util.MagicPaintingVariant;
 import twilightforest.util.Restriction;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -130,6 +131,7 @@ public class TwilightForestMod {
 		WoodPalettes.WOOD_PALETTES.register(modbus);
 		Enforcement.ENFORCEMENTS.register(modbus);
 		Restrictions.RESTRICTIONS.register(modbus);
+		MagicPaintingVariants.MAGIC_PAINTINGS.register(modbus);
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(this::init);
@@ -150,6 +152,7 @@ public class TwilightForestMod {
 		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
 		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
 		event.dataPackRegistry(Restrictions.RESTRICTION_KEY, Restriction.CODEC, Restriction.CODEC);
+		event.dataPackRegistry(MagicPaintingVariants.REGISTRY_KEY, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {

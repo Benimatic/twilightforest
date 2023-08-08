@@ -37,8 +37,6 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
 		generator.addProvider(event.includeClient(), new BlockstateGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
-		generator.addProvider(event.includeClient(), new AtlasGenerator(output, helper));
-		generator.addProvider(event.includeClient(), new LangGenerator(output));
 		generator.addProvider(event.includeClient(), new SoundGenerator(output, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
 		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
@@ -67,5 +65,7 @@ public class DataGenerators {
 						Component.literal("Resources for Twilight Forest"),
 						DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
 						Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
+		generator.addProvider(event.includeClient(), new AtlasGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new LangGenerator(output));
 	}
 }

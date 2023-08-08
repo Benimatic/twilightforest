@@ -109,8 +109,10 @@ public class TFClientSetup {
     }
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void addJappaPackListener(RegisterClientReloadListenersEvent event) {
+	public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener(JappaPackReloadListener.INSTANCE);
+		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
+		event.registerReloadListener(MagicPaintingTextureManager.instance);
 	}
 
 	@SubscribeEvent
@@ -164,6 +166,7 @@ public class TFClientSetup {
 		event.registerEntityRenderer(TFEntities.MAZE_SLIME.get(), m -> new MazeSlimeRenderer(m, 0.625F));
 		event.registerEntityRenderer(TFEntities.YETI.get(), m -> new TFBipedRenderer<>(m, new YetiModel<>(m.bakeLayer(TFModelLayers.YETI)), 0.625F, "yeti2.png"));
 		event.registerEntityRenderer(TFEntities.PROTECTION_BOX.get(), ProtectionBoxRenderer::new);
+		event.registerEntityRenderer(TFEntities.MAGIC_PAINTING.get(), MagicPaintingRenderer::new);
 		event.registerEntityRenderer(TFEntities.ALPHA_YETI.get(), m -> new TFBipedRenderer<>(m, new AlphaYetiModel(m.bakeLayer(TFModelLayers.ALPHA_YETI)), 1.75F, "yetialpha.png"));
 		event.registerEntityRenderer(TFEntities.WINTER_WOLF.get(), WinterWolfRenderer::new);
 		event.registerEntityRenderer(TFEntities.SNOW_GUARDIAN.get(), m -> new SnowGuardianRenderer(m, new NoopModel<>(m.bakeLayer(TFModelLayers.NOOP))));

@@ -1,0 +1,8 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/back"
+    }
+  ]
+}

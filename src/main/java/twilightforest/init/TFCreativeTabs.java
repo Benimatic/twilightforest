@@ -1,11 +1,18 @@
 package twilightforest.init;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -14,8 +21,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.MagicPainting;
+import twilightforest.init.custom.MagicPaintingVariants;
+import twilightforest.util.MagicPaintingVariant;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 public class TFCreativeTabs {
 
@@ -444,6 +455,7 @@ public class TFCreativeTabs {
 				output.accept(TFItems.MUSIC_DISC_HOME.get());
 				output.accept(TFItems.MUSIC_DISC_MAKER.get());
 				output.accept(TFItems.MUSIC_DISC_SUPERSTITIOUS.get());
+				parameters.holders().lookup(MagicPaintingVariants.REGISTRY_KEY).ifPresent((lookup) -> createPaintings(output, lookup));
 				output.accept(TFItems.NAGA_BANNER_PATTERN.get());
 				output.accept(TFItems.LICH_BANNER_PATTERN.get());
 				output.accept(TFItems.MINOSHROOM_BANNER_PATTERN.get());
@@ -602,5 +614,17 @@ public class TFCreativeTabs {
 		tags.put("display", display);
 		loreSword.setTag(tags);
 		output.accept(loreSword);
+	}
+
+	private static final Comparator<Holder<MagicPaintingVariant>> MAGIC_COMPARATOR = Comparator.comparing(Holder::value, Comparator.<MagicPaintingVariant>comparingInt((variant) ->
+			variant.height() * variant.width()).thenComparing(MagicPaintingVariant::width));
+
+	private static void createPaintings(CreativeModeTab.Output output, HolderLookup.RegistryLookup<MagicPaintingVariant> lookup) {
+		lookup.listElements().sorted(MAGIC_COMPARATOR).forEach((holder) -> {
+			ItemStack itemstack = new ItemStack(TFItems.MAGIC_PAINTING.get());
+			CompoundTag tag = itemstack.getOrCreateTagElement("EntityTag");
+			tag.putString("variant", holder.unwrapKey().map(ResourceKey::location).map(ResourceLocation::toString).orElse(MagicPainting.EMPTY));
+			output.accept(itemstack);
+		});
 	}
 }

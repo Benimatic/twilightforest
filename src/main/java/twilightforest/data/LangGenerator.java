@@ -1,10 +1,17 @@
 package twilightforest.data;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.init.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LangGenerator extends TFLangProvider {
+	public static final Map<ResourceLocation, Pair<String, String>> MAGIC_PAINTING_HELPER = new HashMap<>();
+
 	public LangGenerator(PackOutput output) {
 		super(output);
 	}
@@ -452,6 +459,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.flask.doses", "Doses: %s/%s");
 		this.add("item.twilightforest.flask.no_refill", "Cannot be refilled");
 
+		this.addItem(TFItems.MAGIC_PAINTING, "Magic Painting");
 		this.addItem(TFItems.ORE_METER, "Ore Meter");
 		this.addItem(TFItems.FILLED_MAGIC_MAP, "Magic Map");
 		this.addItem(TFItems.FILLED_MAZE_MAP, "Maze Map");
@@ -1131,5 +1139,10 @@ public class LangGenerator extends TFLangProvider {
 		this.add("museumcurator.metallurgy.twilightforest.fiery", "Fiery Metal");
 		this.add("museumcurator.metallurgy.twilightforest.ironwood", "Ironwood");
 		this.add("museumcurator.metallurgy.twilightforest.knightmetal", "Knightmetal");
+
+		MAGIC_PAINTING_HELPER.forEach((location, stringStringPair) -> {
+			this.add(location.toLanguageKey("magic_painting", "title"), stringStringPair.getFirst());
+			this.add(location.toLanguageKey("magic_painting", "author"), stringStringPair.getSecond());
+		});
 	}
 }

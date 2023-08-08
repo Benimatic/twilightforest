@@ -8,6 +8,7 @@ import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.init.custom.MagicPaintingVariants;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.init.custom.WoodPalettes;
 
@@ -30,7 +31,8 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 			.add(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalettes::bootstrap)
 			.add(Registries.DAMAGE_TYPE, TFDamageTypes::bootstrap)
 			.add(Registries.TRIM_MATERIAL, TFTrimMaterials::bootstrap)
-			.add(Restrictions.RESTRICTION_KEY, Restrictions::bootstrap);
+			.add(Restrictions.RESTRICTION_KEY, Restrictions::bootstrap)
+			.add(MagicPaintingVariants.REGISTRY_KEY, MagicPaintingVariants::bootstrap);
 
 	public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider, BUILDER, Set.of("minecraft", TwilightForestMod.ID));

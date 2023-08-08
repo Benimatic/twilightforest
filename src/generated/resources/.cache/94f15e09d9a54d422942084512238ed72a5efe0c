@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-30T10:21:41.8273388	TwilightForest Item and BlockItem models
+// 1.20.1	2023-08-08T21:00:23.4625274	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -299,6 +299,7 @@ c1428d0907051e585b83662a7414fcc9b8450fcc assets/twilightforest/models/item/liver
 b488c0e68304fe38b56b843b215bb46abd69fbc3 assets/twilightforest/models/item/magic_beans.json
 ff9e2e8376642cf0ae9452f73d2cdd2ae486022e assets/twilightforest/models/item/magic_map.json
 3be27be382684a8a3955e7658c54d3d34a6a444c assets/twilightforest/models/item/magic_map_focus.json
+7d6333678dc9845504c0da7b660debb25fc58dc6 assets/twilightforest/models/item/magic_painting.json
 bc799d77d4344616b9a679dcd2e839fa75646287 assets/twilightforest/models/item/mangrove_banister.json
 40e9fe30b711daf2712fa6533799c9bbe0c2366e assets/twilightforest/models/item/mangrove_boat.json
 ffa22394c21d9ae5aaf32421ca2bad7df2f3686b assets/twilightforest/models/item/mangrove_button.json
