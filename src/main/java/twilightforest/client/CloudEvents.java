@@ -60,88 +60,95 @@ public class CloudEvents {
 
         if (!mc.isPaused()) {
             if (mc.level != null && TFConfig.CLIENT_CONFIG.cloudBlockRainParticles.get()) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
-                RENDER_HELPER.clear();
+                Vec3 vec3 = mc.gameRenderer.getMainCamera().getPosition();
+                if (mc.level.getGameTime() % 10L == 0L) {
+                    RENDER_HELPER.clear();
+
+                    double camX = vec3.x();
+                    double camY = vec3.y();
+                    double camZ = vec3.z();
+
+                    int floorX = Mth.floor(camX);
+                    int floorY = Mth.floor(camY);
+                    int floorZ = Mth.floor(camZ);
+
+                    int renderDistance = Minecraft.useFancyGraphics() ? 10 : 5;
+
+                    for (int roofZ = floorZ - renderDistance; roofZ <= floorZ + renderDistance; ++roofZ) {
+                        for (int roofX = floorX - renderDistance; roofX <= floorX + renderDistance; ++roofX) {
+                            int lastBadYLevel = Integer.MIN_VALUE;
+                            for (int roofY = floorY - renderDistance; roofY < floorY + CloudBlock.PRECIPITATION_FALL_DISTANCE + renderDistance; roofY++) {
+                                boolean skipLoop = roofY == lastBadYLevel + 1; // Cloud can't rain if there is an invalid blockState right below it, so might as well skip the loop
+                                BlockPos pos = new BlockPos(roofX, roofY, roofZ);
+                                if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos)))
+                                    lastBadYLevel = roofY; // Check if we skip next loop
+                                if (skipLoop) continue;
+
+                                if (mc.level.getBlockState(pos).getBlock() instanceof CloudBlock cloudBlock) {
+                                    Pair<Biome.Precipitation, Float> precipitationRainLevelPair = cloudBlock.getCurrentPrecipitation(pos, mc.level, mc.level.getRainLevel(1.0F));
+                                    if (precipitationRainLevelPair.getLeft() == Biome.Precipitation.NONE)
+                                        continue; // No rain no gain
+
+                                    int highestRainyBlock = roofY;
+                                    for (int y = roofY - 1; y > roofY - CloudBlock.PRECIPITATION_FALL_DISTANCE; y--) {
+                                        if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos.atY(y))))
+                                            highestRainyBlock = y;
+                                        else break;
+                                    }
+                                    if (highestRainyBlock == roofY) continue;
+
+                                    int botY = Math.max(highestRainyBlock, floorY - renderDistance);
+                                    int topY = Math.min(roofY, floorY + renderDistance);
+                                    if (topY - botY <= 0) continue;
+
+                                    RENDER_HELPER.add(new PrecipitationRenderHelper(pos, precipitationRainLevelPair.getLeft(), precipitationRainLevelPair.getRight(), botY, topY, highestRainyBlock));
+                                }
+                            }
+                        }
+                    }
+                }
+
                 RandomSource randomsource = RandomSource.create((long) mc.levelRenderer.getTicks() * 312987231L);
                 BlockPos particlePos = null;
                 int particleCount = 100 / (mc.options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
 
                 boolean yetToMakeASound = true;
-
-
-                Vec3 vec3 = mc.gameRenderer.getMainCamera().getPosition();
                 BlockPos camPos = BlockPos.containing(vec3);
-                double camX = vec3.x();
-                double camY = vec3.y();
-                double camZ = vec3.z();
 
                 List<Vec2i> particleChecks = new ArrayList<>();
                 for (int i = 0; i < particleCount; ++i) {
                     particleChecks.add(new Vec2i(randomsource.nextInt(21) - 10 + camPos.getX(), randomsource.nextInt(21) - 10 + camPos.getZ()));
                 }
 
-                int floorX = Mth.floor(camX);
-                int floorY = Mth.floor(camY);
-                int floorZ = Mth.floor(camZ);
+                for (PrecipitationRenderHelper helper : RENDER_HELPER) {
+                    for (Vec2i vec2 : particleChecks) {
+                        if (vec2.x == helper.cloudPos.getX() && vec2.z == helper.cloudPos.getZ()) {
+                            BlockPos highestRainyPos = helper.cloudPos.atY(helper.rainOnY);
 
-                int renderDistance = Minecraft.useFancyGraphics() ? 10 : 5;
-
-                for (int roofZ = floorZ - renderDistance; roofZ <= floorZ + renderDistance; ++roofZ) {
-                    for (int roofX = floorX - renderDistance; roofX <= floorX + renderDistance; ++roofX) {
-                        int lastBadYLevel = Integer.MIN_VALUE;
-                        for (int roofY = floorY - renderDistance; roofY < floorY + CloudBlock.PRECIPITATION_FALL_DISTANCE + renderDistance; roofY++) {
-                            boolean skipLoop = roofY == lastBadYLevel + 1; // Cloud can't rain if there is an invalid blockState right below it, so might as well skip the loop
-                            BlockPos pos = new BlockPos(roofX, roofY, roofZ);
-                            if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos))) lastBadYLevel = roofY; // Check if we skip next loop
-                            if (skipLoop) continue;
-
-                            if (mc.level.getBlockState(pos).getBlock() instanceof CloudBlock cloudBlock) {
-                                Pair<Biome.Precipitation, Float> precipitationRainLevelPair = cloudBlock.getCurrentPrecipitation(pos, mc.level, mc.level.getRainLevel(1.0F));
-                                if (precipitationRainLevelPair.getLeft() == Biome.Precipitation.NONE) continue; // No rain no gain
-
-                                int highestRainyBlock = roofY;
-                                for (int y = roofY - 1; y > roofY - CloudBlock.PRECIPITATION_FALL_DISTANCE; y--) {
-                                    if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos.atY(y)))) highestRainyBlock = y;
-                                    else break;
+                            if (yetToMakeASound && particlePos != null && randomsource.nextInt(3) < mc.levelRenderer.rainSoundTime++) {
+                                mc.levelRenderer.rainSoundTime = 0;
+                                if (particlePos.getY() > camPos.getY() + 1 && mc.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, camPos).getY() > Mth.floor((float) camPos.getY())) {
+                                    mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
+                                } else {
+                                    mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
                                 }
-                                if (highestRainyBlock == roofY) continue;
+                                yetToMakeASound = false;
+                            }
 
-                                int botY = Math.max(highestRainyBlock, floorY - renderDistance);
-                                int topY = Math.min(roofY, floorY + renderDistance);
-                                if (topY - botY <= 0) continue;
+                            if (highestRainyPos.getY() > mc.level.getMinBuildHeight() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
+                                particlePos = highestRainyPos.below();
+                                if (mc.options.particles().get() == ParticleStatus.MINIMAL) break;
 
-                                RENDER_HELPER.add(new PrecipitationRenderHelper(pos, precipitationRainLevelPair.getLeft(), precipitationRainLevelPair.getRight(), botY, topY, highestRainyBlock));
-
-                                for (Vec2i vec2 : particleChecks) {
-                                    if (vec2.x == roofX && vec2.z == roofZ) {
-                                        BlockPos highestRainyPos = pos.atY(highestRainyBlock);
-
-                                        if (yetToMakeASound && particlePos != null && randomsource.nextInt(3) < mc.levelRenderer.rainSoundTime++) {
-                                            mc.levelRenderer.rainSoundTime = 0;
-                                            if (particlePos.getY() > camPos.getY() + 1 && mc.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, camPos).getY() > Mth.floor((float) camPos.getY())) {
-                                                mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
-                                            } else {
-                                                mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
-                                            }
-                                            yetToMakeASound = false;
-                                        }
-
-                                        if (highestRainyPos.getY() > mc.level.getMinBuildHeight() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
-                                            particlePos = highestRainyPos.below();
-                                            if (mc.options.particles().get() == ParticleStatus.MINIMAL) break;
-
-                                            double particleX = randomsource.nextDouble();
-                                            double particleZ = randomsource.nextDouble();
-                                            BlockState blockstate = mc.level.getBlockState(particlePos);
-                                            FluidState fluidstate = mc.level.getFluidState(particlePos);
-                                            VoxelShape voxelshape = blockstate.getCollisionShape(mc.level, particlePos);
-                                            double voxelMax = voxelshape.max(Direction.Axis.Y, particleX, particleZ);
-                                            double fluidMax = fluidstate.getHeight(mc.level, particlePos);
-                                            double particleY = Math.max(voxelMax, fluidMax);
-                                            ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
-                                            mc.level.addParticle(particleoptions, (double) particlePos.getX() + particleX, (double) particlePos.getY() + particleY, (double) particlePos.getZ() + particleZ, 0.0D, 0.0D, 0.0D);
-                                        }
-                                    }
-                                }
+                                double particleX = randomsource.nextDouble();
+                                double particleZ = randomsource.nextDouble();
+                                BlockState blockstate = mc.level.getBlockState(particlePos);
+                                FluidState fluidstate = mc.level.getFluidState(particlePos);
+                                VoxelShape voxelshape = blockstate.getCollisionShape(mc.level, particlePos);
+                                double voxelMax = voxelshape.max(Direction.Axis.Y, particleX, particleZ);
+                                double fluidMax = fluidstate.getHeight(mc.level, particlePos);
+                                double particleY = Math.max(voxelMax, fluidMax);
+                                ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
+                                mc.level.addParticle(particleoptions, (double) particlePos.getX() + particleX, (double) particlePos.getY() + particleY, (double) particlePos.getZ() + particleZ, 0.0D, 0.0D, 0.0D);
                             }
                         }
                     }
