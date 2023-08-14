@@ -106,6 +106,14 @@ public class TFConfig {
 							""").
 					define("boss_drop_chests", true);
 
+			cloudBlockPrecipitationDistanceServer = builder.
+					translation(config + "cloud_block_precipitation_distance_server").
+					comment("""
+							Dictates how many blocks down from a cloud block should the game logic check for handling weather related code.
+							Lower if experiencing low tick rate. Set to 0 to turn all cloud precipitation logic off.
+							""").
+					defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
+
 			builder.
 					comment("Settings for all things related to the uncrafting table.").
 					push("Uncrafting Table");
@@ -260,6 +268,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
 		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
 		public final ForgeConfigSpec.BooleanValue bossDropChests;
+		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceServer;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
@@ -329,14 +338,10 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
-			cloudBlockPrecipitationRender = builder.
-					translation(config + "cloud_block_precipitation_render").
-					comment("Renders rain and snow underneath cloud blocks. Turn this off if you're experiencing poor performance.").
-					define("cloudBlockPrecipitationRender", true);
-			cloudBlockRainParticles = builder.
-					translation(config + "cloud_block_rain_particles").
-					comment("Spawns rain particles underneath cloud blocks. Turn this off if you're experiencing poor performance.").
-					define("cloudBlockRainParticles", true);
+			cloudBlockPrecipitationDistance = builder.
+					translation(config + "cloud_block_precipitation_distance").
+					comment("Renders rain and snow underneath cloud blocks. Set this to 0 if you're experiencing poor performance.").
+					defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
 
 		}
 
@@ -347,8 +352,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
-		public final ForgeConfigSpec.BooleanValue cloudBlockPrecipitationRender;
-		public final ForgeConfigSpec.BooleanValue cloudBlockRainParticles;
+		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistance;
 	}
 
 	private static final String config =  "config." + TwilightForestMod.ID;

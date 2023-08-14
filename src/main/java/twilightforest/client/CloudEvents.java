@@ -59,7 +59,7 @@ public class CloudEvents {
         Minecraft mc = Minecraft.getInstance();
 
         if (!mc.isPaused()) {
-            if (mc.level != null && TFConfig.CLIENT_CONFIG.cloudBlockRainParticles.get()) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
+            if (mc.level != null && TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistance.get() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
                 Vec3 vec3 = mc.gameRenderer.getMainCamera().getPosition();
                 if (mc.level.getGameTime() % 10L == 0L) {
                     RENDER_HELPER.clear();
@@ -73,11 +73,12 @@ public class CloudEvents {
                     int floorZ = Mth.floor(camZ);
 
                     int renderDistance = Minecraft.useFancyGraphics() ? 10 : 5;
+                    int precipitationDistance = TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistance.get();
 
                     for (int roofZ = floorZ - renderDistance; roofZ <= floorZ + renderDistance; ++roofZ) {
                         for (int roofX = floorX - renderDistance; roofX <= floorX + renderDistance; ++roofX) {
                             int lastBadYLevel = Integer.MIN_VALUE;
-                            for (int roofY = floorY - renderDistance; roofY < floorY + CloudBlock.PRECIPITATION_FALL_DISTANCE + renderDistance; roofY++) {
+                            for (int roofY = floorY - renderDistance; roofY < floorY + precipitationDistance + renderDistance; roofY++) {
                                 boolean skipLoop = roofY == lastBadYLevel + 1; // Cloud can't rain if there is an invalid blockState right below it, so might as well skip the loop
                                 BlockPos pos = new BlockPos(roofX, roofY, roofZ);
                                 if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos)))
@@ -90,7 +91,7 @@ public class CloudEvents {
                                         continue; // No rain no gain
 
                                     int highestRainyBlock = roofY;
-                                    for (int y = roofY - 1; y > roofY - CloudBlock.PRECIPITATION_FALL_DISTANCE; y--) {
+                                    for (int y = roofY - 1; y > roofY - precipitationDistance; y--) {
                                         if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos.atY(y))))
                                             highestRainyBlock = y;
                                         else break;
@@ -159,7 +160,7 @@ public class CloudEvents {
 
     @SubscribeEvent
     public static void renderCloudBlockPrecipitation(RenderLevelStageEvent event) {
-        if (TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationRender.get() && event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistance.get() > 0) {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.level == null) return;
             float partialTick = minecraft.getPartialTick();
