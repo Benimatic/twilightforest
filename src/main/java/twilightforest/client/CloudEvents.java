@@ -49,7 +49,7 @@ import java.util.List;
 public class CloudEvents {
     private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
 
-    record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int minY, int maxY, int rainOnY) {
+    record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int rainOnY) {
 
     }
 
@@ -98,11 +98,7 @@ public class CloudEvents {
                                     }
                                     if (highestRainyBlock == roofY) continue;
 
-                                    int botY = Math.max(highestRainyBlock, floorY - renderDistance);
-                                    int topY = Math.min(roofY, floorY + renderDistance);
-                                    if (topY - botY <= 0) continue;
-
-                                    RENDER_HELPER.add(new PrecipitationRenderHelper(pos, precipitationRainLevelPair.getLeft(), precipitationRainLevelPair.getRight(), botY, topY, highestRainyBlock));
+                                    RENDER_HELPER.add(new PrecipitationRenderHelper(pos, precipitationRainLevelPair.getLeft(), precipitationRainLevelPair.getRight(), highestRainyBlock));
                                 }
                             }
                         }
@@ -122,34 +118,37 @@ public class CloudEvents {
                 }
 
                 for (PrecipitationRenderHelper helper : RENDER_HELPER) {
-                    for (Vec2i vec2 : particleChecks) {
-                        if (vec2.x == helper.cloudPos.getX() && vec2.z == helper.cloudPos.getZ()) {
-                            BlockPos highestRainyPos = helper.cloudPos.atY(helper.rainOnY);
+                    if (helper.precipitation() == Biome.Precipitation.RAIN) {
+                        for (Vec2i vec2 : particleChecks) {
+                            if (vec2.x == helper.cloudPos().getX() && vec2.z == helper.cloudPos().getZ()) {
+                                BlockPos highestRainyPos = helper.cloudPos().atY(helper.rainOnY());
+                                if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(highestRainyPos.below()))) continue;
 
-                            if (yetToMakeASound && particlePos != null && randomsource.nextInt(3) < mc.levelRenderer.rainSoundTime++) {
-                                mc.levelRenderer.rainSoundTime = 0;
-                                if (particlePos.getY() > camPos.getY() + 1 && mc.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, camPos).getY() > Mth.floor((float) camPos.getY())) {
-                                    mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
-                                } else {
-                                    mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
+                                if (yetToMakeASound && particlePos != null && randomsource.nextInt(3) < mc.levelRenderer.rainSoundTime++) {
+                                    mc.levelRenderer.rainSoundTime = 0;
+                                    if (particlePos.getY() > camPos.getY() + 1 && mc.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, camPos).getY() > Mth.floor((float) camPos.getY())) {
+                                        mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
+                                    } else {
+                                        mc.level.playLocalSound(particlePos, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
+                                    }
+                                    yetToMakeASound = false;
                                 }
-                                yetToMakeASound = false;
-                            }
 
-                            if (highestRainyPos.getY() > mc.level.getMinBuildHeight() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
-                                particlePos = highestRainyPos.below();
-                                if (mc.options.particles().get() == ParticleStatus.MINIMAL) break;
+                                if (highestRainyPos.getY() > mc.level.getMinBuildHeight() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
+                                    particlePos = highestRainyPos.below();
+                                    if (mc.options.particles().get() == ParticleStatus.MINIMAL) break;
 
-                                double particleX = randomsource.nextDouble();
-                                double particleZ = randomsource.nextDouble();
-                                BlockState blockstate = mc.level.getBlockState(particlePos);
-                                FluidState fluidstate = mc.level.getFluidState(particlePos);
-                                VoxelShape voxelshape = blockstate.getCollisionShape(mc.level, particlePos);
-                                double voxelMax = voxelshape.max(Direction.Axis.Y, particleX, particleZ);
-                                double fluidMax = fluidstate.getHeight(mc.level, particlePos);
-                                double particleY = Math.max(voxelMax, fluidMax);
-                                ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
-                                mc.level.addParticle(particleoptions, (double) particlePos.getX() + particleX, (double) particlePos.getY() + particleY, (double) particlePos.getZ() + particleZ, 0.0D, 0.0D, 0.0D);
+                                    double particleX = randomsource.nextDouble();
+                                    double particleZ = randomsource.nextDouble();
+                                    BlockState blockstate = mc.level.getBlockState(particlePos);
+                                    FluidState fluidstate = mc.level.getFluidState(particlePos);
+                                    VoxelShape voxelshape = blockstate.getCollisionShape(mc.level, particlePos);
+                                    double voxelMax = voxelshape.max(Direction.Axis.Y, particleX, particleZ);
+                                    double fluidMax = fluidstate.getHeight(mc.level, particlePos);
+                                    double particleY = Math.max(voxelMax, fluidMax);
+                                    ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
+                                    mc.level.addParticle(particleoptions, (double) particlePos.getX() + particleX, (double) particlePos.getY() + particleY, (double) particlePos.getZ() + particleZ, 0.0D, 0.0D, 0.0D);
+                                }
                             }
                         }
                     }
@@ -195,8 +194,10 @@ public class CloudEvents {
                 BlockPos pos = helper.cloudPos();
                 int roofX = pos.getX();
                 int roofZ = pos.getZ();
-                int topY = helper.maxY();
-                int botY = helper.minY();
+
+                int botY = Math.max(helper.rainOnY(), floorY - renderDistance);
+                int topY = Math.min(pos.getY(), floorY + renderDistance);
+                if (topY - botY <= 0) continue;
 
                 int rainS = (roofZ - floorZ + 16) * 32 + roofX - floorX + 16;
                 double rainX = (double) TFWeatherRenderer.rainxs[rainS] * 0.5D;
@@ -204,7 +205,7 @@ public class CloudEvents {
                 mutableBlockPos.set(roofX, camY, roofZ);
 
                 RandomSource random = RandomSource.create((long) roofX * roofX * 3121 + roofX * 45238971L ^ (long) roofZ * roofZ * 418711 + roofZ * 13761L);
-                if (helper.precipitation == Biome.Precipitation.RAIN) {
+                if (helper.precipitation() == Biome.Precipitation.RAIN) {
                     if (tesselatorCheck != 0) {
                         if (tesselatorCheck >= 0) tesselator.end();
 
