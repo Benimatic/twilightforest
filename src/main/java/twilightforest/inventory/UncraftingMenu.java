@@ -473,7 +473,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
-			if (this.assemblyMatrix.isEmpty()) {
+			if (this.assemblyMatrix.isEmpty() && (clickType != ClickType.SWAP || player.getInventory().getItem(mouseButton).isEmpty())) {
 				slotNum -= 9;
 			}
 		}
