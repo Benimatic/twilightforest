@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -260,10 +262,11 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.OAK_SIGN) {
 			world.setBlock(pos, Blocks.OAK_SIGN.defaultBlockState().setValue(StandingSignBlock.ROTATION, this.getOrientation().get2DDataValue() * 4), 2);
 
-			SignBlockEntity teSign = (SignBlockEntity) world.getBlockEntity(pos);
-			if (teSign != null) {
-				teSign.getFrontText().setMessage(1, Component.literal(string0));
-				teSign.getFrontText().setMessage(2, Component.literal(string1));
+			if (world.getBlockEntity(pos) instanceof SignBlockEntity sign) {
+				CompoundTag tag = sign.saveWithoutMetadata();
+				SignText text = sign.getFrontText().setMessage(1, Component.literal(string0)).setMessage(2, Component.literal(string1));
+				SignText.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, text).resultOrPartial(TwilightForestMod.LOGGER::error).ifPresent((tag1) -> tag.put("front_text", tag1));
+				sign.load(tag);
 			}
 		}
 	}
