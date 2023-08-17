@@ -1,5 +1,13 @@
 package twilightforest;
 
+import com.mojang.authlib.EnvironmentParser;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.HttpAuthenticationService;
+import com.mojang.authlib.exceptions.*;
+import com.mojang.authlib.minecraft.client.ObjectMapper;
+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
+import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -8,16 +16,23 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.PlayerHelper;
 
+import java.io.IOException;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFConfig {
@@ -342,6 +357,12 @@ public class TFConfig {
 					translation(config + "cloud_block_precipitation_distance").
 					comment("Renders rain and snow underneath cloud blocks. Set this to 0 if you're experiencing poor performance.").
 					defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
+			giantSkinUUIDs = builder.
+					translation(config + "giant_skin_uuid_list").
+					comment("""
+							List of player UUIDs whose skins the giants of Twilight Forest should use.
+							If left empty, the giants will appear the same as the player viewing them does.""").
+					defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), s -> s instanceof String);
 
 		}
 
@@ -353,6 +374,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistance;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 	}
 
 	private static final String config =  "config." + TwilightForestMod.ID;
@@ -390,8 +412,15 @@ public class TFConfig {
 					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
 		}
+
+		TFConfig.giantCheck(event);
 		//sets cached portal locking advancement to null just in case it changed
 		COMMON_CONFIG.portalLockingAdvancement = null;
+	}
+
+	@SubscribeEvent
+	public static void onConfigReload(final ModConfigEvent.Loading event) {
+		TFConfig.giantCheck(event);
 	}
 
 	//damn forge events
@@ -412,6 +441,59 @@ public class TFConfig {
 						COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
 			}
+		}
+	}
+
+	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
+
+	public static void giantCheck(ModConfigEvent event) {
+		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID) && event.getConfig().getType().equals(ModConfig.Type.CLIENT)) {
+			new Thread() {
+				@Override
+				public void run() {
+					GAME_PROFILES.clear();
+
+					YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
+					String baseUrl = EnvironmentParser.getEnvironmentFromProperties().orElse(YggdrasilEnvironment.PROD.getEnvironment()).getSessionHost() + "/session/minecraft/";
+					boolean requireSecure = false;
+					for (String stringUUID : TFConfig.CLIENT_CONFIG.giantSkinUUIDs.get()) {
+						try {
+							UUID uuid = UUID.fromString(stringUUID);
+
+							URL url = HttpAuthenticationService.constantURL(baseUrl + "profile/" + uuid);
+							url = HttpAuthenticationService.concatenateURL(url, "unsigned=" + !requireSecure);
+
+							final MinecraftProfilePropertiesResponse response = ObjectMapper.create().readValue(service.performGetRequest(url), MinecraftProfilePropertiesResponse.class);
+
+							if (StringUtils.isNotBlank(response.getError())) {
+								if ("UserMigratedException".equals(response.getCause())) {
+									throw new UserMigratedException(response.getErrorMessage());
+								} else if ("ForbiddenOperationException".equals(response.getError())) {
+									throw new InvalidCredentialsException(response.getErrorMessage());
+								} else if ("InsufficientPrivilegesException".equals(response.getError())) {
+									throw new InsufficientPrivilegesException(response.getErrorMessage());
+								} else if ("multiplayer.access.banned".equals(response.getError())) {
+									throw new UserBannedException();
+								} else {
+									throw new AuthenticationException(response.getErrorMessage());
+								}
+							}
+
+							if (response.getId() != null) {
+								final GameProfile result = new GameProfile(response.getId(), response.getName());
+								if (response.getProperties() != null)
+									result.getProperties().putAll(response.getProperties());
+								GAME_PROFILES.add(result);
+							}
+						} catch (IllegalArgumentException e) {
+							TwilightForestMod.LOGGER.error("\"{}\" is not a valid UUID!", stringUUID);
+						} catch (AuthenticationException | IOException e) {
+							e.printStackTrace();
+						}
+					}
+					super.run();
+				}
+			}.start();
 		}
 	}
 }
