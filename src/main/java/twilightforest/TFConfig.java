@@ -121,7 +121,7 @@ public class TFConfig {
 							""").
 					define("boss_drop_chests", true);
 
-			cloudBlockPrecipitationDistanceServer = builder.
+			cloudBlockPrecipitationDistanceCommon = builder.
 					translation(config + "cloud_block_precipitation_distance_server").
 					comment("""
 							Dictates how many blocks down from a cloud block should the game logic check for handling weather related code.
@@ -283,7 +283,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
 		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
 		public final ForgeConfigSpec.BooleanValue bossDropChests;
-		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceServer;
+		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
@@ -353,10 +353,12 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
-			cloudBlockPrecipitationDistance = builder.
+			cloudBlockPrecipitationDistanceClient = builder.
 					translation(config + "cloud_block_precipitation_distance").
-					comment("Renders rain and snow underneath cloud blocks. Set this to 0 if you're experiencing poor performance.").
-					defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
+					comment("""
+							Renders precipitation underneath cloud blocks. -1 sets it to be synced with the common config.
+							Set this to a lower number if you're experiencing poor performance, or set it to 0 if you wish to turn it off""").
+					defineInRange("cloudBlockPrecipitationDistance", -1, -1, Integer.MAX_VALUE);
 			giantSkinUUIDs = builder.
 					translation(config + "giant_skin_uuid_list").
 					comment("""
@@ -373,11 +375,15 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
-		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistance;
+		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 	}
 
 	private static final String config =  "config." + TwilightForestMod.ID;
+
+	public static int getClientCloudBlockPrecipitationDistance() {
+		return (CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get() == -1 ? COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon : CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient).get();
+	}
 
 	@Nullable
 	public static ResourceLocation getPortalLockingAdvancement(Player player) {

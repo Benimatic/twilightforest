@@ -59,7 +59,7 @@ public class CloudEvents {
         Minecraft mc = Minecraft.getInstance();
 
         if (!mc.isPaused()) {
-            if (mc.level != null && TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistance.get() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
+            if (mc.level != null && TFConfig.getClientCloudBlockPrecipitationDistance() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
                 Vec3 vec3 = mc.gameRenderer.getMainCamera().getPosition();
                 if (mc.level.getGameTime() % 10L == 0L) {
                     RENDER_HELPER.clear();
@@ -73,7 +73,7 @@ public class CloudEvents {
                     int floorZ = Mth.floor(camZ);
 
                     int renderDistance = Minecraft.useFancyGraphics() ? 10 : 5;
-                    int precipitationDistance = TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistance.get();
+                    int precipitationDistance = TFConfig.getClientCloudBlockPrecipitationDistance();
 
                     for (int roofZ = floorZ - renderDistance; roofZ <= floorZ + renderDistance; ++roofZ) {
                         for (int roofX = floorX - renderDistance; roofX <= floorX + renderDistance; ++roofX) {
@@ -159,7 +159,7 @@ public class CloudEvents {
 
     @SubscribeEvent
     public static void renderCloudBlockPrecipitation(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.CLIENT_CONFIG.cloudBlockPrecipitationDistance.get() > 0) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.level == null) return;
             float partialTick = minecraft.getPartialTick();
