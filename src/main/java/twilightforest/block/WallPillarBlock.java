@@ -67,7 +67,7 @@ public class WallPillarBlock extends ConnectableRotatedPillarBlock implements Si
 
 	@Override
 	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
-		return facingState.getBlock() instanceof WallPillarBlock && (facing.getAxis() == thisAxis || facingState.getValue(AXIS) != thisAxis);
+		return facingState.getBlock() instanceof WallPillarBlock && (facing.getAxis() == thisAxis || facing.getAxis() == facingState.getValue(AXIS));
 	}
 
 	@Override
