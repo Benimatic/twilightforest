@@ -45,7 +45,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBiome(TFBiomes.FINAL_PLATEAU, "Final Plateau");
 		this.addBiome(TFBiomes.UNDERGROUND, "Underground");
 
-		this.add("dimension.twilightforest.twilightforest", "Twilight Forest");
+		this.add("dimension.twilightforest.twilight_forest", "Twilight Forest");
 
 		this.addStructure(TFStructures.HEDGE_MAZE, "Hedge Maze");
 		this.addStructure(TFStructures.HOLLOW_HILL_SMALL, "Small Hollow Hill");

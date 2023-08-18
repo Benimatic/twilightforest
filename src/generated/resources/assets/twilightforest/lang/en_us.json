@@ -775,7 +775,7 @@
   "death.attack.twilightforest.yeeted": "%1$s was yeeted for the last time",
   "death.attack.twilightforest.yeeted.entity": "%1$s was yeeted for the last time by %2$s",
   "death.attack.twilightforest.yeeted.item": "%1$s was yeeted for the last time by %2$s while somehow holding %3$s",
-  "dimension.twilightforest.twilightforest": "Twilight Forest",
+  "dimension.twilightforest.twilight_forest": "Twilight Forest",
   "effect.twilightforest.frosted": "Frosted",
   "enchantment.twilightforest.chill_aura": "Chill Aura",
   "enchantment.twilightforest.chill_aura.desc": "Adds a chance for the attacker to gain the frosted effect after hitting the wearer.",
