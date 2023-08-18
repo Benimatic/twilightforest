@@ -98,11 +98,11 @@ dependencies {
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${project.curios_version}+${project.minecraft_version}")
 
     //curse maven
-    implementation fg.deobf("curse.maven:jade-324717:4573193")
+    implementation fg.deobf("curse.maven:jade-324717:4681833")
     runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
-    runtimeOnly fg.deobf("curse.maven:museum-curator-859070:4607988")
+    runtimeOnly fg.deobf("curse.maven:museum-curator-859070:4629894")
 
-    compileOnly fg.deobf("curse.maven:the-one-probe-245211:4613250")
+    compileOnly fg.deobf("curse.maven:the-one-probe-245211:4629624")
 
     //mods we dont have compat with but are nice to have
     runtimeOnly fg.deobf("team-twilight:crossdimcommands:${project.base_minecraft_version}-1.0")
