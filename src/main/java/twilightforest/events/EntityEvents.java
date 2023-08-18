@@ -239,11 +239,11 @@ public class EntityEvents {
 			profile = skull.getOwnerProfile();
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)));
 		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(),
 				newBlock.defaultBlockState()
-						.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+						.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 						.setValue(SkullCandleBlock.ROTATION, level.getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)),
 				AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
@@ -256,11 +256,11 @@ public class EntityEvents {
 			profile = skull.getOwnerProfile();
 		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)));
 		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(),
 				newBlock.defaultBlockState()
-						.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+						.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 						.setValue(WallSkullCandleBlock.FACING, level.getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)),
 				AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue(), 1));
 		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);

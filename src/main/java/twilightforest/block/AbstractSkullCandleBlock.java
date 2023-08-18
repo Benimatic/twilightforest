@@ -14,19 +14,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -40,13 +39,14 @@ import twilightforest.init.TFBlockEntities;
 
 import java.util.*;
 
-public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
+public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements LightableBlock {
 
 	private final SkullBlock.Type type;
 
 	public AbstractSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(properties);
 		this.type = type;
+		this.registerDefaultState(this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE));
 	}
 
 	public SkullBlock.Type getType() {
@@ -93,6 +93,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 		return CandleColors.PLAIN;
 	}
 
+	@Override
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
@@ -178,7 +179,12 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 
 			}
 		}
-		return super.use(state, level, pos, player, hand, result);
+		return this.lightCandles(state, level, pos, player, hand, result);
+	}
+
+	@Override
+	public void onProjectileHit(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
+		this.lightCandlesWithProjectile(level, state, result, projectile);
 	}
 
 	@Override
@@ -187,6 +193,11 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 			this.getParticleOffsets(state, level, pos).forEach((offset) ->
 					addParticlesAndSound(level, offset.add(pos.getX(), pos.getY(), pos.getZ()), rand, state.getValue(LIGHTING) == Lighting.OMINOUS));
 		}
+	}
+
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(LIGHTING);
 	}
 
 	@Nullable

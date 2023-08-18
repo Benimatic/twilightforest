@@ -13,32 +13,24 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 
 //all the common lighting/extinguishing methods for the candelabra and skull candles are here to reduce clutter
 //it may also be handy if we decide to add more candle-based blocks in the future
-public abstract class AbstractLightableBlock extends BaseEntityBlock {
+public interface LightableBlock {
 
-	public static final EnumProperty<Lighting> LIGHTING = EnumProperty.create("lighting", Lighting.class);
+	EnumProperty<Lighting> LIGHTING = EnumProperty.create("lighting", Lighting.class);
 
-	public AbstractLightableBlock(Properties properties) {
-		super(properties);
-		this.registerDefaultState(this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE));
-	}
 
-	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	default InteractionResult lightCandles(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (player.getAbilities().mayBuild && player.getItemInHand(hand).isEmpty() && state.getValue(LIGHTING) != Lighting.NONE) {
 			extinguish(player, state, level, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
@@ -61,25 +53,24 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 		return InteractionResult.PASS;
 	}
 
-	@Override
-	public void onProjectileHit(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
+	default void lightCandlesWithProjectile(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
 		if (!level.isClientSide() && projectile.isOnFire() && this.canBeLit(state)) {
-			setLit(level, state, result.getBlockPos(), true);
+			this.setLit(level, state, result.getBlockPos(), true);
 		}
 	}
 
-	protected boolean canBeLit(BlockState state) {
+	default boolean canBeLit(BlockState state) {
 		return state.getValue(LIGHTING) == Lighting.NONE;
 	}
 
-	protected abstract Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos);
+	Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos);
 
 	// Original methods used Vec3 but here we can avoid creation of extraneous vectors
-	protected static void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, RandomSource rand, boolean ominous) {
+	default void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, RandomSource rand, boolean ominous) {
 		addParticlesAndSound(level, pos.getX() + xFraction, pos.getY() + yFraction, pos.getZ() + zFraction, rand, ominous);
 	}
 
-	protected static void addParticlesAndSound(Level level, double x, double y, double z, RandomSource rand, boolean ominous) {
+	default void addParticlesAndSound(Level level, double x, double y, double z, RandomSource rand, boolean ominous) {
 		float var3 = rand.nextFloat();
 		if (var3 < 0.3F) {
 			if (!ominous) level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
@@ -92,7 +83,7 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 	}
 
 	//still, we should include the vector method because im too lazy to convert :P
-	protected static void addParticlesAndSound(Level level, Vec3 vec, RandomSource rand, boolean ominous) {
+	default void addParticlesAndSound(Level level, Vec3 vec, RandomSource rand, boolean ominous) {
 		float var3 = rand.nextFloat();
 		if (var3 < 0.3F) {
 			if (!ominous) level.addParticle(ParticleTypes.SMOKE, vec.x(), vec.y(), vec.z(), 0.0D, 0.0D, 0.0D);
@@ -104,11 +95,11 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 		level.addParticle(ominous ? TFParticleType.OMINOUS_FLAME.get() : ParticleTypes.SMALL_FLAME, vec.x, vec.y, vec.z, 0.0D, 0.0D, 0.0D);
 	}
 
-	public static void extinguish(@Nullable Player player, BlockState state, LevelAccessor accessor, BlockPos pos) {
+	default void extinguish(@Nullable Player player, BlockState state, LevelAccessor accessor, BlockPos pos) {
 		setLit(accessor, state, pos, false);
 
-		if (state.getBlock() instanceof AbstractLightableBlock abstractLightableBlock) {
-			abstractLightableBlock.getParticleOffsets(state, accessor, pos).forEach((vec3) ->
+		if (state.getBlock() instanceof LightableBlock lightableBlock) {
+			lightableBlock.getParticleOffsets(state, accessor, pos).forEach((vec3) ->
 					accessor.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + vec3.x, (double) pos.getY() + vec3.y, (double) pos.getZ() + vec3.z, 0.0D, 0.025D, 0.0D));
 		}
 
@@ -116,16 +107,11 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 		accessor.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 	}
 
-	private static void setLit(LevelAccessor accessor, BlockState state, BlockPos pos, boolean lit) {
+	default void setLit(LevelAccessor accessor, BlockState state, BlockPos pos, boolean lit) {
 		accessor.setBlock(pos, state.setValue(LIGHTING, lit ? Lighting.NORMAL : Lighting.NONE), 11);
 	}
 
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(LIGHTING);
-	}
-
-	public enum Lighting implements StringRepresentable {
+	enum Lighting implements StringRepresentable {
 		NONE,
 		NORMAL,
 		OMINOUS;

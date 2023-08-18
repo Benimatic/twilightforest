@@ -1671,7 +1671,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		this.getVariantBuilder(TFBlocks.CANDELABRA.get()).forAllStates(state -> {
 			Direction direction = state.getValue(CandelabraBlock.FACING);
 			boolean onWall = state.getValue(CandelabraBlock.ON_WALL);
-			boolean lit = state.getValue(CandelabraBlock.LIGHTING) != AbstractLightableBlock.Lighting.NONE;
+			boolean lit = state.getValue(CandelabraBlock.LIGHTING) != LightableBlock.Lighting.NONE;
 
 			ConfiguredModel.Builder<?> stateBuilder = ConfiguredModel.builder();
 
