@@ -206,7 +206,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get().asItem(),
 				TFBlocks.AURORALIZED_GLASS.get().asItem(),
 				TFBlocks.SLIDER.get().asItem(),
-				TFBlocks.TWISTED_STONE_PILLAR.get().asItem(),
 				TFItems.ORE_METER.get(),
 				TFItems.MAGIC_PAINTING.get()
 		);
