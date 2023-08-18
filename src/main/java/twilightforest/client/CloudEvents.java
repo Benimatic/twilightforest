@@ -199,7 +199,8 @@ public class CloudEvents {
                 int topY = Math.min(pos.getY(), floorY + renderDistance);
                 if (topY - botY <= 0) continue;
 
-                int rainS = (roofZ - floorZ + 16) * 32 + roofX - floorX + 16;
+                // Due to the fact the positions only update once every 10 ticks, a fast player can get far enough from the blocks to cause a block difference too large
+                int rainS = Mth.clamp((roofZ - floorZ + 16) * 32 + roofX - floorX + 16, 0, 1023); // Array size is 1024, so we make sure it doesn't fail
                 double rainX = (double) TFWeatherRenderer.rainxs[rainS] * 0.5D;
                 double rainZ = (double) TFWeatherRenderer.rainzs[rainS] * 0.5D;
                 mutableBlockPos.set(roofX, camY, roofZ);
