@@ -111,25 +111,6 @@ dependencies {
     minecraft "net.neoforged:forge:${project.minecraft_version}-${project.neo_version}"
 }
 
-tasks.withType(ProcessResources).configureEach {
-    var replaceProperties = [
-            minecraft_version: minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            neo_version: neo_version,
-            neo_version_range: neo_version_range,
-            loader_version_range: loader_version_range,
-            mod_id: mod_id,
-            mod_name: mod_name,
-            mod_authors: mod_authors,
-            mod_version: version
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml']) {
-        expand replaceProperties + [project: project]
-    }
-}
-
 tasks.named('jar', Jar).configure {
     manifest {
         archiveClassifier = 'universal'
