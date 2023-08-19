@@ -1,0 +1,22 @@
+{
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "twilightforest:block/wrought_iron_fence_post",
+    "all": "twilightforest:block/wrought_iron"
+  },
+  "elements": [
+    {
+      "from": [ 7, 0, 7 ],
+      "to": [ 9, 16, 9 ],
+      "faces": {
+        "up": { "texture": "#all", "cullface": "up" },
+        "down": { "texture": "#all", "cullface": "down" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "parent": "block/block",
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "twilightforest:block/wrought_iron_finial",
+    "all": "twilightforest:block/wrought_iron"
+  },
+  "elements": [
+    {
+      "__comment": "base",
+      "from": [ 7.5, 0, 7.5 ],
+      "to": [ 8.5, 1, 8.5 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "head",
+      "from": [ 6.5, 1, 6.5 ],
+      "to": [ 9.5, 4, 9.5 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }
+  ]
+}

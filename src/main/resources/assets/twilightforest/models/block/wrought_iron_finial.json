@@ -1,0 +1,132 @@
+{
+  "parent": "block/block",
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "twilightforest:block/wrought_iron_finial",
+    "all": "twilightforest:block/wrought_iron"
+  },
+  "elements": [
+    {
+      "__comment": "body",
+      "from": [ 7, 0, 7 ],
+      "to": [ 9, 6, 9 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "tip",
+      "from": [ 7.5, 6, 7.5 ],
+      "to": [ 8.5, 7, 8.5 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "east face",
+      "from": [ 5, 2, 7.5 ],
+      "to": [ 6, 5, 8.5 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "west face",
+      "from": [ 10, 2, 7.5 ],
+      "to": [ 11, 5, 8.5 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "north face",
+      "from": [ 7.5, 2, 5 ],
+      "to": [ 8.5, 5, 6 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "south face",
+      "from": [ 7.5, 2, 10 ],
+      "to": [ 8.5, 5, 11 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "east connect",
+      "from": [ 6, 1, 7.5 ],
+      "to": [ 7, 2, 8.5 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "west connect",
+      "from": [ 9, 1, 7.5 ],
+      "to": [ 10, 2, 8.5 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "north connect",
+      "from": [ 7.5, 1, 6 ],
+      "to": [ 8.5, 2, 7 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }, {
+      "__comment": "west connect",
+      "from": [ 7.5, 1, 9 ],
+      "to": [ 8.5, 2, 10 ],
+      "faces": {
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" }
+      }
+    }
+  ]
+}
