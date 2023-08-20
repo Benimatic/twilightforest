@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -14,9 +15,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,10 +35,30 @@ public class WroughtIronFinialBlock extends Block implements SimpleWaterloggedBl
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty ROTATED = BooleanProperty.create("rotated");
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public WroughtIronFinialBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(ROTATED, false));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(ROTATED, false).setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction pDirection, BlockState pNeighborState, LevelAccessor level, BlockPos pos, BlockPos pNeighborPos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+        return super.updateShape(state, pDirection, pNeighborState, level, pos, pNeighborPos);
+    }
+
+    @Override
+    @Deprecated
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return !pState.getValue(WATERLOGGED);
     }
 
     @Override
@@ -48,11 +69,12 @@ public class WroughtIronFinialBlock extends Block implements SimpleWaterloggedBl
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(DirectionalBlock.FACING, context.getClickedFace()).setValue(ROTATED, context.isSecondaryUseActive());
+        FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+        return this.defaultBlockState().setValue(DirectionalBlock.FACING, context.getClickedFace()).setValue(ROTATED, context.isSecondaryUseActive()).setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, ROTATED);
+        builder.add(FACING, ROTATED, WATERLOGGED);
     }
 }
