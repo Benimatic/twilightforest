@@ -20,10 +20,14 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
+
+import java.util.Map;
 
 public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -34,19 +38,43 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
     public static final EnumProperty<FenceSide> WEST_FENCE = EnumProperty.create("west_fence", FenceSide.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+    private static final VoxelShape POST_SHAPE = Block.box(7.0D, 0.0D, 7.0D, 9.0D, 16.0D, 9.0D);
+    private static final VoxelShape NORTH_SHAPE = Block.box(7.0D, 0.0D, 0.0D, 9.0D, 16.0D, 8.0D);
+    private static final VoxelShape SOUTH_SHAPE = Block.box(7.0D, 0.0D, 8.0D, 9.0D, 16.0D, 16.0D);
+    private static final VoxelShape EAST_SHAPE = Block.box(8.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
+    private static final VoxelShape WEST_SHAPE = Block.box(0.0D, 0.0D, 7.0D, 8.0D, 16.0D, 9.0D);
+
     public WroughtIronFenceBlock(Properties props) {
         super(props);
         this.registerDefaultState(this.getStateDefinition().any().setValue(POST, true).setValue(EAST_FENCE, FenceSide.NONE).setValue(NORTH_FENCE, FenceSide.NONE).setValue(SOUTH_FENCE, FenceSide.NONE).setValue(WEST_FENCE, FenceSide.NONE).setValue(WATERLOGGED, false));
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
+    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+        VoxelShape finalShape = Shapes.empty();
+        if (state.getValue(POST)) {
+            finalShape = POST_SHAPE;
+        }
+        if (state.getValue(NORTH_FENCE) != FenceSide.NONE) {
+            finalShape = Shapes.or(finalShape, NORTH_SHAPE);
+        }
+        if (state.getValue(SOUTH_FENCE) != FenceSide.NONE) {
+            finalShape = Shapes.or(finalShape, SOUTH_SHAPE);
+        }
+        if (state.getValue(WEST_FENCE) != FenceSide.NONE) {
+            finalShape = Shapes.or(finalShape, WEST_SHAPE);
+        }
+        if (state.getValue(EAST_FENCE) != FenceSide.NONE) {
+            finalShape = Shapes.or(finalShape, EAST_SHAPE);
+        }
+        //make it a full block if for some reason theres not a single piece of fence showing. That way people can still interact with the block
+        if (finalShape.isEmpty()) finalShape = Shapes.block();
+        return finalShape;
     }
 
     @Override
     @Deprecated
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+    public boolean isPathfindable(BlockState state, BlockGetter getter, BlockPos pos, PathComputationType type) {
         return false;
     }
 
@@ -82,9 +110,7 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
-
-        return direction == Direction.UP ? this.updateTop(level, state, neighborPos, neighbor) : updateSide(level, pos, state, neighborPos, neighbor, direction);
-
+        return direction == Direction.UP ? this.updateTop(level, state, neighborPos, neighbor) : this.updateSide(level, pos, state, neighborPos, neighbor, direction);
     }
 
     private BlockState updateSide(LevelReader level, BlockPos firstPos, BlockState firstState, BlockPos secondPos, BlockState secondState, Direction direction) {

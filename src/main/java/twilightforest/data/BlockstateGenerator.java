@@ -373,6 +373,31 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			}
 		}, TomeSpawnerBlock.SPAWNER);
 
+		getMultipartBuilder(TFBlocks.WROUGHT_IRON_FENCE.get())
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, true).end()
+				
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
+				
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(90).addModel().condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
+
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(180).addModel().condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end()
+
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
+
+		simpleBlock(TFBlocks.WROUGHT_IRON_FINIAL.get(), models().getExistingFile(prefix("wrought_iron_finial")));
+
 		registerWoodBlocks();
 		registerNagastone();
 		registerForceFields();

@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-18T18:36:08.2851551	TwilightForest blockstates and block models
+// 1.20.1	2023-08-19T18:54:22.8392853	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -447,6 +447,8 @@ c77239dff938dbdd73b4f8ac732f2fad83c12b4d assets/twilightforest/blockstates/viole
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/wither_skeleton_wall_skull_candle.json
 2c533ced16289e079d4087d68d6b4d384368ee44 assets/twilightforest/blockstates/worn_castle_brick.json
 f0ee8181dc2593ee94782ecaba7208da53aef0df assets/twilightforest/blockstates/worn_castle_brick_stairs.json
+780dbbaa047dc013dcbbcf504f3d2034374a3c51 assets/twilightforest/blockstates/wrought_iron_fence.json
+f290f146d82ab65f10591c27cfe1c7967ac85f3f assets/twilightforest/blockstates/wrought_iron_finial.json
 f9b77d1702c932a62b46a65cd7a6bbd9ed1fdc60 assets/twilightforest/blockstates/yellow_castle_door.json
 f201be47403de47f7a64166b6ea0e3b06d1e1a76 assets/twilightforest/blockstates/yellow_castle_rune_brick.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/zombie_skull_candle.json
