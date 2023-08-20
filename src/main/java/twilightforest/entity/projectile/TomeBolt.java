@@ -12,6 +12,8 @@ import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LecternBlock;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,7 +43,6 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 	}
 
 
-
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
@@ -69,6 +70,11 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 
 	@Override
 	protected void onHit(HitResult result) {
+		if (this.getOwner() != null && result instanceof BlockHitResult blockHitResult &&
+				this.getOwner().blockPosition().equals(blockHitResult.getBlockPos()) &&
+				this.level().getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LecternBlock) {
+			return;
+		}
 		super.onHit(result);
 		if (!this.level().isClientSide()) {
 			this.level().broadcastEntityEvent(this, (byte) 3);
