@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-08T21:00:23.4625274	TwilightForest Item and BlockItem models
+// 1.20.1	2023-08-19T20:12:23.7945802	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -613,6 +613,7 @@ bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/withe
 5569c9ade74d97c8a24f99537d1578d1b460680d assets/twilightforest/models/item/worn_castle_brick.json
 5bf06f896d41e73af2aca9d220481e511b796409 assets/twilightforest/models/item/worn_castle_brick_stairs.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/wraith_spawn_egg.json
+fdf292e4b88b00479986f02cf4253d648d6ef5d1 assets/twilightforest/models/item/wrought_iron_finial.json
 9d0f9474de92d909e4a9134343798791cd01aa46 assets/twilightforest/models/item/yellow_castle_door.json
 b27493eda49748814ba36a9543ccdcd33d7b44e2 assets/twilightforest/models/item/yellow_castle_rune_brick.json
 0229fa1d67eea7895e2c8330a25b4f20cdc643f8 assets/twilightforest/models/item/yeti_boots.json
