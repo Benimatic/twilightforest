@@ -2,8 +2,7 @@
 	"ambientocclusion": false,
 	"render_type": "minecraft:cutout",
 	"textures": {
-		"all": "twilightforest:block/wrought_iron",
-		"particle": "twilightforest:block/wrought_iron"
+		"all": "twilightforest:block/wrought_iron"
 	},
 	"elements": [
 		{
@@ -48,7 +47,7 @@
 		{
 			"name": "picket tip 3",
 			"from": [7.5, 15, 7.5],
-			"to": [8.5, 16, 8],
+			"to": [8.5, 15.99, 8],
 			"faces": {
 				"north": {"uv": [7, 0, 8, 1], "texture": "#all"},
 				"east": {"uv": [0.5, 0, 1, 1], "texture": "#all"},
@@ -139,7 +138,7 @@
 		{
 			"name": "picket tip 1",
 			"from": [7.5, 15, 0],
-			"to": [8.5, 16, 0.5],
+			"to": [8.5, 15.99, 0.5],
 			"faces": {
 				"north": {"uv": [7, 0, 8, 1], "texture": "#all"},
 				"east": {"uv": [0, 0, 0.5, 1], "texture": "#all"},
