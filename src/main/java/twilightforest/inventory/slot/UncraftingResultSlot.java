@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import twilightforest.inventory.UncraftingContainer;
+import twilightforest.inventory.UncraftingMenu;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class UncraftingResultSlot extends ResultSlot {
 
 			// if we are using a combined recipe, wipe the uncrafting matrix and decrement the input appropriately
 			for (int i = 0; i < this.uncraftingMatrix.getContainerSize(); i++) {
-				if (this.assemblyMatrix.getItem(i).isEmpty()) {
+				if (this.assemblyMatrix.getItem(i).isEmpty() || UncraftingMenu.isMarked(this.uncraftingMatrix.getItem(i))) {
 					this.uncraftingMatrix.setItem(i, ItemStack.EMPTY);
 				} else {
 					//if we have an ingredient in the grid and one in the uncrafting matrix, copy the uncrafting matrix item for later
