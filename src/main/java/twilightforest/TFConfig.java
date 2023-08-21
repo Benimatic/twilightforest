@@ -183,11 +183,23 @@ public class TFConfig {
 								If true, the uncrafting table will also be allowed to uncraft shapeless recipes.
 								The table was originally intended to only take shaped recipes, but this option remains for people who wish to keep the functionality.""").
 						define("enableShapelessCrafting", false);
-				UNCRAFTING_STUFFS.disableUncrafting = builder.
+				UNCRAFTING_STUFFS.disableUncraftingOnly = builder.
 						worldRestart().
-						translation(config + "uncrafting").
-						comment("Disable the uncrafting function of the uncrafting table. Recommended as a last resort if there's too many things to change about its behavior.").
+						translation(config + "disable_uncrafting").
+						comment("""
+								Disables the uncrafting function of the uncrafting table. Recommended as a last resort if there's too many things to change about its behavior (or you're just lazy, I dont judge).
+								Do note that special uncrafting recipes are not disabled as the mod relies on them for other things.""").
 						define("disableUncrafting", false);
+
+				UNCRAFTING_STUFFS.disableEntireTable = builder.
+						worldRestart().
+						translation(config + "disable_uncrafting_table").
+						comment("""
+								Disables any usage of the uncrafting table, as well as prevents it from showing up in loot or crafted.
+								Please note that table has more uses than just uncrafting, you can read about them here! http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table
+								It is highly recommended to keep the table enabled as the mod has special uncrafting exclusive recipes, but the option remains for people that dont want the table to be functional at all.
+								If you are looking to just prevent normal crafting recipes from being reversed, consider using the 'disableUncrafting' option instead.""").
+						define("disableUncraftingTable", false);
 			}
 			builder.pop();
 
@@ -304,7 +316,8 @@ public class TFConfig {
 			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
 			public ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
 			public ForgeConfigSpec.BooleanValue allowShapelessUncrafting;
-			public ForgeConfigSpec.BooleanValue disableUncrafting;
+			public ForgeConfigSpec.BooleanValue disableUncraftingOnly;
+			public ForgeConfigSpec.BooleanValue disableEntireTable;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
@@ -379,7 +392,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 	}
 
-	private static final String config =  "config." + TwilightForestMod.ID;
+	private static final String config = "config." + TwilightForestMod.ID;
 
 	public static int getClientCloudBlockPrecipitationDistance() {
 		return (CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get() == -1 ? COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon : CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient).get();
@@ -412,7 +425,8 @@ public class TFConfig {
 					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
@@ -441,7 +455,8 @@ public class TFConfig {
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
-						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),

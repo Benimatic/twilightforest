@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.CompoundIngredient;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.UncraftingGenerator;
@@ -18,6 +19,7 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
+import twilightforest.item.recipe.UncraftingTableCondition;
 
 import java.util.function.Consumer;
 
@@ -137,14 +139,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFItems.TORCHBERRIES.get()))
 				.save(consumer, TwilightForestMod.prefix("berry_torch"));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.UNCRAFTING_TABLE.get())
-				.pattern("###")
-				.pattern("#X#")
-				.pattern("###")
-				.define('#', Blocks.CRAFTING_TABLE)
-				.define('X', TFItems.MAZE_MAP_FOCUS.get())
-				.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
-				.save(consumer);
+		ConditionalRecipe.builder().addCondition(UncraftingTableCondition.INSTANCE).addRecipe(
+						ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.UNCRAFTING_TABLE.get())
+								.pattern("###")
+								.pattern("#X#")
+								.pattern("###")
+								.define('#', Blocks.CRAFTING_TABLE)
+								.define('X', TFItems.MAZE_MAP_FOCUS.get())
+								.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
+								::save)
+				.generateAdvancement(TwilightForestMod.prefix("recipes/decorations/uncrafting_table"))
+				.build(consumer, TwilightForestMod.prefix("uncrafting_table"));
 
 		cookingRecipes(consumer, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
 		cookingRecipes(consumer, "smoked", RecipeSerializer.SMOKING_RECIPE, 100);

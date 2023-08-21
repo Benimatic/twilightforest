@@ -20,6 +20,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -41,7 +42,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
 	// Inaccessible grid, for uncrafting logic
-	private final UncraftingContainer uncraftingMatrix = new UncraftingContainer();
+	private final UncraftingContainer uncraftingMatrix = new UncraftingContainer(this);
 	// Accessible grid, for actual crafting
 	public final CraftingContainer assemblyMatrix = new TransientCraftingContainer(this, 3, 3);
 	// Inaccessible grid, for recrafting logic
@@ -61,8 +62,10 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
-	// Need to store potential custom cost. If set to -1, will calculate uncrafting cost normally.
-	private int customCost;
+	// Store the currently selected recipe for use later down the line.
+	// Currently used for determining if the recipe is an uncrafting one and for determining custom costs
+	@Nullable
+	public Recipe<?> storedGhostRecipe = null;
 
 	public static UncraftingMenu fromNetwork(int id, Inventory inventory) {
 		return new UncraftingMenu(id, inventory, inventory.player.level(), ContainerLevelAccess.NULL);
@@ -122,8 +125,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
 
 				Recipe<?> recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
-				this.customCost = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCost() : -1;
-				ItemStack[] recipeItems = getIngredients(recipe);
+				this.storedGhostRecipe = recipe;
+				ItemStack[] recipeItems = this.getIngredients(recipe);
 
 				if (recipe instanceof IShapedRecipe<?> rec) {
 
@@ -178,7 +181,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				this.uncraftingMatrix.recraftingCost = 0;
 
 			} else {
-				this.customCost = -1;
+				this.storedGhostRecipe = null;
 				this.uncraftingMatrix.numberOfInputItems = 0;
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
@@ -397,9 +400,10 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 */
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
-		if (this.assemblyMatrix.isEmpty()) {
-			return this.customCost >= 0 ? this.customCost : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get());
-		} else return 0;
+		if ((!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() || this.storedGhostRecipe instanceof UncraftingRecipe) && this.assemblyMatrix.isEmpty()) {
+			return this.storedGhostRecipe instanceof UncraftingRecipe recipe ? recipe.cost() : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get());
+		}
+		return 0;
 	}
 
 	/**
@@ -487,13 +491,13 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.uncraftingMatrix) {
 
-			// similarly, reject uncrafting if they can't do that either
-			if (this.calculateUncraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
+			// don't allow uncrafting normal recipes if the server option is turned off
+			if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() && !(this.storedGhostRecipe instanceof UncraftingRecipe)) {
 				return;
 			}
 
-			// don't allow uncrafting if the server option is turned off
-			if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) {
+			// similarly, reject uncrafting if they can't do that either
+			if (this.calculateUncraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 				return;
 			}
 
@@ -619,6 +623,6 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
+		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get() && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
 	}
 }

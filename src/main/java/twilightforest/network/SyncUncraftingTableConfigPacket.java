@@ -12,7 +12,8 @@ public class SyncUncraftingTableConfigPacket {
 	private final double uncraftingMultiplier;
 	private final double repairingMultiplier;
 	private final boolean allowShapeless;
-	private final boolean disabled;
+	private final boolean disabledUncrafting;
+	private final boolean disabledTable;
 	private final List<String> disabledRecipes;
 	private final boolean flipRecipeList;
 	private final List<String> disabledModids;
@@ -20,11 +21,12 @@ public class SyncUncraftingTableConfigPacket {
 
 	//I think casting is fine in this case. The forge config requires that entries extend string but they should always be strings
 	@SuppressWarnings("unchecked")
-	public SyncUncraftingTableConfigPacket(double uncraftingMultiplier, double repairingMultiplier, boolean allowShapeless, boolean disabled, List<? extends String> disabledRecipes, boolean flipRecipeList, List<? extends String> disabledModids, boolean flipModidList) {
+	public SyncUncraftingTableConfigPacket(double uncraftingMultiplier, double repairingMultiplier, boolean allowShapeless, boolean disabledUncrafting, boolean disabledTable, List<? extends String> disabledRecipes, boolean flipRecipeList, List<? extends String> disabledModids, boolean flipModidList) {
 		this.uncraftingMultiplier = uncraftingMultiplier;
 		this.repairingMultiplier = repairingMultiplier;
 		this.allowShapeless = allowShapeless;
-		this.disabled = disabled;
+		this.disabledUncrafting = disabledUncrafting;
+		this.disabledTable = disabledTable;
 		this.disabledRecipes = (List<String>) disabledRecipes;
 		this.flipRecipeList = flipRecipeList;
 		this.disabledModids = (List<String>) disabledModids;
@@ -35,7 +37,8 @@ public class SyncUncraftingTableConfigPacket {
 		this.uncraftingMultiplier = buf.readDouble();
 		this.repairingMultiplier = buf.readDouble();
 		this.allowShapeless = buf.readBoolean();
-		this.disabled = buf.readBoolean();
+		this.disabledUncrafting = buf.readBoolean();
+		this.disabledTable = buf.readBoolean();
 		this.disabledRecipes = buf.readList(FriendlyByteBuf::readUtf);
 		this.flipRecipeList = buf.readBoolean();
 		this.disabledModids = buf.readList(FriendlyByteBuf::readUtf);
@@ -46,7 +49,8 @@ public class SyncUncraftingTableConfigPacket {
 		buf.writeDouble(this.uncraftingMultiplier);
 		buf.writeDouble(this.repairingMultiplier);
 		buf.writeBoolean(this.allowShapeless);
-		buf.writeBoolean(this.disabled);
+		buf.writeBoolean(this.disabledUncrafting);
+		buf.writeBoolean(this.disabledTable);
 		buf.writeCollection(this.disabledRecipes, FriendlyByteBuf::writeUtf);
 		buf.writeBoolean(this.flipRecipeList);
 		buf.writeCollection(this.disabledModids, FriendlyByteBuf::writeUtf);
@@ -60,7 +64,8 @@ public class SyncUncraftingTableConfigPacket {
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(message.uncraftingMultiplier);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(message.repairingMultiplier);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(message.allowShapeless);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.set(message.disabled);
+				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.set(message.disabledUncrafting);
+				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.set(message.disabledTable);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.set(message.disabledRecipes);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.set(message.flipRecipeList);
 				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.set(message.disabledModids);

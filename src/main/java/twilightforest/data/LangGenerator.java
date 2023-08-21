@@ -444,9 +444,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE, "Piglin Wall Skull Candle");
 
 		this.addBlock(TFBlocks.UNCRAFTING_TABLE, "Uncrafting Table");
+		this.add("block.twilightforest.uncrafting_table.disabled", "This block has been disabled.");
 		this.add("container.twilightforest.uncrafting_table", "Uncrafting Table");
-		this.add("container.twilightforest.uncrafting_table.disabled", "Uncrafting is disabled via config");
 		this.add("container.twilightforest.uncrafting_table.disabled_item", "Uncrafting this item is disabled.");
+		this.add("container.twilightforest.uncrafting_table.uncrafting_disabled", "Uncrafting is disabled via config");
 
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");
 		this.addItem(TFItems.NAGA_CHESTPLATE, "Naga Scale Tunic");

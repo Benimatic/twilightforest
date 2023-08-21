@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.*;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.DataPackRegistryEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -39,6 +41,7 @@ import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.top.TopCompat;
+import twilightforest.item.recipe.UncraftingTableCondition;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.UpdateGamerulePacket;
 import twilightforest.util.MagicPaintingVariant;
@@ -55,7 +58,6 @@ import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.Locale;
-import java.util.Objects;
 
 @Mod(TwilightForestMod.ID)
 public class TwilightForestMod {
@@ -156,11 +158,13 @@ public class TwilightForestMod {
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {
-		if (Objects.equals(evt.getRegistryKey(), Registries.BIOME_SOURCE)) {
+		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
-		} else if (Objects.equals(evt.getRegistryKey(), Registries.CHUNK_GENERATOR)) {
+		} else if (evt.getRegistryKey().equals(Registries.CHUNK_GENERATOR)) {
 			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+		} else if (evt.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
+			CraftingHelper.register(UncraftingTableCondition.Serializer.INSTANCE);
 		}
 	}
 
