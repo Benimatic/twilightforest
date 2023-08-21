@@ -396,10 +396,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
 
-		getVariantBuilder(TFBlocks.WROUGHT_IRON_FINIAL.get()).forAllStates(state ->
+		getVariantBuilder(TFBlocks.WROUGHT_IRON_FINIAL.get()).forAllStatesExcept(state ->
 				ConfiguredModel.builder().modelFile(state.getValue(WroughtIronFinialBlock.ROTATED) ? models().getExistingFile(prefix("wrought_iron_finial_ew")) : models().getExistingFile(prefix("wrought_iron_finial_ns")))
 						.rotationX(state.getValue(WroughtIronFinialBlock.FACING) == Direction.DOWN ? 180 : state.getValue(WroughtIronFinialBlock.FACING).getAxis().isHorizontal() ? 90 : 0)
-						.rotationY(state.getValue(WroughtIronFinialBlock.FACING).getAxis().isVertical() ? 0 : (((int) state.getValue(WroughtIronFinialBlock.FACING).toYRot()) + 180) % 360).build());
+						.rotationY(state.getValue(WroughtIronFinialBlock.FACING).getAxis().isVertical() ? 0 : (((int) state.getValue(WroughtIronFinialBlock.FACING).toYRot()) + 180) % 360).build(), WroughtIronFinialBlock.WATERLOGGED);
 
 		registerWoodBlocks();
 		registerNagastone();
