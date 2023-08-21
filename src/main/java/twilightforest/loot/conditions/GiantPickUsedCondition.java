@@ -17,10 +17,10 @@ import twilightforest.init.TFLoot;
 
 import java.util.Set;
 
-public class WasGiantPickUsedCondition implements LootItemCondition {
+public class GiantPickUsedCondition implements LootItemCondition {
     final LootContext.EntityTarget entityTarget;
 
-    WasGiantPickUsedCondition(LootContext.EntityTarget pEntityTarget) {
+    private GiantPickUsedCondition(LootContext.EntityTarget pEntityTarget) {
         this.entityTarget = pEntityTarget;
     }
 
@@ -46,18 +46,18 @@ public class WasGiantPickUsedCondition implements LootItemCondition {
     }
 
     public static LootItemCondition.Builder builder(LootContext.EntityTarget target) {
-        return () -> new WasGiantPickUsedCondition(target);
+        return () -> new GiantPickUsedCondition(target);
     }
 
-    public static class ConditionSerializer implements Serializer<WasGiantPickUsedCondition> {
+    public static class ConditionSerializer implements Serializer<GiantPickUsedCondition> {
         @Override
-        public void serialize(JsonObject json, WasGiantPickUsedCondition condition, JsonSerializationContext context) {
+        public void serialize(JsonObject json, GiantPickUsedCondition condition, JsonSerializationContext context) {
             json.add("entity", context.serialize(condition.entityTarget));
         }
 
         @Override
-        public WasGiantPickUsedCondition deserialize(JsonObject json, JsonDeserializationContext context) {
-            return new WasGiantPickUsedCondition(GsonHelper.getAsObject(json, "entity", context, LootContext.EntityTarget.class));
+        public GiantPickUsedCondition deserialize(JsonObject json, JsonDeserializationContext context) {
+            return new GiantPickUsedCondition(GsonHelper.getAsObject(json, "entity", context, LootContext.EntityTarget.class));
         }
     }
 }

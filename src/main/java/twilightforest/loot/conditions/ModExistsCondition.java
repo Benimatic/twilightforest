@@ -12,12 +12,12 @@ import net.minecraftforge.fml.ModList;
 import twilightforest.init.TFLoot;
 
 // Loot condition for checking if a mod exists.
-public class ModExists implements LootItemCondition {
+public class ModExistsCondition implements LootItemCondition {
 
 	private final boolean exists;
 	private final String modID;
 
-	public ModExists(String modID) {
+	public ModExistsCondition(String modID) {
 		this.exists = ModList.get().isLoaded(modID);
 		this.modID = modID;
 	}
@@ -33,18 +33,18 @@ public class ModExists implements LootItemCondition {
 	}
 
 	public static LootItemCondition.Builder builder(String modid) {
-		return () -> new ModExists(modid);
+		return () -> new ModExistsCondition(modid);
 	}
 
-	public static class ConditionSerializer implements Serializer<ModExists> {
+	public static class ConditionSerializer implements Serializer<ModExistsCondition> {
 		@Override
-		public void serialize(JsonObject json, ModExists value, JsonSerializationContext context) {
+		public void serialize(JsonObject json, ModExistsCondition value, JsonSerializationContext context) {
 			json.addProperty("mod_id", value.modID);
 		}
 
 		@Override
-		public ModExists deserialize(JsonObject json, JsonDeserializationContext context) {
-			return new ModExists(GsonHelper.getAsString(json, "mod_id"));
+		public ModExistsCondition deserialize(JsonObject json, JsonDeserializationContext context) {
+			return new ModExistsCondition(GsonHelper.getAsString(json, "mod_id"));
 		}
 	}
 }

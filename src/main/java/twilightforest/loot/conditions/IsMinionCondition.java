@@ -14,7 +14,7 @@ import twilightforest.init.TFLoot;
 
 import javax.annotation.Nonnull;
 
-public record IsMinion(boolean inverse) implements LootItemCondition {
+public record IsMinionCondition(boolean inverse) implements LootItemCondition {
 
 	@Override
 	public LootItemConditionType getType() {
@@ -27,18 +27,18 @@ public record IsMinion(boolean inverse) implements LootItemCondition {
 	}
 
 	public static Builder builder(boolean inverse) {
-		return () -> new IsMinion(inverse);
+		return () -> new IsMinionCondition(inverse);
 	}
 
-	public static class ConditionSerializer implements Serializer<IsMinion> {
+	public static class ConditionSerializer implements Serializer<IsMinionCondition> {
 		@Override
-		public void serialize(JsonObject json, IsMinion value, JsonSerializationContext context) {
+		public void serialize(JsonObject json, IsMinionCondition value, JsonSerializationContext context) {
 			json.addProperty("inverse", value.inverse);
 		}
 
 		@Override
-		public IsMinion deserialize(JsonObject json, JsonDeserializationContext context) {
-			return new IsMinion(GsonHelper.getAsBoolean(json, "inverse", false));
+		public IsMinionCondition deserialize(JsonObject json, JsonDeserializationContext context) {
+			return new IsMinionCondition(GsonHelper.getAsBoolean(json, "inverse", false));
 		}
 	}
 }
