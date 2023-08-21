@@ -89,7 +89,7 @@ repositories {
 
 dependencies {
     // jared
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
+    implementation fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
 
     // tterrag
     //implementation fg.deobf("team.chisel.ctm:CTM:${minecraft_version}-${ctm_version}")
