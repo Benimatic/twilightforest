@@ -75,9 +75,9 @@ public class TFConfig {
 					define("disablePortalCreation", false);
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
-					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
-
-							"\nNote that enabling this also reduces the rate at which portal formation checks are performed.").
+					comment("""
+							Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination.
+							Note that enabling this also reduces the rate at which portal formation checks are performed.""").
 					define("checkPortalDestination", false);
 			portalLightning = builder.
 					translation(config + "portal_lighting").
@@ -109,24 +109,21 @@ public class TFConfig {
 					worldRestart().
 					comment("""
 							If false, items that come enchanted when you craft them (such as ironwood or steeleaf gear) will not show this way in the creative inventory.
-							Please note that this doesnt affect the crafting recipes themselves, you will need a datapack to change those.
-							""").
+							Please note that this doesnt affect the crafting recipes themselves, you will need a datapack to change those.""").
 					define("default_item_enchantments", true);
 
 			bossDropChests = builder.
 					translation(config + "boss_drop_chests").
 					comment("""
 							If true, Twilight Forest's bosses will put their drops inside of a chest where they originally spawned instead of dropping the loot directly.
-							Note that the Knight Phantoms are not affected by this as their drops work differently.
-							""").
+							Note that the Knight Phantoms are not affected by this as their drops work differently.""").
 					define("boss_drop_chests", true);
 
 			cloudBlockPrecipitationDistanceCommon = builder.
 					translation(config + "cloud_block_precipitation_distance_server").
 					comment("""
 							Dictates how many blocks down from a cloud block should the game logic check for handling weather related code.
-							Lower if experiencing low tick rate. Set to 0 to turn all cloud precipitation logic off.
-							""").
+							Lower if experiencing low tick rate. Set to 0 to turn all cloud precipitation logic off.""").
 					defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
 
 			builder.
