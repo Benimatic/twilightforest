@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -229,17 +230,47 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         return 0.0D;
     }
 
+    protected static final float ONE_SECOND = 1.0F / 1200F;
+
     protected float getAlpha(@Nullable OpacityModifier opacityModifier, MagicPainting painting) {
+        float a = 1.0F;
         if (opacityModifier != null) switch (opacityModifier.type()) {
             case DISTANCE -> {
                 Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
-                float distance = (float)Mth.clamp((camPos.distanceTo(painting.position()) - 2.0D) * 0.2D, 0.0D, 1.0D);
-                return opacityModifier.inverted() ? 1.0F - (distance * distance) : (distance * distance);
+                a = (float) (opacityModifier.invert() ? opacityModifier.multiplier() - camPos.distanceTo(painting.position()) : camPos.distanceTo(painting.position()) - opacityModifier.multiplier());
             }
             case WEATHER -> {
-                return opacityModifier.inverted() ? 1.0F - painting.level().getRainLevel(Minecraft.getInstance().getPartialTick()) : painting.level().getRainLevel(Minecraft.getInstance().getPartialTick());
+                float partialTick = Minecraft.getInstance().getPartialTick();
+                a = (painting.level().getRainLevel(partialTick) + painting.level().getThunderLevel(partialTick)) * 0.5F * Math.abs(opacityModifier.multiplier());
+                if (opacityModifier.invert()) a = 1.0F - a;
+            }
+            case LIGHTNING -> {
+                if (painting.level() instanceof ClientLevel clientLevel) {
+                    a = clientLevel.getSkyFlashTime() * opacityModifier.multiplier();
+                    if (opacityModifier.invert()) a = 1.0F - a;
+                }
+            }
+            case DAY_TIME -> {
+                float dayTime =  Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
+                if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
+                a = (float) Math.pow(dayTime, opacityModifier.multiplier());
+            }
+            case DAY_TIME_SHARP -> {
+                float dayTime =  Math.abs(painting.level().getTimeOfDay(Minecraft.getInstance().getPartialTick()) - 0.5F) * 2.0F;
+                if (opacityModifier.invert()) dayTime = 1.0F - dayTime;
+                float threshold = 1.0F - opacityModifier.multiplier();
+
+                if (threshold > 1.0F - ONE_SECOND) threshold = 1.0F - ONE_SECOND;
+                else if (threshold < ONE_SECOND) threshold = ONE_SECOND;
+
+                if (dayTime < threshold) a = 0.0F;
+                else if (dayTime <= threshold + ONE_SECOND) a = (dayTime - threshold) / ONE_SECOND;
+            }
+            case SINE_TIME -> {
+                a = (float)(Math.sin((painting.tickCount + Minecraft.getInstance().getPartialTick()) * opacityModifier.multiplier())) * 0.5F + 0.5F;
+                if (opacityModifier.invert()) a = 1.0F - a;
             }
         }
-        return 1.0F;
+        return Mth.clamp(a, 0.0F, 1.0F);
     }
 }

@@ -56,15 +56,20 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers) {
             }
         }
 
-        public record OpacityModifier(Type type, boolean inverted) {
+        public record OpacityModifier(Type type, float multiplier, boolean invert) {
             public static final Codec<OpacityModifier> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
                     OpacityModifier.Type.CODEC.fieldOf("type").forGetter(OpacityModifier::type),
-                    Codec.BOOL.fieldOf("inverted").forGetter(OpacityModifier::inverted)
+                    ExtraCodecs.POSITIVE_FLOAT.fieldOf("multiplier").forGetter(OpacityModifier::multiplier),
+                    Codec.BOOL.fieldOf("invert").forGetter(OpacityModifier::invert)
             ).apply(recordCodecBuilder, OpacityModifier::new));
 
             public enum Type implements StringRepresentable {
                 DISTANCE("distance"),
-                WEATHER("weather");
+                WEATHER("weather"),
+                LIGHTNING("lightning"),
+                DAY_TIME("day_time"),
+                DAY_TIME_SHARP("day_time_sharp"),
+                SINE_TIME("sine_time");
 
                 static final Codec<OpacityModifier.Type> CODEC = StringRepresentable.fromEnum(OpacityModifier.Type::values);
                 private final String name;
