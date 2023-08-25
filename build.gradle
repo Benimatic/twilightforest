@@ -59,7 +59,7 @@ minecraft {
         client {
             taskName "Minecraft_Client_${project.minecraft_version}"
             property 'forge.enabledGameTestNamespaces', mod_id
-            args '--username', secrets.getProperty("username")?: 'Dev', '--uuid', secrets.getProperty("uuid")?: UUID.randomUUID()
+            args '--username', secrets.getProperty("username")?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid")?: ''
         }
 
         server {
