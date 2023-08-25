@@ -20,6 +20,8 @@ import twilightforest.util.MagicPaintingVariant.Layer;
 import java.util.List;
 import java.util.Optional;
 
+import static twilightforest.util.MagicPaintingVariant.Layer.*;
+
 public class MagicPaintingVariants {
     public static final ResourceKey<Registry<MagicPaintingVariant>> REGISTRY_KEY = ResourceKey.createRegistryKey(TwilightForestMod.namedRegistry("magic_paintings"));
     public static final DeferredRegister<MagicPaintingVariant> MAGIC_PAINTINGS = DeferredRegister.create(REGISTRY_KEY, TwilightForestMod.ID);
@@ -34,11 +36,11 @@ public class MagicPaintingVariants {
     public static void bootstrap(BootstapContext<MagicPaintingVariant> context) {
         register(context, DARKNESS, "Darkness", "???", 64, 32, List.of(
                 new Layer("background", null, null, true),
-                new Layer("sky", new Layer.Parallax(Layer.Parallax.Type.VIEW_ANGLE, 0.01F, 128, 32), new Layer.OpacityModifier(Layer.OpacityModifier.Type.SINE_TIME, 0.03F, false), true),
+                new Layer("sky", new Parallax(Parallax.Type.VIEW_ANGLE, 0.01F, 128, 32), new OpacityModifier(OpacityModifier.Type.SINE_TIME, 0.03F, false), true),
                 new Layer("terrain", null, null, false),
                 new Layer("gems", null, null, true),
-                new Layer("gems", null, new Layer.OpacityModifier(Layer.OpacityModifier.Type.DAY_TIME, 2.0F, true), true),
-                new Layer("lightning", null, new Layer.OpacityModifier(Layer.OpacityModifier.Type.LIGHTNING, 1.0F, false), true)
+                new Layer("gems", null, new OpacityModifier(OpacityModifier.Type.DAY_TIME, 2.0F, true), true),
+                new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false), true)
         ));
     }
 
