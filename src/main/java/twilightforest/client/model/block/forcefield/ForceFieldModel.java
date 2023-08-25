@@ -55,37 +55,46 @@ public class ForceFieldModel implements IDynamicBakedModel {
     }
 
     @Override
-    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
+    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction cullFace, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
         List<BakedQuad> quads = new ArrayList<>();
         ForceFieldData data = extraData.get(DATA);
 
-        if (side != null && data != null) {
-            for (Map.Entry<BlockElement, ForceFieldModelLoader.Condition> entry : this.parts.entrySet()) {
-                BlockElementFace blockelementface = entry.getKey().faces.get(side);
-                ExtraDirection direction = entry.getValue().direction();
-
-                if (blockelementface != null && direction != null) {
-                    if (ForceFieldModel.skipRender(data.directions(), direction, entry.getValue().b(), entry.getValue().parents(), side)) continue;
-
-                    TextureAtlasSprite sprite = this.spriteFunction.apply(context.getMaterial(blockelementface.texture));
-                    quads.add(FACE_BAKERY.bakeQuad(
-                            entry.getKey().from,
-                            entry.getKey().to,
-                            blockelementface,
-                            sprite,
-                            side,
-                            BlockModelRotation.X0_Y0,
-                            null,
-                            false,
-                            new ResourceLocation(sprite.atlasLocation().getNamespace(), sprite.atlasLocation().getPath() + "_" + side.name().toLowerCase(Locale.ROOT)))
-                    );
+        if (data != null) {
+            if (cullFace == null) {
+                for (Direction direction : Direction.values()) {
+                    quads = this.getQuads(quads, direction, data, false);
                 }
+            } else return this.getQuads(quads, cullFace, data, true);
+        }
+
+        return quads;
+    }
+
+    public @NotNull List<BakedQuad> getQuads(List<BakedQuad> quads, Direction side, ForceFieldData data, boolean cull) {
+        for (Map.Entry<BlockElement, ForceFieldModelLoader.Condition> entry : this.parts.entrySet()) {
+            BlockElementFace blockelementface = entry.getKey().faces.get(side);
+            if (blockelementface != null && blockelementface.cullForDirection != null == cull) { // IntelliJ will try to tell you cullForDirection is never null, it's gaslighting you
+                if (ForceFieldModel.skipRender(data.directions(), entry.getValue().direction(), entry.getValue().b(), entry.getValue().parents(), side)) continue;
+
+                TextureAtlasSprite sprite = this.spriteFunction.apply(context.getMaterial(blockelementface.texture));
+                quads.add(FACE_BAKERY.bakeQuad(
+                        entry.getKey().from,
+                        entry.getKey().to,
+                        blockelementface,
+                        sprite,
+                        side,
+                        BlockModelRotation.X0_Y0,
+                        null,
+                        false,
+                        new ResourceLocation(sprite.atlasLocation().getNamespace(), sprite.atlasLocation().getPath() + "_" + side.name().toLowerCase(Locale.ROOT)))
+                );
             }
         }
         return quads;
     }
 
-    protected static boolean skipRender(Map<ExtraDirection, List<Direction>> directions, ExtraDirection direction, boolean supposedToBe, List<ExtraDirection> parents, Direction side) {
+    protected static boolean skipRender(Map<ExtraDirection, List<Direction>> directions, @Nullable ExtraDirection direction, boolean supposedToBe, List<ExtraDirection> parents, Direction side) {
+        if (direction == null) return false;
         for (ExtraDirection parent : parents) if (!directions.containsKey(parent)) return true;
         boolean hasKey = directions.containsKey(direction);
         if (hasKey != supposedToBe) return true;
@@ -103,7 +112,7 @@ public class ForceFieldModel implements IDynamicBakedModel {
                     ExtraDirection mirrored = extraDirection.mirrored(dir.getAxis());
                     if (mirrored != extraDirection) {
                         BlockState other = level.getBlockState(pos.relative(dir));
-                        if (other.is(state.getBlock())) {
+                        if (other.getBlock() instanceof ForceFieldBlock) {
                             List<ExtraDirection> otherDirections = getExtraDirections(other, level, pos.relative(dir));
                             if (otherDirections.contains(mirrored)) directionList.add(dir);
                         }
