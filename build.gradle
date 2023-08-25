@@ -6,6 +6,20 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
+def secrets = new Properties()
+file('secrets.properties').withInputStream {
+    stream -> secrets.load(stream)
+}
+
+fileTree("secrets").matching {
+    include "**/*.properties"
+}.each {
+    File file ->
+        file.withInputStream {
+            stream -> secrets.load(stream)
+        }
+}
+
 version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = group_name
 
@@ -40,19 +54,24 @@ minecraft {
         }
 
         client {
+            taskName "Minecraft_Client_${project.minecraft_version}"
             property 'forge.enabledGameTestNamespaces', mod_id
+            args '--username', secrets.getProperty("username")?: 'Dev', '--uuid', secrets.getProperty("uuid")?: UUID.randomUUID()
         }
 
         server {
+            taskName "Minecraft_Server_${project.minecraft_version}"
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
         }
 
-       gameTestServer {
+        gameTestServer {
+            taskName "Minecraft_GameTestServer_${project.minecraft_version}"
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         data {
+            taskName "Minecraft_Data_${project.minecraft_version}"
             workingDirectory project.file('run-data')
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
