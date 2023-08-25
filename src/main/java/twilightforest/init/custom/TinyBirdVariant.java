@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 public record TinyBirdVariant(ResourceLocation texture) {
 	public static final ResourceKey<Registry<TinyBirdVariant>> TINY_BIRD_TYPE_KEY = ResourceKey.createRegistryKey(TwilightForestMod.prefix("tiny_bird_variant"));
 	public static final DeferredRegister<TinyBirdVariant> TINY_BIRDS = DeferredRegister.create(TINY_BIRD_TYPE_KEY, TwilightForestMod.ID);
-	public static final Supplier<IForgeRegistry<TinyBirdVariant>> TINY_BIRD_REGISTRY = TINY_BIRDS.makeRegistry(RegistryBuilder::new);
+	public static final Supplier<IForgeRegistry<TinyBirdVariant>> TINY_BIRD_REGISTRY = TINY_BIRDS.makeRegistry(() -> new RegistryBuilder<TinyBirdVariant>().hasTags());
 
 	public static final RegistryObject<TinyBirdVariant> BLUE = TINY_BIRDS.register("blue", () -> new TinyBirdVariant(TwilightForestMod.getModelTexture("tinybirdblue.png")));
 	public static final RegistryObject<TinyBirdVariant> BROWN = TINY_BIRDS.register("brown", () -> new TinyBirdVariant(TwilightForestMod.getModelTexture("tinybirdbrown.png")));

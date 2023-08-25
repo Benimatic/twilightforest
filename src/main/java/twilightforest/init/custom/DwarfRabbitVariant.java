@@ -18,7 +18,7 @@ public record DwarfRabbitVariant(ResourceLocation texture) {
 
 	public static final ResourceKey<Registry<DwarfRabbitVariant>> DWARF_RABBIT_TYPE_KEY = ResourceKey.createRegistryKey(TwilightForestMod.prefix("dwarf_rabbit_variant"));
 	public static final DeferredRegister<DwarfRabbitVariant> DWARF_RABBITS = DeferredRegister.create(DWARF_RABBIT_TYPE_KEY, TwilightForestMod.ID);
-	public static final Supplier<IForgeRegistry<DwarfRabbitVariant>> DWARF_RABBIT_REGISTRY = DWARF_RABBITS.makeRegistry(RegistryBuilder::new);
+	public static final Supplier<IForgeRegistry<DwarfRabbitVariant>> DWARF_RABBIT_REGISTRY = DWARF_RABBITS.makeRegistry(() -> new RegistryBuilder<DwarfRabbitVariant>().hasTags());
 
 	public static final RegistryObject<DwarfRabbitVariant> BROWN = DWARF_RABBITS.register("brown", () -> new DwarfRabbitVariant(TwilightForestMod.getModelTexture("bunnybrown.png")));
 	public static final RegistryObject<DwarfRabbitVariant> DUTCH = DWARF_RABBITS.register("dutch", () -> new DwarfRabbitVariant(TwilightForestMod.getModelTexture("bunnydutch.png")));
