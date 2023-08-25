@@ -186,7 +186,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
                 Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
-                Vec3 paintPos = painting.position();
+                Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
                 double x = camPos.x - paintPos.x;
                 double z = camPos.z - paintPos.z;
                 double yRot = Mth.wrapDegrees((float)(Mth.atan2(z, x) * (double)(180F / (float)Math.PI)) - 90.0F - painting.getYRot());
@@ -208,7 +208,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
                 Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
-                Vec3 paintPos = painting.position();
+                Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
 
                 double x = camPos.x - paintPos.x;
                 double y = camPos.y - paintPos.y;
