@@ -182,7 +182,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	@SuppressWarnings("deprecation")
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos pos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), this.canConnectTo(state, accessor, pos, direction));
+		return this.canConnectTo(state, accessor, pos, direction) ? state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), true) : state;
 	}
 
 	@Override
