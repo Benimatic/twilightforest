@@ -28,27 +28,26 @@ import java.util.*;
 import java.util.function.Function;
 
 public class ForceFieldModel implements IDynamicBakedModel {
-
     private static final ModelProperty<ForceFieldData> DATA = new ModelProperty<>();
     private static final FaceBakery FACE_BAKERY = new FaceBakery();
 
+    private final Map<BlockElement, ForceFieldModelLoader.Condition> parts;
     private final Function<Material, TextureAtlasSprite> spriteFunction;
     private final IGeometryBakingContext context;
-    private final Map<BlockElement, ForceFieldModelLoader.Condition> parts;
     private final TextureAtlasSprite particle;
     private final ItemOverrides overrides;
-    private final ItemTransforms transforms;
     private final ChunkRenderTypeSet blockRenderTypes;
     private final List<RenderType> itemRenderTypes;
     private final List<RenderType> fabulousItemRenderTypes;
 
-    public ForceFieldModel(Function<Material, TextureAtlasSprite> spriteFunction, IGeometryBakingContext context, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group, Map<BlockElement, ForceFieldModelLoader.Condition> parts) {
+    public ForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> parts, Function<Material, TextureAtlasSprite> spriteFunction, IGeometryBakingContext context, ItemOverrides overrides) {
         this.parts = parts;
         this.spriteFunction = spriteFunction;
         this.context = context;
-        this.particle = particle;
+        this.particle = spriteFunction.apply(context.getMaterial("particle"));
         this.overrides = overrides;
-        this.transforms = transforms;
+        ResourceLocation renderTypeHint = context.getRenderTypeHint();
+        RenderTypeGroup group = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
         this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
         this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
         this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
@@ -113,8 +112,7 @@ public class ForceFieldModel implements IDynamicBakedModel {
                     if (mirrored != extraDirection) {
                         BlockState other = level.getBlockState(pos.relative(dir));
                         if (other.getBlock() instanceof ForceFieldBlock) {
-                            List<ExtraDirection> otherDirections = getExtraDirections(other, level, pos.relative(dir));
-                            if (otherDirections.contains(mirrored)) directionList.add(dir);
+                            if (getExtraDirections(other, level, pos.relative(dir)).contains(mirrored)) directionList.add(dir);
                         }
                     }
                 }
@@ -168,17 +166,17 @@ public class ForceFieldModel implements IDynamicBakedModel {
 
     @Override
     public boolean useAmbientOcclusion() {
-        return true;
+        return this.context.useAmbientOcclusion();
     }
 
     @Override
     public boolean isGui3d() {
-        return true;
+        return this.context.isGui3d();
     }
 
     @Override
     public boolean usesBlockLight() {
-        return true;
+        return this.context.useBlockLight();
     }
 
     @Override
@@ -200,7 +198,7 @@ public class ForceFieldModel implements IDynamicBakedModel {
     @Override
     @SuppressWarnings("deprecation")
     public ItemTransforms getTransforms() {
-        return this.transforms;
+        return this.context.getTransforms();
     }
 
     @NotNull

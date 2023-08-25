@@ -8,7 +8,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.RenderTypeGroup;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 
@@ -19,8 +18,6 @@ public record UnbakedForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Con
 
 	@Override
 	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
-		ResourceLocation renderTypeHint = context.getRenderTypeHint();
-		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
-		return new ForceFieldModel(spriteGetter, context, spriteGetter.apply(context.getMaterial("particle")), overrides, context.getTransforms(), renderTypes, this.elementsAndConditions);
+		return new ForceFieldModel(this.elementsAndConditions, spriteGetter, context, overrides);
 	}
 }
