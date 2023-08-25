@@ -3,14 +3,12 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -138,21 +136,23 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 		return true;
 	}
 
-	public boolean canConnectTo(BlockGetter getter, BlockPos pos, Direction direction) {
-		BlockState state = getter.getBlockState(pos.relative(direction));
-		boolean solidSide = state.isFaceSturdy(getter, pos.relative(direction), direction.getOpposite());
-		Block block = state.getBlock();
+	public boolean canConnectTo(@Nullable BlockState state, BlockGetter getter, BlockPos pos, Direction direction) {
+		BlockState relative = getter.getBlockState(pos.relative(direction));
+		if (relative.is(this)) return true;
 
 		int betterConnections = 0;
-		if (!state.is(this)) {
+		if (state == null) {
 			for (Direction face : Direction.values()) {
 				if (getter.getBlockState(pos.relative(face)).is(this)) betterConnections++;
 			}
-			if (betterConnections > 3)
-				return false; //Might need to alter this a bit, without this the forcefields in the final castles like to attach to every block, still does a bit in the main room :/
+		} else {
+			for (Direction face : Direction.values()) {
+				if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face))) betterConnections++;
+			}
 		}
+		if (betterConnections >= 3) return false;
 
-		return !isExceptionForConnection(state) && solidSide || block instanceof ForceFieldBlock || block instanceof IronBarsBlock || state.is(BlockTags.WALLS);
+		return !isExceptionForConnection(relative) && relative.isFaceSturdy(getter, pos.relative(direction), direction.getOpposite());
 	}
 
 	@Override
@@ -168,20 +168,21 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 		Level level = context.getLevel();
 		Direction clicked = context.getClickedFace();
 
-		return this.defaultBlockState()
-				.setValue(DOWN, clicked != Direction.DOWN ? this.canConnectTo(level, pos, Direction.DOWN) : !context.isSecondaryUseActive())
-				.setValue(UP, clicked != Direction.UP ? this.canConnectTo(level, pos, Direction.UP) : !context.isSecondaryUseActive())
-				.setValue(NORTH, clicked != Direction.NORTH ? this.canConnectTo(level, pos, Direction.NORTH) : !context.isSecondaryUseActive())
-				.setValue(EAST, clicked != Direction.EAST ? this.canConnectTo(level, pos, Direction.EAST) : !context.isSecondaryUseActive())
-				.setValue(SOUTH, clicked != Direction.SOUTH ? this.canConnectTo(level, pos, Direction.SOUTH) : !context.isSecondaryUseActive())
-				.setValue(WEST, clicked != Direction.WEST ? this.canConnectTo(level, pos, Direction.WEST) : !context.isSecondaryUseActive());
+		BlockState state = this.defaultBlockState();
+
+		for (Direction dir : Direction.values()) {
+			state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(dir), clicked.getOpposite() == dir ||
+					(clicked != dir ? this.canConnectTo(null, level, pos, dir) : !context.isSecondaryUseActive()));
+		}
+
+		return state;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos pos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), this.canConnectTo(accessor, pos, direction));
+		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), this.canConnectTo(state, accessor, pos, direction));
 	}
 
 	@Override
