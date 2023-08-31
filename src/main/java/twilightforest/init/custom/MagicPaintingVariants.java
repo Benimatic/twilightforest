@@ -28,6 +28,7 @@ public class MagicPaintingVariants {
     public static final Codec<Holder<MagicPaintingVariant>> CODEC = RegistryFileCodec.create(REGISTRY_KEY, MagicPaintingVariant.CODEC, false);
 
     public static final ResourceKey<MagicPaintingVariant> DARKNESS = makeKey(TwilightForestMod.prefix("darkness"));
+    public static final ResourceKey<MagicPaintingVariant> LUCID_LANDS = makeKey(TwilightForestMod.prefix("lucid_lands"));
 
     private static ResourceKey<MagicPaintingVariant> makeKey(ResourceLocation name) {
         return ResourceKey.create(REGISTRY_KEY, name);
@@ -41,6 +42,13 @@ public class MagicPaintingVariants {
                 new Layer("gems", null, null, true),
                 new Layer("gems", null, new OpacityModifier(OpacityModifier.Type.DAY_TIME, 2.0F, true), true),
                 new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false), true)
+        ));
+        register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 32, 32, List.of(
+                new Layer("background", null, null, true),
+                new Layer("clouds", new Parallax(Parallax.Type.SINE_TIME, 0.01F, 48, 32), null, true),
+                new Layer("volcanic_lands", null, null, true),
+                new Layer("agate_jungle", new Parallax(Parallax.Type.VIEW_ANGLE, 0.02F, 44, 32), null, true),
+                new Layer("crystal_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.025F, 58, 32), null, true)
         ));
     }
 

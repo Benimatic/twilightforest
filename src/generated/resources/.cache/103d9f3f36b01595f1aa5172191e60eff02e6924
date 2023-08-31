@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-25T23:29:00.7320199	Registries
+// 1.20.1	2023-08-31T18:22:07.6962209	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -55,6 +55,7 @@ de49903e456db111c78f2f0934ac3369f94953f3 data/twilightforest/trim_material/steel
 c01efe2b06b832718931f88ed9645b44b58409dd data/twilightforest/twilight/biome_layer_stack/biomes_along_streams.json
 87d0487a38fb84d85efb0cb0044f50fe8053d60e data/twilightforest/twilight/biome_layer_stack/random_forest_biomes.json
 8527a9a4915c26f9b917c47d5e0de4ef6068ef6f data/twilightforest/twilight/magic_paintings/darkness.json
+787683014abd676d1b53c38f635db54fdded27ae data/twilightforest/twilight/magic_paintings/lucid_lands.json
 88412ce3e8458a297b71848841406df4291ef208 data/twilightforest/twilight/restrictions/dark_forest.json
 e49249f502656a408fe01beaecf5ffd167e77d18 data/twilightforest/twilight/restrictions/dark_forest_center.json
 7c6706852692effaad2a28df5b64b6354b9ad2d9 data/twilightforest/twilight/restrictions/final_plateau.json
