@@ -185,8 +185,13 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     protected double getWidthOffset(@Nullable Parallax parallax, MagicPainting painting, double widthDiff) {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
-                Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
+                float partialTick = Minecraft.getInstance().getPartialTick();
+                Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
+                        Minecraft.getInstance().cameraEntity.getEyePosition(partialTick) :
+                        Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+
                 Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
+
                 double x = camPos.x - paintPos.x;
                 double z = camPos.z - paintPos.z;
                 double yRot = Mth.wrapDegrees((float)(Mth.atan2(z, x) * (double)(180F / (float)Math.PI)) - 90.0F - painting.getYRot());
@@ -207,7 +212,11 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
     protected double getHeightOffset(@Nullable Parallax parallax, MagicPainting painting, double heightDiff) {
         if (parallax != null) switch (parallax.type()) {
             case VIEW_ANGLE -> {
-                Vec3 camPos = Optional.ofNullable(Minecraft.getInstance().cameraEntity).map(Entity::getEyePosition).orElse(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition());
+                float partialTick = Minecraft.getInstance().getPartialTick();
+                Vec3 camPos = Minecraft.getInstance().cameraEntity != null ?
+                        Minecraft.getInstance().cameraEntity.getEyePosition(partialTick) :
+                        Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+
                 Vec3 paintPos = painting.position().relative(painting.getDirection().getOpposite(), 1.0D);
 
                 double x = camPos.x - paintPos.x;
