@@ -156,9 +156,9 @@ public class TFClientEvents {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
-			final double scale = 512F;
+			final double scale = 2048F;
 			Vec3 pos = event.getCamera().getPosition();
-			final double y = 140D - pos.y();
+			final double y = 256D - pos.y();
 			buffer.vertex(-scale, y, -scale).endVertex();
 			buffer.vertex(-scale, y, scale).endVertex();
 			buffer.vertex(scale, y, scale).endVertex();
