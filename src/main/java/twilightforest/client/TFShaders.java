@@ -24,10 +24,10 @@ public class TFShaders {
 	public static void init(IEventBus bus) {
 		bus.addListener((Consumer<RegisterShadersEvent>) event -> {
 			try {
-				event.registerShader(new ShaderInstance(event.getResourceProvider(), new ResourceLocation(TwilightForestMod.ID, "red_thread/red_thread"), DefaultVertexFormat.
-						BLOCK), shader -> RED_THREAD = shader);
-				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), new ResourceLocation(TwilightForestMod.ID, "aurora/aurora"), DefaultVertexFormat.
-						POSITION), shader -> AURORA = (PositionAwareShaderInstance) shader);
+				event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
+						shader -> RED_THREAD = shader);
+				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION),
+						shader -> AURORA = (PositionAwareShaderInstance) shader);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
