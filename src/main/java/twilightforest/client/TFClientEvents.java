@@ -168,7 +168,10 @@ public class TFClientEvents {
 			RenderSystem.enableBlend();
 			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F);
 			// TODO: pass biomeZoomSeed as a uniform, ideally only set it once so we're not uploading it to the GPU every frame
-			TFShaders.AURORA.invokeThenEndTesselator((float) pos.x(), (float) pos.y(), (float) pos.z());
+			TFShaders.AURORA.invokeThenEndTesselator(
+					Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
+					(float) pos.x(), (float) pos.y(), (float) pos.z()
+			);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			RenderSystem.disableBlend();
 			RenderSystem.enableCull();

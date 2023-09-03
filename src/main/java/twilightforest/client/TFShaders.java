@@ -83,39 +83,46 @@ public class TFShaders {
 	public static class PositionAwareShaderInstance extends BindableShaderInstance {
 
 		@Nullable
+		public final Uniform SEED;
+
+		@Nullable
 		public final Uniform POSITION;
 
 		public PositionAwareShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
+			SEED = getUniform("SeedContext");
 			POSITION = getUniform("PositionContext");
 		}
 
-		public final void setValue(float x, float y, float z) {
+		public final void setValue(int seed, float x, float y, float z) {
+			if (SEED != null) {
+				SEED.set(seed);
+			}
 			if (POSITION != null) {
 				POSITION.set(x, y, z);
 			}
 		}
 
-		public final void setValueBindApply(float x, float y, float z) {
-			bind(() -> setValue(x, y, z));
+		public final void setValueBindApply(int seed, float x, float y, float z) {
+			bind(() -> setValue(seed, x, y, z));
 		}
 
 		public final void reset() {
-			setValue(0, 0, 0);
+			setValue(0, 0, 0, 0);
 		}
 
 		public final void resetClear() {
 			runThenClear(this::reset);
 		}
 
-		public final void invokeThenClear(float x, float y, float z, Runnable exec) {
-			setValueBindApply(x, y, z);
+		public final void invokeThenClear(int seed, float x, float y, float z, Runnable exec) {
+			setValueBindApply(seed, x, y, z);
 			exec.run();
 			resetClear();
 		}
 
-		public final void invokeThenEndTesselator(float x, float y, float z) {
-			invokeThenClear(x, y, z, () -> Tesselator.getInstance().end());
+		public final void invokeThenEndTesselator(int seed, float x, float y, float z) {
+			invokeThenClear(seed, x, y, z, () -> Tesselator.getInstance().end());
 		}
 
 	}

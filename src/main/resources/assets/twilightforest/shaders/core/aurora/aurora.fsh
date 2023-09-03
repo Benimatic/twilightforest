@@ -96,6 +96,8 @@ vec4 openSimplex2SDerivatives_ImproveXY(vec3 X) {
 
 uniform mat4 ModelViewMat;
 uniform vec4 ColorModulator;
+uniform float GameTime;
+uniform int SeedContext;
 uniform vec3 PositionContext;
 
 out vec4 fragColor;
@@ -103,7 +105,7 @@ out vec4 fragColor;
 in vec4 pixelPos;
 
 void main() {
-    float noise = openSimplex2SDerivatives_ImproveXY(vec3((pixelPos.x + PositionContext.x) / 64.0, (pixelPos.z + PositionContext.z) / 64.0, 0.0)).a;
+    float noise = openSimplex2SDerivatives_ImproveXY(vec3((pixelPos.x + PositionContext.x + (SeedContext / 360)) / 128.0, (pixelPos.z + PositionContext.z + (SeedContext % 360)) / 128.0, GameTime * 180.0)).a;
     if (noise > -0.2 && noise < 0.2) {
         noise = 1.0 + abs(noise) * 5.0;
     } else {
