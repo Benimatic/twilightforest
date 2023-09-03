@@ -1,7 +1,7 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -128,7 +128,7 @@ public class TFClientEvents {
 	}
 
 	/**
-	 * Render effects in first-person perspective
+	 * Render effects in first-person perspective and aurora
 	 */
 	@SubscribeEvent
 	public static void renderWorldLast(RenderLevelStageEvent event) {
@@ -149,6 +149,24 @@ public class TFClientEvents {
 					}
 				}
 			}
+		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER) {
+			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
+			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+
+			final double scale = 512F;
+			Vec3 pos = event.getCamera().getPosition();
+			final double y = 140D - pos.y();
+			buffer.vertex(-scale, y, -scale).endVertex();
+			buffer.vertex(-scale, y, scale).endVertex();
+			buffer.vertex(scale, y, scale).endVertex();
+			buffer.vertex(scale, y, -scale).endVertex();
+
+			RenderSystem.disableCull();
+			RenderSystem.enableBlend();
+			// TODO: pass biomeZoomSeed as a uniform, ideally only set it once so we're not uploading it to the GPU every frame
+			TFShaders.AURORA.invokeThenEndTesselator((float) pos.x(), (float) pos.y(), (float) pos.z());
+			RenderSystem.disableBlend();
+			RenderSystem.enableCull();
 		}
 	}
 
