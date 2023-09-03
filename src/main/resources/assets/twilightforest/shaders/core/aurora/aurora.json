@@ -7,7 +7,8 @@
   "vertex": "twilightforest:/aurora/aurora",
   "fragment": "twilightforest:/aurora/aurora",
   "attributes": [
-	"Position"
+	"Position",
+    "Color"
   ],
   "samplers": [],
   "uniforms": [

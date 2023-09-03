@@ -154,20 +154,28 @@ public class TFClientEvents {
 			}
 		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0)) {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
 			final double scale = 2048F;
 			Vec3 pos = event.getCamera().getPosition();
-			final double y = 256D - pos.y();
-			buffer.vertex(-scale, y, -scale).endVertex();
-			buffer.vertex(-scale, y, scale).endVertex();
-			buffer.vertex(scale, y, scale).endVertex();
-			buffer.vertex(scale, y, -scale).endVertex();
+			double y = 256D - pos.y();
+			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
+
+			for (int i = 0; i < 6; i++) {
+				y += 2D * i;
+				float a = (6F - i) / 6F * 0.75F + 0.25F;
+				buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, a).endVertex();
+				buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, a).endVertex();
+				buffer.vertex(scale, y, scale).color(1F, 1F, 1F, a).endVertex();
+				buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, a).endVertex();
+			}
 
 			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
 			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F);
-			// TODO: pass biomeZoomSeed as a uniform, ideally only set it once so we're not uploading it to the GPU every frame
 			TFShaders.AURORA.invokeThenEndTesselator(
 					Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
 					(float) pos.x(), (float) pos.y(), (float) pos.z()

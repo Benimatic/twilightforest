@@ -26,7 +26,7 @@ public class TFShaders {
 			try {
 				event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
 						shader -> RED_THREAD = shader);
-				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION),
+				event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
 						shader -> AURORA = (PositionAwareShaderInstance) shader);
 			} catch (IOException e) {
 				e.printStackTrace();

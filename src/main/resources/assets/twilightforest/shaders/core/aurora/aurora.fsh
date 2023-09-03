@@ -103,9 +103,10 @@ uniform vec3 PositionContext;
 out vec4 fragColor;
 
 in vec4 pixelPos;
+in vec4 vertexColor;
 
 void main() {
-    float noise = openSimplex2SDerivatives_ImproveXY(vec3((pixelPos.x + PositionContext.x + (SeedContext / 360)) / 512.0, (pixelPos.z + PositionContext.z + (SeedContext % 360)) / 512.0, GameTime * 90.0)).a;
+    float noise = openSimplex2SDerivatives_ImproveXY(vec3((pixelPos.x + PositionContext.x + (SeedContext / 360)) / 512.0, (pixelPos.z + PositionContext.z + (SeedContext % 360)) / 512.0, GameTime * 22.5)).a;
     float colorNoise = openSimplex2SDerivatives_ImproveXY(vec3((pixelPos.x + PositionContext.x + (SeedContext / 360)) / 512.0, (pixelPos.z + PositionContext.z + (SeedContext % 360)) / 512.0, GameTime * 720.0)).a;
     if (noise > -0.2 && noise < 0.2) {
         noise = 1.0 + abs(noise) * 5.0;
@@ -123,5 +124,5 @@ void main() {
     }
     colorNoise = ((colorNoise + 1.0) / 2.0) * 0.5;
     vec4 color = vec4(0.0, 0.5 + colorNoise, 1.0 - colorNoise, noise);
-    fragColor = vec4(ColorModulator.rgb * color.rgb, ColorModulator.a * color.a);
+    fragColor = vec4(vertexColor.rgb * ColorModulator.rgb * color.rgb, vertexColor.a * ColorModulator.a * color.a);
 }
