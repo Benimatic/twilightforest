@@ -152,7 +152,7 @@ public class TFClientEvents {
 					}
 				}
 			}
-		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0)) {
+		} else if (!TFConfig.CLIENT_CONFIG.disableAurora.get() && event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0)) {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -237,14 +237,16 @@ public class TFClientEvents {
 			rotationTicker = rotationTickerI + partial;
 			sineTicker = sineTicker + partial;
 
-			lastAurora = aurora;
-			if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null) {
-				Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
-				if (biome.is(TFBiomes.SNOWY_FOREST) || biome.is(TFBiomes.GLACIER))
-					aurora++;
-				else
-					aurora--;
-				aurora = Mth.clamp(aurora, 0, 60);
+			if (!TFConfig.CLIENT_CONFIG.disableAurora.get()) {
+				lastAurora = aurora;
+				if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null) {
+					Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
+					if (biome.is(TFBiomes.SNOWY_FOREST) || biome.is(TFBiomes.GLACIER))
+						aurora++;
+					else
+						aurora--;
+					aurora = Mth.clamp(aurora, 0, 60);
+				}
 			}
 		}
 

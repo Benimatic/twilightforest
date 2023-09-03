@@ -375,6 +375,12 @@ public class TFConfig {
 							List of player UUIDs whose skins the giants of Twilight Forest should use.
 							If left empty, the giants will appear the same as the player viewing them does.""").
 					defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), s -> s instanceof String);
+			disableAurora = builder.
+					translation(config + "disable_aurora").
+					comment("""
+							Disable this if you're having performance issues near the glacier.
+							""")
+					.define("disableAurora", false);
 
 		}
 
@@ -387,6 +393,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
+		public final ForgeConfigSpec.BooleanValue disableAurora;
 	}
 
 	private static final String config = "config." + TwilightForestMod.ID;
