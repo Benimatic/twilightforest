@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkStatus;
@@ -63,6 +65,7 @@ import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -149,7 +152,7 @@ public class TFClientEvents {
 					}
 				}
 			}
-		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER) {
+		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0)) {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
@@ -163,8 +166,10 @@ public class TFClientEvents {
 
 			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
+			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F);
 			// TODO: pass biomeZoomSeed as a uniform, ideally only set it once so we're not uploading it to the GPU every frame
 			TFShaders.AURORA.invokeThenEndTesselator((float) pos.x(), (float) pos.y(), (float) pos.z());
+			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			RenderSystem.disableBlend();
 			RenderSystem.enableCull();
 		}
@@ -203,6 +208,9 @@ public class TFClientEvents {
 	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
 	private static float intensity = 0.0F;
 
+	private static int aurora = 0;
+	private static int lastAurora = 0;
+
 	@SubscribeEvent
 	public static void clientTick(TickEvent.ClientTickEvent event) {
 		if (event.phase != TickEvent.Phase.END) return;
@@ -217,6 +225,16 @@ public class TFClientEvents {
 
 			rotationTicker = rotationTickerI + partial;
 			sineTicker = sineTicker + partial;
+
+			lastAurora = aurora;
+			if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null) {
+				Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
+				if (biome.is(TFBiomes.SNOWY_FOREST) || biome.is(TFBiomes.GLACIER))
+					aurora++;
+				else
+					aurora--;
+				aurora = Mth.clamp(aurora, 0, 60);
+			}
 		}
 
 		if (!mc.isPaused()) {
