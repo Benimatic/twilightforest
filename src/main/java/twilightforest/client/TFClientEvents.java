@@ -156,7 +156,7 @@ public class TFClientEvents {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			final double scale = 2048F;
+			final double scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
 			Vec3 pos = event.getCamera().getPosition();
 			double y = 256D - pos.y();
 			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
