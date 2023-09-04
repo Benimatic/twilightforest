@@ -166,7 +166,7 @@ public class TFClientEvents {
 
 			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
-			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F);
+			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F * 0.5F);
 			TFShaders.AURORA.invokeThenEndTesselator(
 					Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
 					(float) pos.x(), (float) pos.y(), (float) pos.z()
