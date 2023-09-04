@@ -1,5 +1,7 @@
 #version 150
 
+#moj_import <fog.glsl>
+
 /////////////// K.jpg's Re-oriented 8-Point BCC Noise (OpenSimplex2S) ////////////////
 ////////////////////// Output: vec4(dF/dx, dF/dy, dF/dz, value) //////////////////////
 
@@ -94,9 +96,11 @@ vec4 openSimplex2SDerivatives_ImproveXY(vec3 X) {
 
 //////////////////////////////// End noise code ////////////////////////////////
 
-uniform mat4 ModelViewMat;
 uniform vec4 ColorModulator;
 uniform float GameTime;
+uniform float FogStart;
+uniform float FogEnd;
+uniform vec4 FogColor;
 uniform int SeedContext;
 uniform vec3 PositionContext;
 
@@ -105,24 +109,51 @@ out vec4 fragColor;
 in vec4 pixelPos;
 in vec4 vertexColor;
 
-void main() {
-    float noise = openSimplex2SDerivatives_ImproveXY(vec3((pixelPos.x + PositionContext.x + (SeedContext / 360)) / 512.0, (pixelPos.z + PositionContext.z + (SeedContext % 360)) / 512.0, GameTime * 22.5)).a;
-    float colorNoise = openSimplex2SDerivatives_ImproveXY(vec3((pixelPos.x + PositionContext.x + (SeedContext / 360)) / 512.0, (pixelPos.z + PositionContext.z + (SeedContext % 360)) / 512.0, GameTime * 720.0)).a;
+float genNoise(float x, float z, float speed) {
+    float xx = x + PositionContext.x + (SeedContext / 360);
+    float zz = z + PositionContext.z + (SeedContext % 360);
+    return openSimplex2SDerivatives_ImproveXY(vec3(xx / 512.0, zz / 512.0, GameTime * speed)).a;
+}
+
+float fixNoise(float noise) {
     if (noise > -0.2 && noise < 0.2) {
         noise = 1.0 + abs(noise) * 5.0;
     } else {
         noise = -1.0;
     }
-    noise = (noise + 1.0) / 2.0 - 0.5;
-    if (noise < 0) {
-        noise = 0;
-    } else if (noise > 1) {
-        noise = 1;
-    }
+    noise = clamp((noise + 1.0) / 2.0 - 0.5, 0.0, 1.0);
     if (noise > 0) {
         noise = 1.0 - noise;
     }
+    return noise;
+}
+
+// https://michaelwalczyk.com/blog-ray-marching.html
+float rayMarch(vec3 origin, vec3 direction) {
+    float noise = 0.0;
+    float steps = 16;
+    for (int i = 0; i < steps; ++i) {
+        vec3 curPos = origin + ((i / steps) * 0.35) * direction;
+
+        float fade = 1.0;
+        if (i > 0) {
+            fade = ((steps - i) / steps)  * 0.65;
+        }
+        noise += fixNoise(genNoise(curPos.x, curPos.z, 22.5)) * fade;
+    }
+
+    return noise;
+}
+
+void main() {
+    // Normalize pixelPos to [-1.0, 1.0]
+    vec2 uv = pixelPos.xz * 2.0 - 1.0;
+
+    float noise = rayMarch(vec3(uv.x, 0.0, uv.y), vec3(uv.x, 1.0, uv.y));
+    float colorNoise = genNoise(uv.x, uv.y, 720.0);
+
     colorNoise = ((colorNoise + 1.0) / 2.0) * 0.5;
     vec4 color = vec4(0.0, 0.5 + colorNoise, 1.0 - colorNoise, noise);
-    fragColor = vec4(vertexColor.rgb * ColorModulator.rgb * color.rgb, vertexColor.a * ColorModulator.a * color.a);
+    float fogFade = linear_fog_fade(length(pixelPos.xz / 2.75), FogStart, FogEnd);
+    fragColor = linear_fog(vec4(vertexColor.rgb * ColorModulator.rgb * color.rgb, vertexColor.a * ColorModulator.a * color.a * fogFade), length(pixelPos.xz / 2.5), FogStart, FogEnd, FogColor);
 }

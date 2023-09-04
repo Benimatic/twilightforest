@@ -164,15 +164,6 @@ public class TFClientEvents {
 			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
 			buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
 
-			for (int i = 0; i < 6; i++) {
-				y += 2D * i;
-				float a = (6F - i) / 6F * 0.75F + 0.25F;
-				buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, a).endVertex();
-				buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, a).endVertex();
-				buffer.vertex(scale, y, scale).color(1F, 1F, 1F, a).endVertex();
-				buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, a).endVertex();
-			}
-
 			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
 			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F);
