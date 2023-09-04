@@ -146,6 +146,12 @@ float rayMarch(vec3 origin, vec3 direction) {
 }
 
 void main() {
+    float fogFade = linear_fog_fade(length(pixelPos.xz / 2.75), FogStart, FogEnd);
+
+    if (fogFade <= 0.0) {
+        discard;
+    }
+
     // Normalize pixelPos to [-1.0, 1.0]
     vec2 uv = pixelPos.xz * 2.0 - 1.0;
 
@@ -154,6 +160,5 @@ void main() {
 
     colorNoise = ((colorNoise + 1.0) / 2.0) * 0.5;
     vec4 color = vec4(0.0, 0.5 + colorNoise, 1.0 - colorNoise, noise);
-    float fogFade = linear_fog_fade(length(pixelPos.xz / 2.75), FogStart, FogEnd);
     fragColor = linear_fog(vec4(vertexColor.rgb * ColorModulator.rgb * color.rgb, vertexColor.a * ColorModulator.a * color.a * fogFade), length(pixelPos.xz / 2.5), FogStart, FogEnd, FogColor);
 }
