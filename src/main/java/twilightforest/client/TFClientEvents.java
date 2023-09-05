@@ -154,7 +154,7 @@ public class TFClientEvents {
 					}
 				}
 			}
-		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && !TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).isEmpty() && (aurora > 0 || lastAurora > 0)) {
+		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0)) {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -237,6 +237,8 @@ public class TFClientEvents {
 				else
 					aurora--;
 				aurora = Mth.clamp(aurora, 0, 60);
+			} else {
+				aurora = 0;
 			}
 		}
 
