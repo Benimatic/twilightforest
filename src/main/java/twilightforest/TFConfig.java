@@ -10,6 +10,7 @@ import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
 import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -394,7 +395,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 		public final ForgeConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
-		private final List<Biome> validAuroraBiomes = new ArrayList<>();
+		private final List<ResourceLocation> validAuroraBiomes = new ArrayList<>();
 	}
 
 	private static final String config = "config." + TwilightForestMod.ID;
@@ -422,14 +423,15 @@ public class TFConfig {
 	}
 
 	//Forge's biome registry doesn't contain biomes done via datapacks, so we have to use registryaccess
-	public static List<Biome> getValidAuroraBiomes(RegistryAccess access) {
+	public static List<ResourceLocation> getValidAuroraBiomes(RegistryAccess access) {
 		if (CLIENT_CONFIG.validAuroraBiomes.isEmpty() && !CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
 			CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
-				Biome biome = access.registryOrThrow(Registries.BIOME).get(ResourceLocation.tryParse(s));
-				if (biome == null) {
+				ResourceLocation key = ResourceLocation.tryParse(s);
+				if (key == null || !access.registryOrThrow(Registries.BIOME).containsKey(key)) {
 					TwilightForestMod.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
+				} else {
+					CLIENT_CONFIG.validAuroraBiomes.add(key);
 				}
-				CLIENT_CONFIG.validAuroraBiomes.add(biome);
 			});
 		}
 		return CLIENT_CONFIG.validAuroraBiomes;

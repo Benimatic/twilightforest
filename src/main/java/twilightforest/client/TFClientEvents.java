@@ -17,6 +17,8 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -231,8 +233,9 @@ public class TFClientEvents {
 
 			lastAurora = aurora;
 			if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null && !TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).isEmpty()) {
+				RegistryAccess access = Minecraft.getInstance().level.registryAccess();
 				Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
-				if (TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).contains(biome.get()))
+				if (TFConfig.getValidAuroraBiomes(access).contains(access.registryOrThrow(Registries.BIOME).getKey(biome.value())))
 					aurora++;
 				else
 					aurora--;
