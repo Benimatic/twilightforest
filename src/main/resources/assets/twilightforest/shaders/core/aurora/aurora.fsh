@@ -115,16 +115,19 @@ float genNoise(float x, float z, float speed) {
     return openSimplex2SDerivatives_ImproveXY(vec3(xx / 512.0, zz / 512.0, GameTime * speed)).a;
 }
 
+int floatToOneOrZero(float value) {
+    // 7 decimal places, we may lose precision but thats fine
+    int swap[2] = int[2](min(1, max(0, int(value * 10000000.0))), 1);
+    return swap[min(1, max(0, int(value)))];
+}
+
 float fixNoise(float noise) {
-    if (noise > -0.2 && noise < 0.2) {
-        noise = 1.0 + abs(noise) * 5.0;
-    } else {
-        noise = -1.0;
-    }
+    // Avoids if (noise > -0.2 && noise < 0.2) else ...
+    float swap[2] = float[2](1.0 + abs(noise) * 5.0, -1.0);
+    noise = swap[floatToOneOrZero(abs(noise) - 0.2)];
+
     noise = clamp((noise + 1.0) / 2.0 - 0.5, 0.0, 1.0);
-    if (noise > 0) {
-        noise = 1.0 - noise;
-    }
+    noise = (1.0 - noise) * floatToOneOrZero(noise); // Avoids if (noise > 0)
     return noise;
 }
 
@@ -135,10 +138,9 @@ float rayMarch(vec3 origin, vec3 direction) {
     for (int i = 0; i < steps; ++i) {
         vec3 curPos = origin + ((i / steps) * 0.35) * direction;
 
-        float fade = 1.0;
-        if (i > 0) {
-            fade = ((steps - i) / steps)  * 0.65;
-        }
+        // Avoids if (i > 0)
+        float swap[2] = float[2](1.0, ((steps - i) / steps)  * 0.65);
+        float fade = swap[min(i, 1)];
         noise += fixNoise(genNoise(curPos.x, curPos.z, 22.5)) * fade;
     }
 
@@ -146,12 +148,6 @@ float rayMarch(vec3 origin, vec3 direction) {
 }
 
 void main() {
-    float fogFade = linear_fog_fade(length(pixelPos.xz / 2.75), FogStart, FogEnd);
-
-    if (fogFade <= 0.0) {
-        discard;
-    }
-
     // Normalize pixelPos to [-1.0, 1.0]
     vec2 uv = pixelPos.xz * 2.0 - 1.0;
 
@@ -160,5 +156,6 @@ void main() {
 
     colorNoise = ((colorNoise + 1.0) / 2.0) * 0.5;
     vec4 color = vec4(0.0, 0.5 + colorNoise, 1.0 - colorNoise, noise);
+    float fogFade = linear_fog_fade(length(pixelPos.xz / 2.75), FogStart, FogEnd);
     fragColor = linear_fog(vec4(vertexColor.rgb * ColorModulator.rgb * color.rgb, vertexColor.a * ColorModulator.a * color.a * fogFade), length(pixelPos.xz / 2.5), FogStart, FogEnd, FogColor);
 }
