@@ -161,12 +161,11 @@ public class TFClientEvents {
 			final double scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
 			Vec3 pos = event.getCamera().getPosition();
 			double y = 256D - pos.y();
-			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
 			buffer.vertex(-scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
-			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(-scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
 			buffer.vertex(scale, y, -scale).color(1F, 1F, 1F, 1F).endVertex();
+			buffer.vertex(scale, y, scale).color(1F, 1F, 1F, 1F).endVertex();
 
-			RenderSystem.disableCull();
 			RenderSystem.enableBlend();
 			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick(), lastAurora, aurora)) / 60F * 0.5F);
 			TFShaders.AURORA.invokeThenEndTesselator(
@@ -175,7 +174,6 @@ public class TFClientEvents {
 			);
 			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 			RenderSystem.disableBlend();
-			RenderSystem.enableCull();
 		}
 	}
 
