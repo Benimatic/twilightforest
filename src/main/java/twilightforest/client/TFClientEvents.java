@@ -49,6 +49,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
@@ -65,7 +66,6 @@ import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFBiomes;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -135,6 +135,7 @@ public class TFClientEvents {
 	 */
 	@SubscribeEvent
 	public static void renderWorldLast(RenderLevelStageEvent event) {
+		if (Minecraft.getInstance().level == null) return;
 		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) { // after particles says its best for special rendering effects, and thats what I consider this
 			if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
@@ -152,7 +153,7 @@ public class TFClientEvents {
 					}
 				}
 			}
-		} else if (!TFConfig.CLIENT_CONFIG.disableAurora.get() && event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0)) {
+		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && !TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).isEmpty() && (aurora > 0 || lastAurora > 0)) {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -228,16 +229,14 @@ public class TFClientEvents {
 			rotationTicker = rotationTickerI + partial;
 			sineTicker = sineTicker + partial;
 
-			if (!TFConfig.CLIENT_CONFIG.disableAurora.get()) {
-				lastAurora = aurora;
-				if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null) {
-					Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
-					if (biome.is(TFBiomes.SNOWY_FOREST) || biome.is(TFBiomes.GLACIER))
-						aurora++;
-					else
-						aurora--;
-					aurora = Mth.clamp(aurora, 0, 60);
-				}
+			lastAurora = aurora;
+			if (Minecraft.getInstance().level != null && Minecraft.getInstance().cameraEntity != null && !TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).isEmpty()) {
+				Holder<Biome> biome = Minecraft.getInstance().level.getBiome(Minecraft.getInstance().cameraEntity.blockPosition());
+				if (TFConfig.getValidAuroraBiomes(Minecraft.getInstance().level.registryAccess()).contains(biome.get()))
+					aurora++;
+				else
+					aurora--;
+				aurora = Mth.clamp(aurora, 0, 60);
 			}
 		}
 
