@@ -114,6 +114,9 @@ out vec4 fragColor;
 in vec4 pixelPos;
 in vec4 vertexColor;
 
+const int STEPS = 16;
+const float FSTEPS = 16.0;
+
 float genNoise(float x, float z, float speed) {
     float xx = x + PositionContext.x + (SeedContext / 360);
     float zz = z + PositionContext.z + (SeedContext % 360);
@@ -121,15 +124,15 @@ float genNoise(float x, float z, float speed) {
 }
 
 int floatToOneOrZero(float value) {
+    int swap = min(1, max(0, int(value)));
     // 7 decimal places, we may lose precision but thats fine
-    int swap[2] = int[2](min(1, max(0, int(value * 10000000.0))), 1);
-    return swap[min(1, max(0, int(value)))];
+    return (1 - swap) * min(1, max(0, int(value * 10000000.0))) + swap;
 }
 
 float fixNoise(float noise) {
     // Avoids if (noise > -0.2 && noise < 0.2) else ...
-    float swap[2] = float[2](1.0 + abs(noise) * 5.0, -1.0);
-    noise = swap[floatToOneOrZero(abs(noise) - 0.2)];
+    int swap = floatToOneOrZero(abs(noise) - 0.2);
+    noise = (1 - swap) * (1.0 + abs(noise) * 5.0) + swap * -1.0;
 
     noise = clamp((noise + 1.0) / 2.0 - 0.5, 0.0, 1.0);
     noise = (1.0 - noise) * floatToOneOrZero(noise); // Avoids if (noise > 0)
@@ -139,13 +142,12 @@ float fixNoise(float noise) {
 // https://michaelwalczyk.com/blog-ray-marching.html
 float rayMarch(vec3 origin, vec3 direction) {
     float noise = 0.0;
-    float steps = 16;
-    for (int i = 0; i < steps; ++i) {
-        vec3 curPos = origin + ((i / steps) * 0.35) * direction;
+    for (int i = 0; i < STEPS; ++i) {
+        vec3 curPos = origin + ((i / FSTEPS) * 0.35) * direction;
 
         // Avoids if (i > 0)
-        float swap[2] = float[2](1.0, ((steps - i) / steps)  * 0.65);
-        float fade = swap[min(i, 1)];
+        int swap = min(i, 1);
+        float fade = swap * (((STEPS - i) / FSTEPS) * 0.65) + (1 - swap);
         noise += fixNoise(genNoise(curPos.x, curPos.z, 22.5)) * fade;
     }
 
