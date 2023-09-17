@@ -338,7 +338,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 		CraftingRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
-		if (recipe != null && (recipe.isSpecial() || !this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
+		if (recipe != null && !recipe.isSpecial() && (!this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
 			this.tinkerResult.setRecipeUsed(recipe);
 			this.tinkerResult.setItem(0, recipe.assemble(inventory, this.level.registryAccess()));
 		} else {
