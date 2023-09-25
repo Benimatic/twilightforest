@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-21T15:28:54.3585742	Recipes
+// 1.20.1	2023-09-25T12:27:44.0485068	Recipes
 2f77d438abd468ac8586a54655524d885f6b217f data/twilightforest/advancements/recipes/building_blocks/aurora_pillar.json
 023efa0be4ddd8b477605dfe26539e748e2c4637 data/twilightforest/advancements/recipes/building_blocks/canopy_bookshelf.json
 1036d2d1b462368413b8836e9e0150e4a6cda26b data/twilightforest/advancements/recipes/building_blocks/castleblock/bold_castle_brick_pillar.json
@@ -419,6 +419,7 @@ bcdf02fc2f4234430841023e778a3462b8c1cf31 data/twilightforest/recipes/stonecuttin
 49db632ebbd58b0d74ad6b3e011e47c458ab96b9 data/twilightforest/recipes/stonecutting/castle_brick/castle_brick_stairs.json
 f8aaa8c268aa8300cff637e35c094b360c93f90e data/twilightforest/recipes/stonecutting/castle_brick/thick_castle_brick.json
 95ab8b58a295dc7c48e3e9b0b21d6f84c1b3d83a data/twilightforest/recipes/stonecutting/castle_brick/worn_castle_brick.json
+1d776ca184c44617b757433c702ce0d400052f08 data/twilightforest/recipes/stonecutting/cherry_log/hollow_cherry_log.json
 d9fc6d68d0e5a5a20b0e748c5b24245d41b0c3d6 data/twilightforest/recipes/stonecutting/cracked_castle_brick/cracked_castle_brick_stairs.json
 937d9705e3870d80cc5d5c5bf9ad3250cc18dc2f data/twilightforest/recipes/stonecutting/cracked_castle_brick/thick_castle_brick.json
 4f0c6610e1445c71b4b128b72148fbd2a264cbbd data/twilightforest/recipes/stonecutting/cracked_etched_nagastone/cracked_nagastone_stairs_left.json

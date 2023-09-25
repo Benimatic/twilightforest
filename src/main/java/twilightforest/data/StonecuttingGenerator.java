@@ -13,6 +13,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.init.TFBlocks;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFItems;
+
 import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
@@ -86,24 +88,25 @@ public class StonecuttingGenerator {
 		consumer.accept(stonecutting(TFBlocks.MAZESTONE_MOSAIC.get(), TFBlocks.DECORATIVE_MAZESTONE.get()));
 		consumer.accept(stonecutting(TFBlocks.MAZESTONE_MOSAIC.get(), TFBlocks.MAZESTONE_BRICK.get()));
 
-		consumer.accept(stonecutting(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(TFBlocks.CANOPY_LOG.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(TFBlocks.MANGROVE_LOG.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(TFBlocks.DARK_LOG.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(TFBlocks.TIME_LOG.get(), TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(TFBlocks.MINING_LOG.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(TFBlocks.SORTING_LOG.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get()));
+		consumer.accept(stonecutting(TFBlocks.TWILIGHT_OAK_LOG.get(), TFItems.HOLLOW_TWILIGHT_OAK_LOG.get()));
+		consumer.accept(stonecutting(TFBlocks.CANOPY_LOG.get(), TFItems.HOLLOW_CANOPY_LOG.get()));
+		consumer.accept(stonecutting(TFBlocks.MANGROVE_LOG.get(), TFItems.HOLLOW_MANGROVE_LOG.get()));
+		consumer.accept(stonecutting(TFBlocks.DARK_LOG.get(), TFItems.HOLLOW_DARK_LOG.get()));
+		consumer.accept(stonecutting(TFBlocks.TIME_LOG.get(), TFItems.HOLLOW_TIME_LOG.get()));
+		consumer.accept(stonecutting(TFBlocks.TRANSFORMATION_LOG.get(), TFItems.HOLLOW_TRANSFORMATION_LOG.get()));
+		consumer.accept(stonecutting(TFBlocks.MINING_LOG.get(), TFItems.HOLLOW_MINING_LOG.get()));
+		consumer.accept(stonecutting(TFBlocks.SORTING_LOG.get(), TFItems.HOLLOW_SORTING_LOG.get()));
 
-		consumer.accept(stonecutting(Blocks.OAK_LOG, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.SPRUCE_LOG, TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.BIRCH_LOG, TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.JUNGLE_LOG, TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.ACACIA_LOG, TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.DARK_OAK_LOG, TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.CRIMSON_STEM, TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.WARPED_STEM, TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get()));
-		consumer.accept(stonecutting(Blocks.MANGROVE_LOG, TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get()));
+		consumer.accept(stonecutting(Blocks.OAK_LOG, TFItems.HOLLOW_OAK_LOG.get()));
+		consumer.accept(stonecutting(Blocks.SPRUCE_LOG, TFItems.HOLLOW_SPRUCE_LOG.get()));
+		consumer.accept(stonecutting(Blocks.BIRCH_LOG, TFItems.HOLLOW_BIRCH_LOG.get()));
+		consumer.accept(stonecutting(Blocks.JUNGLE_LOG, TFItems.HOLLOW_JUNGLE_LOG.get()));
+		consumer.accept(stonecutting(Blocks.ACACIA_LOG, TFItems.HOLLOW_ACACIA_LOG.get()));
+		consumer.accept(stonecutting(Blocks.DARK_OAK_LOG, TFItems.HOLLOW_DARK_OAK_LOG.get()));
+		consumer.accept(stonecutting(Blocks.CRIMSON_STEM, TFItems.HOLLOW_CRIMSON_STEM.get()));
+		consumer.accept(stonecutting(Blocks.WARPED_STEM, TFItems.HOLLOW_WARPED_STEM.get()));
+		consumer.accept(stonecutting(Blocks.MANGROVE_LOG, TFItems.HOLLOW_VANGROVE_LOG.get()));
+		consumer.accept(stonecutting(Blocks.CHERRY_LOG, TFItems.HOLLOW_CHERRY_LOG.get()));
 		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.TWISTED_STONE.get()));
 		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.BOLD_STONE_PILLAR.get()));
 		consumer.accept(stonecutting(TFBlocks.TWISTED_STONE.get(), TFBlocks.TWISTED_STONE_PILLAR.get()));
