@@ -5,9 +5,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.metadata.PackMetadataGenerator;
+import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -33,6 +36,8 @@ public class DataGenerators {
 		PackOutput output = event.getGenerator().getPackOutput();
 		CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
 		ExistingFileHelper helper = event.getExistingFileHelper();
+		//TODO remove this method once https://github.com/neoforged/NeoForge/pull/146 is merged
+		addArmorTrims(helper);
 
 		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
 		generator.addProvider(event.includeClient(), new BlockstateGenerator(output, helper));
@@ -67,5 +72,14 @@ public class DataGenerators {
 						Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, helper));
 		generator.addProvider(event.includeClient(), new LangGenerator(output));
+	}
+
+	private static void addArmorTrims(ExistingFileHelper existingFileHelper) {
+		for (ItemModelGenerators.TrimModelData trim : ItemModelGenerators.GENERATED_TRIM_MODELS) {
+			existingFileHelper.trackGenerated(new ResourceLocation("boots_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(new ResourceLocation("chestplate_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(new ResourceLocation("helmet_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+			existingFileHelper.trackGenerated(new ResourceLocation("leggings_trim_" + trim.name()), PackType.CLIENT_RESOURCES, ".png", "textures/trims/items");
+		}
 	}
 }

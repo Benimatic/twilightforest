@@ -18,7 +18,7 @@
     }
   ],
   "render_types": {
-    "twilightforest:forge_entity_unsorted_translucent": [
+    "minecraft:translucent": [
       0
     ]
   },
