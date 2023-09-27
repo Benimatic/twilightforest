@@ -35,10 +35,7 @@
     ]
   ],
   "rewards": {
-    "experience": 42,
-    "loot": [
-      "twilightforest:glass_sword"
-    ]
+    "experience": 42
   },
   "sends_telemetry_event": true
 }

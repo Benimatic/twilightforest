@@ -494,7 +494,7 @@ public class TFAdvancementGenerator implements ForgeAdvancementProvider.Advancem
 						Component.translatable("advancement.twilightforest.glass_sword.desc"),
 						null, FrameType.CHALLENGE, true, true, true)
 				.addCriterion("broken_sword", ItemDurabilityTrigger.TriggerInstance.changedDurability(ItemPredicate.Builder.item().of(TFItems.GLASS_SWORD.get()).build(), MinMaxBounds.Ints.exactly(-1)))
-				.rewards(AdvancementRewards.Builder.experience(42).addLootTable(TwilightForestMod.prefix("glass_sword")))
+				.rewards(AdvancementRewards.Builder.experience(42))
 				.save(consumer, "twilightforest:break_glass_sword");
 
 		this.addDendrologistBlock(Advancement.Builder.advancement().parent(root)
