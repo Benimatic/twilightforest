@@ -52,11 +52,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		tintedAndFlipped(TFBlocks.MOSSY_TOWERWOOD.get());
 		tintedAndFlipped(TFBlocks.INFESTED_TOWERWOOD.get());
 
-		builtinEntity(TFBlocks.FIREFLY.get(), "twilightforest:block/stone_twist/twist_blank");
-		builtinEntity(TFBlocks.MOONWORM.get(), "twilightforest:block/stone_twist/twist_blank");
-		builtinEntity(TFBlocks.CICADA.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.FIREFLY.get(), "block/blank");
+		builtinEntity(TFBlocks.MOONWORM.get(), "block/blank");
+		builtinEntity(TFBlocks.CICADA.get(), "block/blank");
 
-		builtinEntity(TFBlocks.RED_THREAD.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.RED_THREAD.get(), "block/blank");
 
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
@@ -202,7 +202,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
 				.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));
 		axisBlock(TFBlocks.HUGE_STALK.get(), prefix("block/huge_stalk"), prefix("block/huge_stalk_top"));
-		builtinEntity(TFBlocks.BEANSTALK_GROWER.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.BEANSTALK_GROWER.get(), "block/blank");
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
 		perFaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
 		simpleBlock(TFBlocks.TROLLVIDR.get(), models().cross(TFBlocks.TROLLVIDR.getId().getPath(), blockTexture(TFBlocks.TROLLVIDR.get())).renderType(CUTOUT));
@@ -330,7 +330,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		getVariantBuilder(TFBlocks.UNCRAFTING_TABLE.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(UncraftingTableBlock.POWERED) ? glowing : notglowing).build());
 		registerSmokersAndJets();
-		axisBlock(TFBlocks.TWISTED_STONE.get(), prefix("block/stone_twist/twist_side"), prefix("block/stone_twist/twist_end"));
+		axisBlock(TFBlocks.TWISTED_STONE.get(), prefix("block/twisted_stone_side"), prefix("block/twisted_stone_end"));
 		axisBlock(TFBlocks.BOLD_STONE_PILLAR.get(), prefix("block/stone_pillar_side"), prefix("block/stone_pillar_end"));
 		simpleBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(), models().cubeColumn("empty_canopy_bookshelf", prefix("block/wood/bookshelf_spawner/bookshelf_empty"), prefix("block/wood/planks_canopy_0")));
 		simpleBlock(TFBlocks.CANOPY_BOOKSHELF.get(), ConfiguredModel.builder()
@@ -339,40 +339,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.modelFile(models().cubeColumn("canopy_bookshelf_2", prefix("block/wood/bookshelf_canopy_2"), prefix("block/wood/planks_canopy_0"))).nextModel()
 				.modelFile(models().cubeColumn("canopy_bookshelf_3", prefix("block/wood/bookshelf_canopy_3"), prefix("block/wood/planks_canopy_0")))
 				.build());
-		//if theres a better way to do this block please do it. I dont want to think about it right now
 		getVariantBuilder(TFBlocks.DEATH_TOME_SPAWNER.get()).forAllStatesExcept(s -> {
-			switch (s.getValue(TomeSpawnerBlock.BOOK_STAGES)) {
-				case 1 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_1", prefix("block/wood/bookshelf_spawner/bookshelf_1"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 2 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_2", prefix("block/wood/bookshelf_spawner/bookshelf_2"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 3 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_3", prefix("block/wood/bookshelf_spawner/bookshelf_3"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 4 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_4", prefix("block/wood/bookshelf_spawner/bookshelf_4"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 5 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_5", prefix("block/wood/bookshelf_spawner/bookshelf_5"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 6 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_6", prefix("block/wood/bookshelf_spawner/bookshelf_6"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 7 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_7", prefix("block/wood/bookshelf_spawner/bookshelf_7"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 8 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_8", prefix("block/wood/bookshelf_spawner/bookshelf_8"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				case 9 -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_9", prefix("block/wood/bookshelf_spawner/bookshelf_9"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-				default -> {
-					return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_10", prefix("block/wood/bookshelf_canopy"), prefix("block/wood/planks_canopy_0"))).build();
-				}
-			}
+			int books = s.getValue(TomeSpawnerBlock.BOOK_STAGES);
+			return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_" + books, prefix("block/wood/bookshelf_spawner/bookshelf_" + books), prefix("block/wood/planks_canopy_0"))).build();
 		}, TomeSpawnerBlock.SPAWNER);
 
 		getMultipartBuilder(TFBlocks.WROUGHT_IRON_FENCE.get())

@@ -609,7 +609,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_damaged"));
 		ModelFile fill4_damaged = generated("brittle_flask_3_damaged", prefix("item/brittle_potion_flask_4"), prefix("item/brittle_potion_flask_damaged"));
 		
-		generated(TFItems.BRITTLE_FLASK.getId().getPath(), prefix("block/stone_twist/twist_blank"), prefix("item/brittle_potion_flask"))
+		generated(TFItems.BRITTLE_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/brittle_potion_flask"))
 				.override().predicate(prefix("potion_level"), 1).model(fill1).end()
 				.override().predicate(prefix("potion_level"), 2).model(fill2).end()
 				.override().predicate(prefix("potion_level"), 3).model(fill3).end()
@@ -635,7 +635,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile gfill3 = generated("greater_flask_2", prefix("item/greater_potion_flask_3"), prefix("item/greater_potion_flask"));
 		ModelFile gfill4 = generated("greater_flask_3", prefix("item/greater_potion_flask_4"), prefix("item/greater_potion_flask"));
 
-		generated(TFItems.GREATER_FLASK.getId().getPath(), prefix("block/stone_twist/twist_blank"), prefix("item/greater_potion_flask"))
+		generated(TFItems.GREATER_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/greater_potion_flask"))
 				.override().predicate(prefix("potion_level"), 1).model(gfill1).end()
 				.override().predicate(prefix("potion_level"), 2).model(gfill2).end()
 				.override().predicate(prefix("potion_level"), 3).model(gfill3).end()

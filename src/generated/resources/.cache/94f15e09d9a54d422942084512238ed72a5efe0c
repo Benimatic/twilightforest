@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-25T15:25:16.0557281	TwilightForest Item and BlockItem models
+// 1.20.1	2023-10-02T13:25:51.1795618	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -94,7 +94,7 @@ bbd34d60f1e094ba23b890b3c7dec442cc4d2007 assets/twilightforest/models/item/britt
 61eb1abc7ebe22b341c6ec492483567576f1d17c assets/twilightforest/models/item/brittle_flask_cracked.json
 70a875d94ad7dd9f35eb6ad9fb042b083c1a463b assets/twilightforest/models/item/brittle_flask_damaged.json
 d545882f9f495a8375818400535be2adf1af9cfd assets/twilightforest/models/item/brittle_flask_splintered.json
-c3d3f44663360d5a1dbbe29ffe6380a4f894f830 assets/twilightforest/models/item/brittle_potion_flask.json
+7fe947c2f29429f24e536e3d4ad586212ce4fec7 assets/twilightforest/models/item/brittle_potion_flask.json
 820c37ce361c42fa08780fa95348363f3896eca2 assets/twilightforest/models/item/brown_thorns.json
 467cebcf3cd3374114448574b195816d14b53a81 assets/twilightforest/models/item/burnt_thorns.json
 d404dcffd014ea0eb89122556e589a11bed66d85 assets/twilightforest/models/item/candelabra.json
@@ -292,7 +292,7 @@ e21b89209c4ae4bdf01ecbbd79a13e5209f36681 assets/twilightforest/models/item/gold_
 7f66c52d10fb8484a998e563be2f70cbf236cb76 assets/twilightforest/models/item/greater_flask_1.json
 cb9726352c900d4d75a3d745708f9771991b31c9 assets/twilightforest/models/item/greater_flask_2.json
 29b52ef0cdf7341d1928d767defd0da31f5358fb assets/twilightforest/models/item/greater_flask_3.json
-90fc9c02c74255ee549e2315b040fb8dc79f8c53 assets/twilightforest/models/item/greater_potion_flask.json
+5ee9fb5d535d8f464bf7e96eb5aaa5aad2d8f704 assets/twilightforest/models/item/greater_potion_flask.json
 5e9c8652c022e5e87e03ecc2d633d409cd925eda assets/twilightforest/models/item/green_force_field.json
 e2fe7dcbd99ec57c36d0044e45543f01d1017ce7 assets/twilightforest/models/item/green_thorns.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/harbinger_cube_spawn_egg.json
