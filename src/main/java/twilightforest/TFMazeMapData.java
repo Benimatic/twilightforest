@@ -24,6 +24,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	private static final Map<String, TFMazeMapData> CLIENT_DATA = new HashMap<>();
 
 	public int yCenter;
+	public boolean ore;
 
 	public TFMazeMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
@@ -43,6 +44,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		tfdata.trackedDecorationCount = data.trackedDecorationCount;
 
 		tfdata.yCenter = nbt.getInt("yCenter");
+		tfdata.ore = nbt.getBoolean("mapOres");
 
 		return tfdata;
 	}
@@ -51,6 +53,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	public CompoundTag save(CompoundTag nbt) {
 		CompoundTag ret = super.save(nbt);
 		ret.putInt("yCenter", this.yCenter);
+		ret.putBoolean("mapOres", this.ore);
 		return ret;
 	}
 
@@ -84,6 +87,6 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(int mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket(mapItemDataPacket), NetworkDirection.PLAY_TO_CLIENT) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket(mapItemDataPacket, ore, yCenter), NetworkDirection.PLAY_TO_CLIENT) : packet;
 	}
 }

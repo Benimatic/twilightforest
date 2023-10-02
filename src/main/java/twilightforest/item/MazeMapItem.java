@@ -41,7 +41,7 @@ public class MazeMapItem extends MapItem {
 
 	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
 		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.get() : TFItems.FILLED_MAZE_MAP.get());
-		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension(), worldY);
+		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension(), worldY, mapOres);
 		return itemstack;
 	}
 
@@ -56,13 +56,13 @@ public class MazeMapItem extends MapItem {
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMazeMapData mapdata = getData(stack, level);
 		if (mapdata == null && !level.isClientSide()) {
-			mapdata = MazeMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 0, false, false, level.dimension(), level.getLevelData().getYSpawn());
+			mapdata = MazeMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 0, false, false, level.dimension(), level.getLevelData().getYSpawn(), mapOres);
 		}
 
 		return mapdata;
 	}
 
-	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y) {
+	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
 		int i = level.getFreeMapId();
 
 		int mapSize = 128 * (1 << scale);
@@ -73,6 +73,7 @@ public class MazeMapItem extends MapItem {
 
 		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
+		mapdata.ore = ore;
 		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i)); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
