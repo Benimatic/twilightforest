@@ -24,12 +24,12 @@ public class JappaPackReloadListener implements ResourceManagerReloadListener {
 
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
-		jappaPackLoaded = Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
+		jappaPackLoaded = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event) {
-		jappaPackLoaded = Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
+		jappaPackLoaded = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 
 	public boolean isJappaPackLoaded() {
@@ -38,6 +38,6 @@ public class JappaPackReloadListener implements ResourceManagerReloadListener {
 
 	//Avoid using this. Its needed for entity models only due to reload ordering.
 	public BooleanSupplier uncachedJappaPackCheck() {
-		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
+		return () -> Minecraft.getInstance().getResourceManager().listPacks().anyMatch(pack -> pack.getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 }
