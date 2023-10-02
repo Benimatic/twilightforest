@@ -365,7 +365,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 		for (Player player : this.level().getEntitiesOfClass(Player.class, below)) {
 			if (this.level().canSeeSkyFromBelowWater(player.blockPosition())) {
-				player.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, TFEntities.UR_GHAST.get()), 3);
+				player.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, this, TFEntities.UR_GHAST.get()), 3);
 			}
 		}
 

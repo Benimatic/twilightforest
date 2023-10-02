@@ -702,7 +702,7 @@ public class HydraHeadContainer {
 					}
 
 					// bite it!
-					nearby.hurt(TFDamageTypes.getDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, TFEntities.HYDRA.get()), BITE_DAMAGE);
+					nearby.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.get()), BITE_DAMAGE);
 
 					//knockback!
 					if (living instanceof Player player) {
@@ -718,7 +718,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
-				if (!target.fireImmune() && target.hurt(TFDamageTypes.getDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
+				if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.setSecondsOnFire(FLAME_BURN_FACTOR);
 				}
 			}

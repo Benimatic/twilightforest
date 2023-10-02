@@ -128,7 +128,7 @@ public class HydraMortar extends ThrowableProjectile {
 		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
 		for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this.getOwner(), TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
 				nearby.setSecondsOnFire(BURN_FACTOR);
 			}
 		}
