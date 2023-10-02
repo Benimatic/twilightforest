@@ -143,7 +143,7 @@ public class TFLootTables {
 			LootTable table = serverLevel.getServer().getLootData().getLootTable(entity.getLootTable());
 			LootParams params = createLootParams(entity, true, source).create(LootContextParamSets.ENTITY);
 			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
-			table.fill(container, params, serverLevel.getSeed());
+			table.fill(container, params, entity.getLootTableSeed());
 			//if our loot stack size is bigger than the chest, drop everything else outside of it. Dont want to lose any loot now do we?
 			if (stacks.size() > 27) {
 				for (ItemStack stack : stacks.subList(28, stacks.size())) {
