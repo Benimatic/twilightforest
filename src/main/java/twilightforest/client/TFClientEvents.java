@@ -315,14 +315,14 @@ public class TFClientEvents {
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
 	@SubscribeEvent
-	public static void FOVUpdate(ComputeFovModifierEvent event) {
+	public static void updateBowFOV(ComputeFovModifierEvent event) {
 		Player player = event.getPlayer();
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
 				float f = player.getTicksUsingItem() / 20.0F;
 				f = f > 1.0F ? 1.0F : f * f;
-				event.setNewFovModifier(event.getFovModifier() * (1.0F - f * 0.15F));
+				event.setNewFovModifier((float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, (event.getFovModifier() * (1.0F - f * 0.15F))));
 			}
 		}
 	}
