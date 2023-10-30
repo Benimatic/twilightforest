@@ -90,6 +90,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addAdvancement("root", "Twilight Forest", "Enter the mysterious, magical woodlands: the Twilight Forest");
 		this.addAdvancement("kill_cicada", "Shut", "Kill a Cicada");
+		this.addAdvancement("uncraft_uncrafting_table", "A Step too Far", "Uncraft an Uncrafting Table");
 		this.addAdvancement("hedge", "Bug Stomper", "Defeat a spider in a Hedge Maze");
 		this.addAdvancement("hill1", "The Boots Are Mine!", "Defeat a %s in a Small Hollow Hill");
 		this.addAdvancement("hill2", "What Was That Noise?", "Defeat a %s in a Medium Hollow Hill");

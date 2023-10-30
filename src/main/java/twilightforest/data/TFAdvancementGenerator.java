@@ -287,11 +287,18 @@ public class TFAdvancementGenerator implements ForgeAdvancementProvider.Advancem
 		Advancement.Builder.advancement().parent(root).display(
 						TFBlocks.CICADA.get(),
 						Component.translatable("advancement.twilightforest.kill_cicada"),
-						Component.translatable("advancement.twilightforest.kill_cicada.desc",
-								Component.translatable(TFBlocks.CICADA.get().getDescriptionId())),
+						Component.translatable("advancement.twilightforest.kill_cicada.desc"),
 						null, FrameType.TASK, true, false, true)
 				.addCriterion("kill_cicada", KillBugTrigger.Instance.killBug(TFBlocks.CICADA.get()))
 				.save(consumer, "twilightforest:kill_cicada");
+
+		Advancement.Builder.advancement().parent(root).display(
+						TFBlocks.UNCRAFTING_TABLE.get(),
+						Component.translatable("advancement.twilightforest.uncraft_uncrafting_table"),
+						Component.translatable("advancement.twilightforest.uncraft_uncrafting_table.desc"),
+						null, FrameType.TASK, true, true, true)
+				.addCriterion("uncraft_table", UncraftItemTrigger.TriggerInstance.uncraftedItem(TFBlocks.UNCRAFTING_TABLE.get()))
+				.save(consumer, "twilightforest:uncraft_uncrafting_table");
 
 		Advancement focus = Advancement.Builder.advancement().parent(silence).display(
 						TFItems.MAGIC_MAP_FOCUS.get(),

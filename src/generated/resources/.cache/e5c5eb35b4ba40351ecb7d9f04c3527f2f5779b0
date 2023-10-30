@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-27T16:05:30.9727816	Advancements
+// 1.20.1	2023-10-20T23:53:00.7990726	Advancements
 83f8b373d4450a70a809b1d45982530bc19dfa84 data/twilightforest/advancements/arborist.json
 97157d290abc71d7b50fb17770b5a75aa4be7968 data/twilightforest/advancements/arctic_armor_dyed.json
 11a44cdbc8733b4c9544d02d76eb7f43e6cf9fd8 data/twilightforest/advancements/beanstalk.json
@@ -15,7 +15,7 @@ b2a2d913385beb4938b7da0adc2836f934fab9cc data/twilightforest/advancements/experi
 05b97bbc710326d80d37f46077d4bfca387803e6 data/twilightforest/advancements/hill2.json
 3a0f505255bce12fd591ce0e26944141830ab008 data/twilightforest/advancements/hill3.json
 5399dd0726731f6406102675049a27e1b6d405ee data/twilightforest/advancements/hydra_chop.json
-cc31c54d21c0d9896689e0c680dc67275770b78c data/twilightforest/advancements/kill_cicada.json
+91a8f775844d7cf93f3e34d4fc359c22c6a584e4 data/twilightforest/advancements/kill_cicada.json
 a7f6e066f79890a66e6e3e416624273817c0bb15 data/twilightforest/advancements/lich_scepters.json
 0decefaadffc15542ce7c72595f3a3cc59b168c2 data/twilightforest/advancements/magic_map.json
 1170421326c67a2ce63ea191e63cba63033e1ec8 data/twilightforest/advancements/magic_map_focus.json
@@ -40,3 +40,4 @@ fd74ad07a5b6e38955542fc08e323e13c8c560f0 data/twilightforest/advancements/quest_
 a845d2996e9dc76018cb6880056d2df7449c2bad data/twilightforest/advancements/troll.json
 a726ed44a05032deea06cc1d6bcdc4aaf3ec544d data/twilightforest/advancements/twilight_dinner.json
 e5daff58acdffd8893dae3c09e6282c90e306f99 data/twilightforest/advancements/twilight_hunter.json
+2efbd8ec632cf7a3a53ee47d55ef7e634a4bad68 data/twilightforest/advancements/uncraft_uncrafting_table.json

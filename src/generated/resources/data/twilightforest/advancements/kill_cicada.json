@@ -11,12 +11,7 @@
   "display": {
     "announce_to_chat": false,
     "description": {
-      "translate": "advancement.twilightforest.kill_cicada.desc",
-      "with": [
-        {
-          "translate": "block.twilightforest.cicada"
-        }
-      ]
+      "translate": "advancement.twilightforest.kill_cicada.desc"
     },
     "frame": "task",
     "hidden": true,
