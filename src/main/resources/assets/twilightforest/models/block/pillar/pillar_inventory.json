@@ -1,7 +1,7 @@
 {
   "parent": "block/block",
   "textures": {
-    "blank": "twilightforest:block/stone_twist/twist_blank",
+    "blank": "twilightforest:block/blank",
     "crown": "twilightforest:block/stone_twist/twist_crown",
     "side_x": "twilightforest:block/twisted_stone_pillar",
     "side_z": "twilightforest:block/twisted_stone_pillar",

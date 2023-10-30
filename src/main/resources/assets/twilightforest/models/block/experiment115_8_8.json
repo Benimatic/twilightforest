@@ -5,7 +5,7 @@
         "particle": "#bottom",
         "bottom": "twilightforest:block/experiment115/experiment115_bottom",
         "top": "twilightforest:block/experiment115/experiment115_top",
-        "top_2": "twilightforest:block/stone_twist/twist_blank",
+        "top_2": "twilightforest:block/blank",
         "side": "twilightforest:block/experiment115/experiment115_side"
     },
     "elements": [
