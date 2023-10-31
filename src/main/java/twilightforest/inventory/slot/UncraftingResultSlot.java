@@ -55,7 +55,7 @@ public class UncraftingResultSlot extends ResultSlot {
 			// if we are using a combined recipe, wipe the uncrafting matrix and decrement the input appropriately
 			for (int i = 0; i < this.uncraftingMatrix.getContainerSize(); i++) {
 				if (this.assemblyMatrix.getItem(i).isEmpty()) {
-					if (UncraftingMenu.isMarked(this.uncraftingMatrix.getItem(i))) {
+					if (!UncraftingMenu.isMarked(this.uncraftingMatrix.getItem(i))) {
 						this.uncraftingMatrix.setItem(i, ItemStack.EMPTY);
 					} else {
 						//if we have an ingredient in the grid and one in the uncrafting matrix, copy the uncrafting matrix item for later
