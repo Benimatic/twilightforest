@@ -7,17 +7,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import twilightforest.TwilightForestMod;
 
+import java.util.Optional;
+
 public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureClearedTrigger.Instance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("structure_cleared");
 
 	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
-
-	@Override
-	public Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext condition) {
+	public Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext condition) {
 		String structureName = GsonHelper.getAsString(json, "structure");
 		return new StructureClearedTrigger.Instance(player, structureName);
 	}
@@ -30,13 +27,13 @@ public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureCle
 
 		private final String structureName;
 
-		public Instance(ContextAwarePredicate player, String structureName) {
-			super(StructureClearedTrigger.ID, player);
+		public Instance(Optional<ContextAwarePredicate> player, String structureName) {
+			super(player);
 			this.structureName = structureName;
 		}
 
 		public static Instance clearedStructure(String name) {
-			return new Instance(ContextAwarePredicate.ANY, name);
+			return new Instance(Optional.empty(), name);
 		}
 
 		boolean test(String structureName) {

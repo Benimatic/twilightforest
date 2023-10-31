@@ -12,16 +12,13 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.TwilightForestMod;
 
+import java.util.Optional;
+
 public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigger.TriggerInstance> {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("uncraft_item");
 
 	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
-
-	@Override
-	protected UncraftItemTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
+	protected UncraftItemTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
 		return new UncraftItemTrigger.TriggerInstance(player, ItemPredicate.fromJson(json.get("item")));
 	}
 
@@ -31,33 +28,33 @@ public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigge
 
 	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 
-		private final ItemPredicate item;
+		private final Optional<ItemPredicate> item;
 
-		public TriggerInstance(ContextAwarePredicate player, ItemPredicate item) {
-			super(ID, player);
+		public TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ItemPredicate> item) {
+			super(player);
 			this.item = item;
 		}
 
 		public static UncraftItemTrigger.TriggerInstance uncraftedItem() {
-			return new UncraftItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, ItemPredicate.ANY);
+			return new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.empty());
 		}
 
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemPredicate pItem) {
-			return new UncraftItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, pItem);
+		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemPredicate predicate) {
+			return new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate));
 		}
 
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemLike pItem) {
-			return new UncraftItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, new ItemPredicate((TagKey<Item>)null, ImmutableSet.of(pItem.asItem()), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, EnchantmentPredicate.NONE, EnchantmentPredicate.NONE, (Potion)null, NbtPredicate.ANY));
+		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemLike item) {
+			return new UncraftItemTrigger.TriggerInstance(Optional.empty(), new ItemPredicate((TagKey<Item>)null, ImmutableSet.of(item.asItem()), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, EnchantmentPredicate.NONE, EnchantmentPredicate.NONE, (Potion)null, NbtPredicate.ANY));
 		}
 
 		public boolean matches(ItemStack item) {
-			return this.item.matches(item);
+			return this.item.isEmpty() || !this.item.get().matches(item);
 		}
 
 		@Override
-		public JsonObject serializeToJson(SerializationContext ctx) {
-			JsonObject jsonobject = super.serializeToJson(ctx);
-			jsonobject.add("item", this.item.serializeToJson());
+		public JsonObject serializeToJson() {
+			JsonObject jsonobject = super.serializeToJson();
+			this.item.ifPresent(predicate -> jsonobject.add("item", predicate.serializeToJson()));
 			return jsonobject;
 		}
 	}

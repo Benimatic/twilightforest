@@ -7,20 +7,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+
+import java.util.Optional;
 
 public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instance> {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("kill_bug");
 
 	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
-
-	@Override
-	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
+	protected Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
 		Block bug = deserializeBug(json);
 		return new Instance(player, bug);
 	}
@@ -44,13 +41,13 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 		@Nullable
 		private final Block bugType;
 
-		public Instance(ContextAwarePredicate player, @Nullable Block bugType) {
-			super(ID, player);
+		public Instance(Optional<ContextAwarePredicate> player, @Nullable Block bugType) {
+			super(player);
 			this.bugType = bugType;
 		}
 
 		public static Instance killBug(Block bug) {
-			return new Instance(ContextAwarePredicate.ANY, bug);
+			return new Instance(Optional.empty(), bug);
 		}
 
 		public boolean matches(BlockState bug) {
@@ -59,8 +56,8 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 
 		@Override
 		@SuppressWarnings("deprecation")
-		public JsonObject serializeToJson(SerializationContext ctx) {
-			JsonObject object = super.serializeToJson(ctx);
+		public JsonObject serializeToJson() {
+			JsonObject object = super.serializeToJson();
 			if (bugType != null) {
 				object.addProperty("bug", ForgeRegistries.BLOCKS.getKey(this.bugType).toString());
 			}

@@ -8,19 +8,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import twilightforest.TwilightForestMod;
 
+import java.util.Optional;
+
 public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Instance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("hurt_boss");
 
 	@Override
-	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
-		ContextAwarePredicate composite = EntityPredicate.fromJson(json, "hurt_entity", ctx);
+	protected Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
+		Optional<ContextAwarePredicate> composite = EntityPredicate.fromJson(json, "hurt_entity", ctx);
 		return new Instance(player, composite);
-	}
-
-	@Override
-	public ResourceLocation getId() {
-		return ID;
 	}
 
 	public void trigger(ServerPlayer player, Entity hurt) {
@@ -29,25 +26,25 @@ public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Inst
 	}
 
 	public static class Instance extends AbstractCriterionTriggerInstance {
-		private final ContextAwarePredicate hurt;
+		private final Optional<ContextAwarePredicate> hurt;
 
-		public Instance(ContextAwarePredicate player, ContextAwarePredicate hurt) {
-			super(ID, player);
+		public Instance(Optional<ContextAwarePredicate> player, Optional<ContextAwarePredicate> hurt) {
+			super(player);
 			this.hurt = hurt;
 		}
 
 		public boolean matches(LootContext hurt) {
-			return this.hurt.matches(hurt);
+			return this.hurt.isEmpty() || this.hurt.get().matches(hurt);
 		}
 
 		public static Instance hurtBoss(EntityPredicate.Builder hurt) {
-			return new Instance(ContextAwarePredicate.ANY, EntityPredicate.wrap(hurt.build()));
+			return new Instance(Optional.empty(), Optional.of(EntityPredicate.wrap(hurt.build())));
 		}
 
 		@Override
-		public JsonObject serializeToJson(SerializationContext ctx) {
-			JsonObject json = super.serializeToJson(ctx);
-			json.add("hurt_entity", this.hurt.toJson(ctx));
+		public JsonObject serializeToJson() {
+			JsonObject json = super.serializeToJson();
+			this.hurt.ifPresent(predicate -> json.add("hurt_entity", predicate.toJson()));
 			return json;
 		}
 	}

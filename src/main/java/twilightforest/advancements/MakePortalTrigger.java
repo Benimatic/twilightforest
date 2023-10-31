@@ -6,17 +6,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import twilightforest.TwilightForestMod;
 
+import java.util.Optional;
+
 public class MakePortalTrigger extends SimpleCriterionTrigger<MakePortalTrigger.Instance> {
 
     public static final ResourceLocation ID = TwilightForestMod.prefix("make_tf_portal");
 
     @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
-
-    @Override
-    public Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext condition) {
+    public Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext condition) {
 		return new MakePortalTrigger.Instance(player);
     }
 
@@ -26,12 +23,12 @@ public class MakePortalTrigger extends SimpleCriterionTrigger<MakePortalTrigger.
 
     public static class Instance extends AbstractCriterionTriggerInstance {
 
-        public Instance(ContextAwarePredicate player) {
-            super(MakePortalTrigger.ID, player);
+        public Instance(Optional<ContextAwarePredicate> player) {
+            super(player);
         }
 
         public static Instance makePortal() {
-            return new Instance(ContextAwarePredicate.ANY);
+            return new Instance(Optional.empty());
         }
     }
 }

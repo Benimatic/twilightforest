@@ -7,22 +7,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.Instance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("drink_from_flask");
 
 	@Override
-	public ResourceLocation getId() {
-		return ID;
-	}
-
-	@Override
-	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
+	protected Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
 		Potion potion = null;
 		if (json.has("potion")) {
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "potion"));
@@ -43,14 +40,14 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 		@Nullable
 		private final Potion potion;
 
-		public Instance(ContextAwarePredicate player, MinMaxBounds.Ints doses, @Nullable Potion potion) {
-			super(ID, player);
+		public Instance(Optional<ContextAwarePredicate> player, MinMaxBounds.Ints doses, @Nullable Potion potion) {
+			super(player);
 			this.doses = doses;
 			this.potion = potion;
 		}
 
 		public static Instance drankPotion(int doses, Potion potion) {
-			return new Instance(ContextAwarePredicate.ANY, MinMaxBounds.Ints.exactly(doses), potion);
+			return new Instance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), potion);
 		}
 
 		public boolean matches(int doses, Potion potion) {
@@ -58,8 +55,8 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 		}
 
 		@Override
-		public JsonObject serializeToJson(SerializationContext ctx) {
-			JsonObject object = super.serializeToJson(ctx);
+		public JsonObject serializeToJson() {
+			JsonObject object = super.serializeToJson();
 			object.add("doses", this.doses.serializeToJson());
 			if (this.potion != null) {
 				object.addProperty("potion", ForgeRegistries.POTIONS.getKey(this.potion).toString());
