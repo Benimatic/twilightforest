@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
@@ -56,13 +56,7 @@ public class SwarmSpider extends Spider {
 		this.goalSelector.availableGoals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
 
 		// Replace with one that doesn't become docile in light
-		// [VanillaCopy] based on EntitySpider.AISpiderAttack
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true) {
-			@Override
-			protected double getAttackReachSqr(LivingEntity attackTarget) {
-				return 4.0F + attackTarget.getBbWidth();
-			}
-		});
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true));
 
 		// Remove default spider target player task
 		this.targetSelector.availableGoals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);
@@ -93,11 +87,6 @@ public class SwarmSpider extends Spider {
 	@Override
 	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
 		return 0.3F;
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return 0.15D;
 	}
 
 	@Override
@@ -188,7 +177,7 @@ public class SwarmSpider extends Spider {
 			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
-			ForgeEventFactory.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);
+			EventHooks.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);
 
 			if (this.hasPassenger(e -> true)) {
 				this.ejectPassengers();

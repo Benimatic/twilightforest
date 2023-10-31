@@ -1,14 +1,11 @@
 package twilightforest.advancements;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.TwilightForestMod;
 
@@ -35,16 +32,12 @@ public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigge
 			this.item = item;
 		}
 
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem() {
-			return new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.empty());
+		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemPredicate predicate) {
+			return TFAdvancements.UNCRAFT_ITEM.createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));
 		}
 
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemPredicate predicate) {
-			return new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate));
-		}
-
-		public static UncraftItemTrigger.TriggerInstance uncraftedItem(ItemLike item) {
-			return new UncraftItemTrigger.TriggerInstance(Optional.empty(), new ItemPredicate((TagKey<Item>)null, ImmutableSet.of(item.asItem()), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, EnchantmentPredicate.NONE, EnchantmentPredicate.NONE, (Potion)null, NbtPredicate.ANY));
+		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemLike item) {
+			return uncraftedItem(ItemPredicate.Builder.item().of(item).build());
 		}
 
 		public boolean matches(ItemStack item) {

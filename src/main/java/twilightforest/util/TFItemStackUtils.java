@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class TFItemStackUtils {
 	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
 		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
 
-		return living.getCapability(ForgeCapabilities.ITEM_HANDLER).map(inv -> {
+		return living.getCapability(Capabilities.ITEM_HANDLER).map(inv -> {
 			int innerCount = count;
 			boolean consumedSome = false;
 

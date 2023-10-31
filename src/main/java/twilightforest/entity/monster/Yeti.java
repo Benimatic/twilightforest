@@ -7,13 +7,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -30,6 +28,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.init.TFBiomes;
@@ -126,7 +125,7 @@ public class Yeti extends Monster implements IHostileMount {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ANGRY_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ANGRY_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ANGRY_MODIFIER.getId());
 			}
 		}
 	}
@@ -143,37 +142,12 @@ public class Yeti extends Monster implements IHostileMount {
 		this.setAngry(compound.getBoolean("Angry"));
 	}
 
-	/**
-	 * Put the player out in front of where we are
-	 */
 	@Override
-	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		Vec3 riderPos = this.getRiderPosition(passenger);
-		callback.accept(passenger, riderPos.x(), riderPos.y(), riderPos.z());
-	}
-
-	/**
-	 * Returns the Y offset from the entity's position for any entity riding this one.
-	 */
-	@Override
-	public double getPassengersRidingOffset() {
-		return 2.25D;
-	}
-
-	/**
-	 * Used to both get a rider position and to push out of blocks
-	 */
-	private Vec3 getRiderPosition(@Nullable Entity passenger) {
-		if (passenger != null) {
-			float distance = 0.4F;
-
-			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-
-			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + dz);
-		} else {
-			return new Vec3(this.getX(), this.getY(), this.getZ());
-		}
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		float distance = 0.4F;
+		float dx = Mth.cos((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
+		float dz = Mth.sin((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
+		return new Vector3f(dx, dimensions.height * 2.0F, dz);
 	}
 
 	@Override

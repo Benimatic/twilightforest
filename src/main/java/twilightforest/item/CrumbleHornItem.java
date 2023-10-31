@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.MinecraftForge;
-import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
@@ -113,15 +113,15 @@ public class CrumbleHornItem extends Item {
 		if (state.isAir()) return false;
 
 		if (living instanceof Player) {
-			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player) living)))
+			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player) living)).isCanceled())
 				return false;
 		}
 
 		if (world instanceof ServerLevel level) {
-			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipe -> {
+			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
 				if (flag.get()) return;
-				if (recipe.result().is(Blocks.AIR)) {
-					if (recipe.input().is(block) && world.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
+				if (recipeHolder.value().result().is(Blocks.AIR)) {
+					if (recipeHolder.value().input().is(block) && world.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
 						if (living instanceof Player) {
 							if (block.canHarvestBlock(state, world, pos, (Player) living)) {
 								world.removeBlock(pos, false);
@@ -130,15 +130,15 @@ public class CrumbleHornItem extends Item {
 								postTrigger(living);
 								flag.set(true);
 							}
-						} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
+						} else if (EventHooks.getMobGriefingEvent(world, living)) {
 							world.destroyBlock(pos, true);
 							postTrigger(living);
 							flag.set(true);
 						}
 					}
 				} else {
-					if (recipe.input().is(block) && world.getRandom().nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
-						world.setBlock(pos, recipe.result().getBlock().withPropertiesOf(state), 3);
+					if (recipeHolder.value().input().is(block) && world.getRandom().nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
+						world.setBlock(pos, recipeHolder.value().result().getBlock().withPropertiesOf(state), 3);
 						world.levelEvent(2001, pos, Block.getId(state));
 						postTrigger(living);
 						flag.set(true);

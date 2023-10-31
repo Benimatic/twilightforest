@@ -13,7 +13,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.world.item.WrittenBookItem',
-                'methodName': ASM.mapMethod('m_7626_'),
+                'methodName': 'getName',
                 'methodDesc': '(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/network/chat/Component;'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {

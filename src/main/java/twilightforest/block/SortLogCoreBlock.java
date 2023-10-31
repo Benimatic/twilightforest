@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.TFConfig;
@@ -47,14 +47,14 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
 						List<IItemHandler> handlers = new ArrayList<>();
 						for (Direction side : Direction.values()) {
-							blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
+							blockEntity.getCapability(Capabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
 						}
 						if (!handlers.isEmpty()) {
 							inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					} else { // Output if its outside that range
 						for (Direction side : Direction.values()) {
-							blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, Vec3.upFromBottomCenterOf(blockPos, 1.9D)));
+							blockEntity.getCapability(Capabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, Vec3.upFromBottomCenterOf(blockPos, 1.9D)));
 						}
 					}
 				}
@@ -66,7 +66,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
 			List<IItemHandler> handlers = new ArrayList<>();
 			for (Direction side : Direction.values()) {
-				entity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
+				entity.getCapability(Capabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
 			}
 			if (!handlers.isEmpty()) {
 				inputMap.put(handlers, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
@@ -78,7 +78,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
 			for (Direction side : Direction.values()) {
-				entity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D)));
+				entity.getCapability(Capabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D)));
 			}
 		});
 

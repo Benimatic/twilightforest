@@ -10,10 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
@@ -295,20 +292,20 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		List<Recipe<?>> recipes = new ArrayList<>();
 
 		if (!inputStack.isEmpty()) {
-			for (Recipe<?> recipe : world.getRecipeManager().getRecipes()) {
-				if (isRecipeSupported(recipe) &&
-						!recipe.isIncomplete() &&
-						recipe.canCraftInDimensions(3, 3) &&
-						!recipe.getIngredients().isEmpty() &&
-						matches(inputStack, recipe.getResultItem(world.registryAccess())) &&
-						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
-					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
-						recipes.add(recipe);
+			for (RecipeHolder<?> recipe : world.getRecipeManager().getRecipes()) {
+				if (isRecipeSupported(recipe.value()) &&
+						!recipe.value().isIncomplete() &&
+						recipe.value().canCraftInDimensions(3, 3) &&
+						!recipe.value().getIngredients().isEmpty() &&
+						matches(inputStack, recipe.value().getResultItem(world.registryAccess())) &&
+						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.id().toString())) {
+					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.id().getNamespace())) {
+						recipes.add(recipe.value());
 					}
 				}
 			}
-			for (UncraftingRecipe uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get())) {
-				if (uncraftingRecipe.isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe);
+			for (RecipeHolder<UncraftingRecipe> uncraftingRecipe : world.getRecipeManager().getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get())) {
+				if (uncraftingRecipe.value().isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe.value());
 			}
 		}
 
@@ -323,24 +320,24 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		return input.is(output.getItem()) && input.getCount() >= output.getCount();
 	}
 
-	private static CraftingRecipe[] getRecipesFor(CraftingContainer matrix, Level world) {
-		return world.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, matrix, world).toArray(new CraftingRecipe[0]);
+	private static RecipeHolder<?>[] getRecipesFor(CraftingContainer matrix, Level world) {
+		return world.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, matrix, world).toArray(new RecipeHolder[0]);
 	}
 
 	private void chooseRecipe(CraftingContainer inventory) {
 
-		CraftingRecipe[] recipes = getRecipesFor(inventory, this.level);
+		RecipeHolder<?>[] recipes = getRecipesFor(inventory, this.level);
 
 		if (recipes.length == 0) {
 			this.tinkerResult.setItem(0, ItemStack.EMPTY);
 			return;
 		}
 
-		CraftingRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
+		RecipeHolder<?> recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
-		if (recipe != null && !recipe.isSpecial() && (!this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
+		if (recipe != null && !recipe.value().isSpecial() && (!this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe.id()))) {
 			this.tinkerResult.setRecipeUsed(recipe);
-			this.tinkerResult.setItem(0, recipe.assemble(inventory, this.level.registryAccess()));
+			this.tinkerResult.setItem(0, recipe.value().assemble(inventory, this.level.registryAccess()));
 		} else {
 			this.tinkerResult.setItem(0, ItemStack.EMPTY);
 		}

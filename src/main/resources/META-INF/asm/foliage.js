@@ -13,7 +13,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.renderer.BiomeColors',
-                'methodName': ASM.mapMethod('m_108807_'),
+                'methodName': 'lambda$static$0',
                 'methodDesc': '(Lnet/minecraft/world/level/biome/Biome;DD)I'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {

@@ -1,7 +1,7 @@
 package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
@@ -24,19 +24,19 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
-		Level level = source.getLevel();
+		Level level = source.level();
 		RandomSource random = level.getRandom();
-		BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+		BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		if (!level.isClientSide()) {
 			for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS)) {
-				level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach((recipe) -> {
-					if (recipe.input() == livingentity.getType() || (recipe.isReversible() && recipe.result() == livingentity.getType())) {
-						EntityType<?> type = recipe.isReversible() && recipe.result() == livingentity.getType() ? recipe.input() : recipe.result();
+				level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach(recipeHolder -> {
+					if (recipeHolder.value().input() == livingentity.getType() || (recipeHolder.value().isReversible() && recipeHolder.value().result() == livingentity.getType())) {
+						EntityType<?> type = recipeHolder.value().isReversible() && recipeHolder.value().result() == livingentity.getType() ? recipeHolder.value().input() : recipeHolder.value().result();
 						Entity newEntity = type.create(level);
 						if (newEntity != null) {
 							newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.getYRot(), livingentity.getXRot());
 							if (newEntity instanceof Mob mob && livingentity.level() instanceof ServerLevelAccessor accessor) {
-								ForgeEventFactory.onFinalizeSpawn(mob, accessor, livingentity.level().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
+								EventHooks.onFinalizeSpawn(mob, accessor, livingentity.level().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
 							}
 
 							try {
@@ -70,7 +70,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 		if (this.fired) {
 			super.playSound(source);
 		} else {
-			source.getLevel().levelEvent(1001, source.getPos(), 0);
+			source.level().levelEvent(1001, source.pos(), 0);
 		}
 	}
 }

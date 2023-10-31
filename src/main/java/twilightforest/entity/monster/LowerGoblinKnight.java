@@ -21,8 +21,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.neoforged.neoforge.api.distmarker.Dist;
-import net.neoforged.neoforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.event.EventHooks;
+import org.joml.Vector3f;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
@@ -86,7 +88,7 @@ public class LowerGoblinKnight extends Monster {
 					Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER.getId());
 			}
 		}
 	}
@@ -110,15 +112,15 @@ public class LowerGoblinKnight extends Monster {
 
 		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
 		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-		upper.finalizeSpawn(accessor, difficulty, MobSpawnType.NATURAL, data, tag);
+		EventHooks.onFinalizeSpawn(upper, accessor, difficulty, MobSpawnType.NATURAL, data, tag);
 		upper.startRiding(this);
 
 		return data;
 	}
 
 	@Override
-	public double getPassengersRidingOffset() {
-		return 1.0D;
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		return new Vector3f(0.0F, dimensions.height * 0.85F, 0.0F);
 	}
 
 	@Override

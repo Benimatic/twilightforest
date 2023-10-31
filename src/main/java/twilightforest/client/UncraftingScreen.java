@@ -69,12 +69,12 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 	}
 
 	@Override
-	public boolean mouseScrolled(double x, double y, double direction) {
-		boolean scrolled = super.mouseScrolled(x, y, direction);
+	public boolean mouseScrolled(double x, double y, double vertScroll, double horizScroll) {
+		boolean scrolled = super.mouseScrolled(x, y, vertScroll, horizScroll);
 
 		//ingredient buttons
 		if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
-			if (direction > 0) {
+			if (vertScroll > 0) {
 				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
 				this.menu.ingredientsInCycle++;
 			} else {
@@ -86,7 +86,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 
 		//uncrafting recipe buttons
 		if (x > this.leftPos + 40 && x < this.leftPos + 54 && y > this.topPos + 22 && y < this.topPos + 64) {
-			if (direction > 0) {
+			if (vertScroll > 0) {
 				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
 				this.menu.unrecipeInCycle++;
 			} else {
@@ -98,7 +98,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 
 		//recrafting recipe buttons
 		if (x > this.leftPos + 121 && x < this.leftPos + 135 && y > this.topPos + 22 && y < this.topPos + 64) {
-			if (direction > 0) {
+			if (vertScroll > 0) {
 				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(4));
 				this.menu.recipeInCycle++;
 			} else {
@@ -113,7 +113,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, mouseX, mouseY, partialTicks);
 		super.render(graphics, mouseX, mouseY, partialTicks);
 		this.renderTooltip(graphics, mouseX, mouseY); //renderHoveredToolTip
 	}

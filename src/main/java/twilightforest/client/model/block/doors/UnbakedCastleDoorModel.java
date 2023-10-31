@@ -1,7 +1,7 @@
 package twilightforest.client.model.block.doors;
 
 import com.mojang.math.Transformation;
-import net.neoforged.neoforge.client.model.ForgeFaceData;
+import net.neoforged.neoforge.client.model.ExtraFaceData;
 import org.joml.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -47,7 +47,7 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 				this.baseElements[face.get3DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0), null)), null, true);
 
 				for (ConnectionLogic connectionType : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0), new ForgeFaceData(0xFFFFFFFF, 15, 15, true))), null, true);
+					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0), new ExtraFaceData(0xFFFFFFFF, 15, 15, true))), null, true);
 				}
 			}
 		}

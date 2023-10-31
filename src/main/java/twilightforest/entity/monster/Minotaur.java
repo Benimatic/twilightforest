@@ -45,14 +45,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new ChargeAttackGoal(this, 1.5F, this instanceof Minoshroom));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
-			//normally, the minoshroom attack reach is 9.5. It can hit you from nearly 2 blocks away!
-			//lowering this to make the fight a bit more fair and more doable hitless with melee
-			@Override
-			protected double getAttackReachSqr(LivingEntity entity) {
-				return this.mob instanceof Minoshroom ? 5.0D : super.getAttackReachSqr(entity);
-			}
-		});
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));

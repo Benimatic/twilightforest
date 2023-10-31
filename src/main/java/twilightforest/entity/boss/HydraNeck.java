@@ -1,8 +1,8 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.api.distmarker.Dist;
-import net.neoforged.neoforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
 public class HydraNeck extends HydraPart {

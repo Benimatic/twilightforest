@@ -12,7 +12,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.sounds.MusicManager',
-                'methodName': ASM.mapMethod('m_120183_'),
+                'methodName': 'tick',
                 'methodDesc': '()V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {

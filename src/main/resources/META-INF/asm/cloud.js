@@ -14,7 +14,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.world.level.Level',
-                'methodName': ASM.mapMethod('m_46758_'), // isRainingAt
+                'methodName': 'isRainingAt',
                 'methodDesc': '(Lnet/minecraft/core/BlockPos;)Z'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {

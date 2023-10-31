@@ -13,14 +13,15 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.common.ForgeMod;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.eventbus.api.SubscribeEvent;
-import net.neoforged.neoforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFItems;
@@ -149,20 +150,20 @@ public class ToolEvents {
 	}
 
 	private static void checkEntityTooFar(PlayerInteractEvent event, Entity target, Player player, InteractionHand hand) {
-		if (!event.isCanceled()) {
+		if (event instanceof ICancellableEvent cancellable && !cancellable.isCanceled()) {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_RANGE_MODIFIER;
-				AttributeInstance attackRange = player.getAttribute(ForgeMod.ENTITY_REACH.get());
+				AttributeInstance attackRange = player.getAttribute(NeoForgeMod.ENTITY_REACH.get());
 				if (attackRange != null) {
 					AttributeModifier giantModifier = attackRange.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
-						attackRange.removeModifier(giantModifier);
-						double range = player.getAttributeValue(ForgeMod.ENTITY_REACH.get());
+						attackRange.removeModifier(giantModifier.getId());
+						double range = player.getAttributeValue(NeoForgeMod.ENTITY_REACH.get());
 						double trueReach = range == 0 ? 0 : range + (player.isCreative() ? 3 : 0); // Copied from IForgePlayer#getAttackRange().
 						boolean tooFar = !player.isCloseEnough(target, trueReach);
 						attackRange.addTransientModifier(giantModifier);
-						event.setCanceled(tooFar);
+						cancellable.setCanceled(tooFar);
 					}
 				}
 			}
@@ -170,20 +171,20 @@ public class ToolEvents {
 	}
 
 	private static void checkBlockTooFar(PlayerInteractEvent event, Player player, InteractionHand hand) {
-		if (!event.isCanceled()) {
+		if (event instanceof ICancellableEvent cancellable && !cancellable.isCanceled()) {
 			ItemStack heldStack = player.getItemInHand(hand);
 			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 				UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-				AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
+				AttributeInstance reachDistance = player.getAttribute(NeoForgeMod.BLOCK_REACH.get());
 				if (reachDistance != null) {
 					AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 					if (giantModifier != null) {
-						reachDistance.removeModifier(giantModifier);
-						double reach = player.getAttributeValue(ForgeMod.BLOCK_REACH.get());
+						reachDistance.removeModifier(giantModifier.getId());
+						double reach = player.getAttributeValue(NeoForgeMod.BLOCK_REACH.get());
 						double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 						boolean tooFar = player.pick(trueReach, 0.0F, false).getType() != HitResult.Type.BLOCK;
 						reachDistance.addTransientModifier(giantModifier);
-						event.setCanceled(tooFar);
+						cancellable.setCanceled(tooFar);
 					}
 				}
 			}

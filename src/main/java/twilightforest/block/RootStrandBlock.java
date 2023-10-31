@@ -37,7 +37,7 @@ public class RootStrandBlock extends TFPlantBlock {
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state) {
 		return this.isBottomOpen(getter, pos);
 	}
 

@@ -586,7 +586,7 @@ public class HydraHeadContainer {
 		}
 		if (this.headEntity.getState() == State.ROAR_RAWR) {
 			this.headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
-			this.headEntity.gameEvent(GameEvent.ENTITY_ROAR);
+			this.headEntity.gameEvent(GameEvent.ENTITY_ACTION);
 		}
 		if (this.headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
 			this.headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);

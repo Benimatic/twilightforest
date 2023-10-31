@@ -135,19 +135,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			} else if (block instanceof TFChestBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), ms, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock candleBlock) {
-				GameProfile gameprofile = null;
-				if (stack.hasTag()) {
-					CompoundTag compoundtag = stack.getTag();
-					if (compoundtag.contains("SkullOwner", 10)) {
-						gameprofile = NbtUtils.readGameProfile(compoundtag.getCompound("SkullOwner"));
-					} else if (compoundtag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundtag.getString("SkullOwner"))) {
-						gameprofile = new GameProfile(null, compoundtag.getString("SkullOwner"));
-						compoundtag.remove("SkullOwner");
-						SkullBlockEntity.updateGameprofile(gameprofile, (p_172560_) ->
-								compoundtag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_172560_)));
-					}
-				}
-
+				CompoundTag compoundtag = stack.getTag();
+				GameProfile gameprofile = compoundtag != null ? SkullBlockEntity.getOrResolveGameProfile(compoundtag) : null;
 				SkullBlock.Type type = candleBlock.getType();
 				SkullModelBase base = SkullCandleTileEntityRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
 				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, gameprofile);

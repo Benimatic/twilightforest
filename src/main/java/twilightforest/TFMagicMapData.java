@@ -3,6 +3,7 @@ package twilightforest;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.neoforged.neoforge.network.PlayNetworkDirection;
 import org.joml.Matrix4f;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
@@ -18,9 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.api.distmarker.Dist;
-import net.neoforged.neoforge.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.NetworkDirection;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.init.TFLandmark;
 
 import org.jetbrains.annotations.Nullable;
@@ -84,13 +84,13 @@ public class TFMagicMapData extends MapItemSavedData {
 		List<TFMapDecoration> toAdd = new ArrayList<>();
 
 		for (TFMapDecoration coord : tfDecorations) {
-			int worldX = (coord.getX() << this.scale - 1) + this.centerX;
-			int worldZ = (coord.getY() << this.scale - 1) + this.centerZ;
+			int worldX = (coord.x() << this.scale - 1) + this.centerX;
+			int worldZ = (coord.y() << this.scale - 1) + this.centerZ;
 
 			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
-				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRot()));
+				toAdd.add(new TFMapDecoration(trueId, coord.x(), coord.y(), coord.rot()));
 			}
 		}
 
@@ -116,8 +116,8 @@ public class TFMagicMapData extends MapItemSavedData {
 		int i = 0;
 		for (TFMapDecoration featureCoord : tfDecorations) {
 			storage[i * 3] = (byte) featureCoord.featureId;
-			storage[i * 3 + 1] = featureCoord.getX();
-			storage[i * 3 + 2] = featureCoord.getY();
+			storage[i * 3 + 1] = featureCoord.x();
+			storage[i * 3 + 2] = featureCoord.y();
 			i++;
 		}
 
@@ -141,7 +141,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(int mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(this, mapItemDataPacket), NetworkDirection.PLAY_TO_CLIENT) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(this, mapItemDataPacket), PlayNetworkDirection.PLAY_TO_CLIENT) : packet;
 	}
 
 	public static class TFMapDecoration extends MapDecoration {
@@ -194,8 +194,8 @@ public class TFMagicMapData extends MapItemSavedData {
 			// TODO: Forge needs to pass in the ms and buffers, but for now this works
 			if (ICONS.get(featureId).isStructureEnabled) {
 				RenderContext.stack.pushPose();
-				RenderContext.stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				RenderContext.stack.mulPose(Axis.ZP.rotationDegrees(getRot() * 360 / 16.0F));
+				RenderContext.stack.translate(0.0F + this.x() / 2.0F + 64.0F, 0.0F + this.y() / 2.0F + 64.0F, -0.02F);
+				RenderContext.stack.mulPose(Axis.ZP.rotationDegrees(this.rot() * 360 / 16.0F));
 				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
 				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
 				float f1 = featureId % 8.0F / 8.0F;

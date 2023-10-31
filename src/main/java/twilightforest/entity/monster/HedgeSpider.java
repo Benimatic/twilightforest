@@ -41,13 +41,7 @@ public class HedgeSpider extends Spider {
 		this.goalSelector.availableGoals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
 
 		// Replace with one that doesn't become docile in light
-		// [VanillaCopy] based on Spider.MeleeAttackGoal
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true) {
-			@Override
-			protected double getAttackReachSqr(LivingEntity attackTarget) {
-				return 4.0F + attackTarget.getBbWidth();
-			}
-		});
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true));
 
 		// Remove default spider target player task
 		this.targetSelector.availableGoals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);

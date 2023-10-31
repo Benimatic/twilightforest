@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.fml.ModList;
+import net.neoforged.fml.ModList;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFDamageTypes;
 

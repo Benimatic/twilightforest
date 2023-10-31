@@ -1,6 +1,7 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,31 +10,31 @@ import twilightforest.TwilightForestMod;
 
 import java.util.Optional;
 
-public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureClearedTrigger.Instance> {
+public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureClearedTrigger.TriggerInstance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("structure_cleared");
 
 	@Override
-	public Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext condition) {
+	public StructureClearedTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext condition) {
 		String structureName = GsonHelper.getAsString(json, "structure");
-		return new StructureClearedTrigger.Instance(player, structureName);
+		return new StructureClearedTrigger.TriggerInstance(player, structureName);
 	}
 
 	public void trigger(ServerPlayer player, String structureName) {
 		this.trigger(player, (instance) -> instance.test(structureName));
 	}
 
-	public static class Instance extends AbstractCriterionTriggerInstance {
+	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 
 		private final String structureName;
 
-		public Instance(Optional<ContextAwarePredicate> player, String structureName) {
+		public TriggerInstance(Optional<ContextAwarePredicate> player, String structureName) {
 			super(player);
 			this.structureName = structureName;
 		}
 
-		public static Instance clearedStructure(String name) {
-			return new Instance(Optional.empty(), name);
+		public static Criterion<StructureClearedTrigger.TriggerInstance> clearedStructure(String name) {
+			return TFAdvancements.STRUCTURE_CLEARED.createCriterion(new StructureClearedTrigger.TriggerInstance(Optional.empty(), name));
 		}
 
 		boolean test(String structureName) {

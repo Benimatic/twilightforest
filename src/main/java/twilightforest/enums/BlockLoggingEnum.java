@@ -2,6 +2,7 @@ package twilightforest.enums;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -65,7 +67,7 @@ public enum BlockLoggingEnum implements StringRepresentable {
 
     public interface IMultiLoggable extends BucketPickup, LiquidBlockContainer {
         @Override
-        default ItemStack pickupBlock(LevelAccessor world, BlockPos pos, BlockState state) {
+        default ItemStack pickupBlock(@Nullable Player player, LevelAccessor world, BlockPos pos, BlockState state) {
             Fluid stateFluid = state.getValue(MULTILOGGED).fluid;
 
             if (stateFluid != Fluids.EMPTY) {
@@ -76,7 +78,7 @@ public enum BlockLoggingEnum implements StringRepresentable {
         }
 
         @Override
-        default boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        default boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
             return state.hasProperty(MULTILOGGED) && Ref.FLUIDS.containsKey(fluid) && !fluid.equals(state.getValue(MULTILOGGED).fluid) && state.getValue(MULTILOGGED) == AIR;
         }
 

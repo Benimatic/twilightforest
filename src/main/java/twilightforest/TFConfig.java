@@ -3,7 +3,10 @@ package twilightforest;
 import com.mojang.authlib.EnvironmentParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.HttpAuthenticationService;
-import com.mojang.authlib.exceptions.*;
+import com.mojang.authlib.exceptions.AuthenticationException;
+import com.mojang.authlib.exceptions.InsufficientPrivilegesException;
+import com.mojang.authlib.exceptions.InvalidCredentialsException;
+import com.mojang.authlib.exceptions.UserBannedException;
 import com.mojang.authlib.minecraft.client.ObjectMapper;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
@@ -14,12 +17,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.ForgeConfigSpec;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.eventbus.api.SubscribeEvent;
-import net.neoforged.neoforge.fml.common.Mod;
-import net.neoforged.neoforge.fml.config.ModConfig;
-import net.neoforged.neoforge.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +47,7 @@ public class TFConfig {
 
 	public static class Common {
 
-		public Common(ForgeConfigSpec.Builder builder) {
+		public Common(ModConfigSpec.Builder builder) {
 			builder.
 					comment("Settings that are not reversible without consequences.").
 					push("Dimension Settings");
@@ -276,51 +279,51 @@ public class TFConfig {
 
 		public static class Dimension {
 
-			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
-			public ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
+			public ModConfigSpec.BooleanValue newPlayersSpawnInTF;
+			public ModConfigSpec.BooleanValue portalForNewPlayerSpawn;
 
 		}
 
-		public final ForgeConfigSpec.ConfigValue<String> originDimension;
-		public final ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
-		public final ForgeConfigSpec.BooleanValue adminOnlyPortals;
-		public final ForgeConfigSpec.BooleanValue disablePortalCreation;
-		public final ForgeConfigSpec.BooleanValue checkPortalDestination;
-		public final ForgeConfigSpec.BooleanValue portalLightning;
-		public final ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		public final ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
-		public final ForgeConfigSpec.IntValue maxPortalSize;
-		public final ForgeConfigSpec.BooleanValue casketUUIDLocking;
-		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
-		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
-		public final ForgeConfigSpec.BooleanValue bossDropChests;
-		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
+		public final ModConfigSpec.ConfigValue<String> originDimension;
+		public final ModConfigSpec.BooleanValue allowPortalsInOtherDimensions;
+		public final ModConfigSpec.BooleanValue adminOnlyPortals;
+		public final ModConfigSpec.BooleanValue disablePortalCreation;
+		public final ModConfigSpec.BooleanValue checkPortalDestination;
+		public final ModConfigSpec.BooleanValue portalLightning;
+		public final ModConfigSpec.BooleanValue shouldReturnPortalBeUsable;
+		public final ModConfigSpec.ConfigValue<String> portalAdvancementLock;
+		public final ModConfigSpec.IntValue maxPortalSize;
+		public final ModConfigSpec.BooleanValue casketUUIDLocking;
+		public final ModConfigSpec.BooleanValue disableSkullCandles;
+		public final ModConfigSpec.BooleanValue defaultItemEnchants;
+		public final ModConfigSpec.BooleanValue bossDropChests;
+		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
 		public static class MagicTrees {
-			public ForgeConfigSpec.BooleanValue disableTime;
-			public ForgeConfigSpec.IntValue timeRange;
-			public ForgeConfigSpec.BooleanValue disableTransformation;
-			public ForgeConfigSpec.IntValue transformationRange;
-			public ForgeConfigSpec.BooleanValue disableMining;
-			public ForgeConfigSpec.IntValue miningRange;
-			public ForgeConfigSpec.BooleanValue disableSorting;
-			public ForgeConfigSpec.IntValue sortingRange;
+			public ModConfigSpec.BooleanValue disableTime;
+			public ModConfigSpec.IntValue timeRange;
+			public ModConfigSpec.BooleanValue disableTransformation;
+			public ModConfigSpec.IntValue transformationRange;
+			public ModConfigSpec.BooleanValue disableMining;
+			public ModConfigSpec.IntValue miningRange;
+			public ModConfigSpec.BooleanValue disableSorting;
+			public ModConfigSpec.IntValue sortingRange;
 		}
 
 		public final UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
 		public static class UncraftingStuff {
-			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
-			public ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
-			public ForgeConfigSpec.BooleanValue allowShapelessUncrafting;
-			public ForgeConfigSpec.BooleanValue disableUncraftingOnly;
-			public ForgeConfigSpec.BooleanValue disableEntireTable;
-			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
-			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
-			public ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
-			public ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
+			public ModConfigSpec.DoubleValue uncraftingXpCostMultiplier;
+			public ModConfigSpec.DoubleValue repairingXpCostMultiplier;
+			public ModConfigSpec.BooleanValue allowShapelessUncrafting;
+			public ModConfigSpec.BooleanValue disableUncraftingOnly;
+			public ModConfigSpec.BooleanValue disableEntireTable;
+			public ModConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
+			public ModConfigSpec.BooleanValue reverseRecipeBlacklist;
+			public ModConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
+			public ModConfigSpec.BooleanValue flipUncraftingModIdList;
 		}
 
 		public final ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
@@ -328,15 +331,15 @@ public class TFConfig {
 		public ResourceLocation portalLockingAdvancement;
 
 		public static class ShieldInteractions {
-			public ForgeConfigSpec.BooleanValue parryNonTwilightAttacks;
-			public ForgeConfigSpec.IntValue shieldParryTicks;
+			public ModConfigSpec.BooleanValue parryNonTwilightAttacks;
+			public ModConfigSpec.IntValue shieldParryTicks;
 		}
 
 	}
 
 	public static class Client {
 
-		public Client(ForgeConfigSpec.Builder builder) {
+		public Client(ModConfigSpec.Builder builder) {
 			silentCicadas = builder.
 					translation(config + "silent_cicadas").
 					comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.").
@@ -383,16 +386,16 @@ public class TFConfig {
 					.defineList("auroraBiomes", List.of("twilightforest:glacier"), s -> s instanceof String);
 		}
 
-		public final ForgeConfigSpec.BooleanValue silentCicadas;
-		public final ForgeConfigSpec.BooleanValue silentCicadasOnHead;
-		public final ForgeConfigSpec.BooleanValue firstPersonEffects;
-		public final ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
-		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
-		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
-		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
-		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
-		public final ForgeConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
+		public final ModConfigSpec.BooleanValue silentCicadas;
+		public final ModConfigSpec.BooleanValue silentCicadasOnHead;
+		public final ModConfigSpec.BooleanValue firstPersonEffects;
+		public final ModConfigSpec.BooleanValue rotateTrophyHeadsGui;
+		public final ModConfigSpec.BooleanValue disableOptifineNagScreen;
+		public final ModConfigSpec.BooleanValue disableLockedBiomeToasts;
+		public final ModConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ModConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
+		public final ModConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
+		public final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
 		private final List<ResourceLocation> validAuroraBiomes = new ArrayList<>();
 	}
 

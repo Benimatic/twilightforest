@@ -1,6 +1,7 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,14 +11,14 @@ import twilightforest.TwilightForestMod;
 
 import java.util.Optional;
 
-public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Instance> {
+public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.TriggerInstance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("hurt_boss");
 
 	@Override
-	protected Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
+	protected HurtBossTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
 		Optional<ContextAwarePredicate> composite = EntityPredicate.fromJson(json, "hurt_entity", ctx);
-		return new Instance(player, composite);
+		return new HurtBossTrigger.TriggerInstance(player, composite);
 	}
 
 	public void trigger(ServerPlayer player, Entity hurt) {
@@ -25,10 +26,10 @@ public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Inst
 		this.trigger(player, (instance) -> instance.matches(entity));
 	}
 
-	public static class Instance extends AbstractCriterionTriggerInstance {
+	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 		private final Optional<ContextAwarePredicate> hurt;
 
-		public Instance(Optional<ContextAwarePredicate> player, Optional<ContextAwarePredicate> hurt) {
+		public TriggerInstance(Optional<ContextAwarePredicate> player, Optional<ContextAwarePredicate> hurt) {
 			super(player);
 			this.hurt = hurt;
 		}
@@ -37,8 +38,8 @@ public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Inst
 			return this.hurt.isEmpty() || this.hurt.get().matches(hurt);
 		}
 
-		public static Instance hurtBoss(EntityPredicate.Builder hurt) {
-			return new Instance(Optional.empty(), Optional.of(EntityPredicate.wrap(hurt.build())));
+		public static Criterion<HurtBossTrigger.TriggerInstance> hurtBoss(EntityPredicate.Builder hurt) {
+			return TFAdvancements.HURT_BOSS.createCriterion(new TriggerInstance(Optional.empty(), Optional.of(EntityPredicate.wrap(hurt.build()))));
 		}
 
 		@Override

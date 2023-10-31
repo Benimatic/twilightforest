@@ -1,6 +1,7 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,13 +14,13 @@ import twilightforest.TwilightForestMod;
 
 import java.util.Optional;
 
-public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instance> {
+public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.TriggerInstance> {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("kill_bug");
 
 	@Override
-	protected Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
+	protected KillBugTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
 		Block bug = deserializeBug(json);
-		return new Instance(player, bug);
+		return new KillBugTrigger.TriggerInstance(player, bug);
 	}
 
 	@Nullable
@@ -36,18 +37,18 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 		this.trigger(player, (instance) -> instance.matches(bug));
 	}
 
-	public static class Instance extends AbstractCriterionTriggerInstance {
+	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 
 		@Nullable
 		private final Block bugType;
 
-		public Instance(Optional<ContextAwarePredicate> player, @Nullable Block bugType) {
+		public TriggerInstance(Optional<ContextAwarePredicate> player, @Nullable Block bugType) {
 			super(player);
 			this.bugType = bugType;
 		}
 
-		public static Instance killBug(Block bug) {
-			return new Instance(Optional.empty(), bug);
+		public static Criterion<TriggerInstance> killBug(Block bug) {
+			return TFAdvancements.KILL_BUG.createCriterion(new TriggerInstance(Optional.empty(), bug));
 		}
 
 		public boolean matches(BlockState bug) {
@@ -55,7 +56,6 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 		}
 
 		@Override
-		@SuppressWarnings("deprecation")
 		public JsonObject serializeToJson() {
 			JsonObject object = super.serializeToJson();
 			if (bugType != null) {

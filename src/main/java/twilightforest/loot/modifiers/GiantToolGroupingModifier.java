@@ -13,13 +13,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.neoforged.neoforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.eventbus.api.SubscribeEvent;
-import net.neoforged.neoforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
@@ -97,7 +97,7 @@ public class GiantToolGroupingModifier extends LootModifier {
     }
 
     private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
-        return player.getMainHandItem().getItem() instanceof GiantPickItem && ForgeHooks.isCorrectToolForDrops(state, player);
+        return player.getMainHandItem().getItem() instanceof GiantPickItem && CommonHooks.isCorrectToolForDrops(state, player);
     }
 
     private static boolean shouldBreakGiantBlock(Player player, GiantPickMineCapability capability) {

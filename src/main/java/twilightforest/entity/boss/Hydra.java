@@ -28,7 +28,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
@@ -570,7 +570,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (this.deathTime <= 0 && EventHooks.getMobGriefingEvent(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -777,7 +777,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint {
 
 		if (this.deathTime == 200) {
 			if (this.level() instanceof ServerLevel && !this.wasExperienceConsumed() && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
-				int reward = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, this.getExperienceReward());
+				int reward = EventHooks.getExperienceDrop(this, this.lastHurtByPlayer, this.getExperienceReward());
 				ExperienceOrb.award((ServerLevel) this.level(), this.position(), reward);
 			}
 

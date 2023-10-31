@@ -2,6 +2,7 @@ package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,12 +15,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.Instance> {
+public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.TriggerInstance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("drink_from_flask");
 
 	@Override
-	protected Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
+	protected DrinkFromFlaskTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
 		Potion potion = null;
 		if (json.has("potion")) {
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "potion"));
@@ -27,27 +28,27 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 		}
 		if(json.has("doses") && GsonHelper.getAsInt(json, "doses") > 4) throw new JsonSyntaxException("DrinkFromFlaskTrigger: can't have more than 4 doses.");
 		MinMaxBounds.Ints doses = MinMaxBounds.Ints.fromJson(json.get("doses"));
-		return new Instance(player, doses, potion);
+		return new DrinkFromFlaskTrigger.TriggerInstance(player, doses, potion);
 	}
 
 	public void trigger(ServerPlayer player, int doses, Potion potion) {
 		this.trigger(player, (instance) -> instance.matches(doses, potion));
 	}
 
-	public static class Instance extends AbstractCriterionTriggerInstance {
+	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 
 		private final MinMaxBounds.Ints doses;
 		@Nullable
 		private final Potion potion;
 
-		public Instance(Optional<ContextAwarePredicate> player, MinMaxBounds.Ints doses, @Nullable Potion potion) {
+		public TriggerInstance(Optional<ContextAwarePredicate> player, MinMaxBounds.Ints doses, @Nullable Potion potion) {
 			super(player);
 			this.doses = doses;
 			this.potion = potion;
 		}
 
-		public static Instance drankPotion(int doses, Potion potion) {
-			return new Instance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), potion);
+		public static Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(int doses, Potion potion) {
+			return TFAdvancements.DRINK_FROM_FLASK.createCriterion(new TriggerInstance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), potion));
 		}
 
 		public boolean matches(int doses, Potion potion) {

@@ -16,18 +16,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
-import net.neoforged.neoforge.api.distmarker.Dist;
-import net.neoforged.neoforge.common.ForgeConfigSpec;
-import net.neoforged.neoforge.common.MinecraftForge;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.crafting.CraftingHelper;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.eventbus.api.IEventBus;
-import net.neoforged.neoforge.fml.*;
-import net.neoforged.neoforge.fml.common.Mod;
-import net.neoforged.neoforge.fml.config.ModConfig;
-import net.neoforged.neoforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.neoforged.neoforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.*;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.ForgeRegistries;
@@ -39,8 +40,6 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.compat.top.TopCompat;
 import twilightforest.item.recipe.UncraftingTableCondition;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.UpdateGamerulePacket;
@@ -79,21 +78,23 @@ public class TwilightForestMod {
 
 	public TwilightForestMod() {
 		{
-			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
+			final Pair<TFConfig.Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Common::new);
 			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
 			TFConfig.COMMON_CONFIG = specPair.getLeft();
 		}
 		{
-			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
+			final Pair<TFConfig.Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Client::new);
 			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientInitiator::call);
-		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-		MinecraftForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
-		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
-		MinecraftForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
+		if (FMLEnvironment.dist.isClient()) {
+			ClientInitiator.call();
+		}
+		NeoForge.EVENT_BUS.addListener(this::registerCommands);
+		NeoForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
+		NeoForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
+		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -142,9 +143,9 @@ public class TwilightForestMod {
 		modbus.addListener(CapabilityList::registerCapabilities);
 
 		if (ModList.get().isLoaded("curios")) {
-			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
-			modbus.addListener(CuriosCompat::registerCurioRenderers);
-			modbus.addListener(CuriosCompat::registerCurioLayers);
+//			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+//			modbus.addListener(CuriosCompat::registerCurioRenderers);
+//			modbus.addListener(CuriosCompat::registerCurioLayers);
 		}
 
 		BiomeGrassColors.init();
@@ -170,7 +171,7 @@ public class TwilightForestMod {
 
 	public void sendIMCs(InterModEnqueueEvent evt) {
 		if (ModList.get().isLoaded("theoneprobe")) {
-			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
+			//InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
 		}
 	}
 

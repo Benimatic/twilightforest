@@ -1,7 +1,7 @@
 package twilightforest.client;
 
-import net.neoforged.neoforge.api.distmarker.Dist;
-import net.neoforged.neoforge.fml.DistExecutor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.DistExecutor;
 
 import java.util.function.Supplier;
 

@@ -114,10 +114,11 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
                     if (direction == Direction.EAST) posZ = Mth.floor(painting.getZ() + (double) ((xMax + xMin) / 2.0F / 16.0F));
 
                     int light = layer.fullbright() ? 15728850 : LevelRenderer.getLightColor(painting.level(), new BlockPos(posX, Mth.floor(painting.getY() + (double) ((yMax + yMin) / 2.0F / 16.0F)), posZ));
-                    float xEnd = layerTexture.getU(layerWidthFactor * (double) (widthAsBlock - k) + widthOffset);
-                    float xStart = layerTexture.getU(layerWidthFactor * (double) (widthAsBlock - (k + 1)) + widthOffset);
-                    float yEnd = layerTexture.getV(layerHeightFactor * (double) (heightAsBlock - l) + heightOffset);
-                    float yStart = layerTexture.getV(layerHeightFactor * (double) (heightAsBlock - (l + 1)) + heightOffset);
+                    //TODO verify float casts are fine here
+                    float xEnd = layerTexture.getU((float) (layerWidthFactor * (double) (widthAsBlock - k) + widthOffset));
+                    float xStart = layerTexture.getU((float) (layerWidthFactor * (double) (widthAsBlock - (k + 1)) + widthOffset));
+                    float yEnd = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - l) + heightOffset));
+                    float yStart = layerTexture.getV((float) (layerHeightFactor * (double) (heightAsBlock - (l + 1)) + heightOffset));
                     this.vertex(matrix4f, matrix3f, vertex, xMax, yMin, -z, xStart, yEnd, 0, 0, -1, light, alpha);
                     this.vertex(matrix4f, matrix3f, vertex, xMin, yMin, -z, xEnd, yEnd, 0, 0, -1, light, alpha);
                     this.vertex(matrix4f, matrix3f, vertex, xMin, yMax, -z, xEnd, yStart, 0, 0, -1, light, alpha);
@@ -134,9 +135,9 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting> {
         float u01 = backSprite.getU0();
         float u11 = backSprite.getU1();
         float v01 = backSprite.getV0();
-        float v = backSprite.getV(1.0D);
+        float v = backSprite.getV(1.0F);
         float u02 = backSprite.getU0();
-        float u = backSprite.getU(1.0D);
+        float u = backSprite.getU(1.0F);
         float v02 = backSprite.getV0();
         float v11 = backSprite.getV1();
 

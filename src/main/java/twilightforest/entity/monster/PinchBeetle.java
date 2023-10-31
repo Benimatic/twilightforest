@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,7 +14,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
@@ -112,34 +113,11 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		if (!this.getPassengers().isEmpty()) {
-			Vec3 riderPos = this.getRiderPosition();
-			callback.accept(passenger, riderPos.x(), riderPos.y(), riderPos.z());
-		}
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -0.1D;
-	}
-
-	@Override
-	public double getPassengersRidingOffset() {
-		return 0.75D;
-	}
-
-	private Vec3 getRiderPosition() {
-		if (!this.getPassengers().isEmpty()) {
-			float distance = 0.75F;
-
-			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-
-			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + this.getPassengers().get(0).getMyRidingOffset(), this.getZ() + dz);
-		} else {
-			return new Vec3(this.getX(), this.getY(), this.getZ());
-		}
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		float distance = 0.75F;
+		float dx = Mth.cos((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
+		float dz = Mth.sin((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
+		return new Vector3f(dx,  dimensions.height * 0.25F, dz);
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -34,9 +35,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
@@ -232,30 +234,16 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	@Override
-	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
-		Vec3 riderPos = this.getRiderPosition();
-		callback.accept(passenger, riderPos.x(), riderPos.y(), riderPos.z());
+	protected float ridingOffset(Entity p_294652_) {
+		return super.ridingOffset(p_294652_);
 	}
 
 	@Override
-	public double getPassengersRidingOffset() {
-		return 5.75D;
-	}
-
-	/**
-	 * Used to both get a rider position and to push out of blocks
-	 */
-	private Vec3 getRiderPosition() {
-		if (this.isVehicle()) {
-			float distance = 0.4F;
-
-			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
-
-			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + this.getPassengers().get(0).getMyRidingOffset(), this.getZ() + dz);
-		} else {
-			return new Vec3(this.getX(), this.getY(), this.getZ());
-		}
+	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
+		float distance = 0.4F;
+		float dx = Mth.cos((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
+		float dz = Mth.sin((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
+		return new Vector3f(dx, dimensions.height * 2.0F, dz);
 	}
 
 	@Override
@@ -264,7 +252,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -274,7 +262,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	public void makeRandomBlockFall(int range, int hangTime) {
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
 			// find a block nearby
 			int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
 			int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);

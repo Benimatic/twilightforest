@@ -1,6 +1,7 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -8,26 +9,26 @@ import twilightforest.TwilightForestMod;
 
 import java.util.Optional;
 
-public class KillAllPhantomsTrigger extends SimpleCriterionTrigger<KillAllPhantomsTrigger.Instance> {
+public class KillAllPhantomsTrigger extends SimpleCriterionTrigger<KillAllPhantomsTrigger.TriggerInstance> {
 
 	public static final ResourceLocation ID = TwilightForestMod.prefix("kill_all_phantoms");
 
 	@Override
-	protected Instance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
-		return new Instance(player);
+	protected KillAllPhantomsTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> player, DeserializationContext ctx) {
+		return new KillAllPhantomsTrigger.TriggerInstance(player);
 	}
 
 	public void trigger(ServerPlayer player) {
 		this.trigger(player, (instance) -> true);
 	}
 
-	public static class Instance extends AbstractCriterionTriggerInstance {
-		public Instance(Optional<ContextAwarePredicate> player) {
+	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+		public TriggerInstance(Optional<ContextAwarePredicate> player) {
 			super(player);
 		}
 
-		public static Instance killThemAll() {
-			return new Instance(Optional.empty());
+		public static Criterion<KillAllPhantomsTrigger.TriggerInstance> killThemAll() {
+			return TFAdvancements.KILL_ALL_PHANTOMS.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 	}
 }

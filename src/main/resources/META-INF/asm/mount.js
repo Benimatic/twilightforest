@@ -14,7 +14,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.player.LocalPlayer',
-                'methodName': ASM.mapMethod('m_6083_'), // rideTick
+                'methodName': 'rideTick',
                 'methodDesc': '()V'
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {

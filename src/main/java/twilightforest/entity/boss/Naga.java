@@ -44,7 +44,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
@@ -272,7 +272,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			this.setTarget(null);
 		}
 
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		if (EventHooks.getMobGriefingEvent(this.level(), this)) {
 			AABB bb = this.getBoundingBox();
 
 			int minx = Mth.floor(bb.minX - 0.75D);
