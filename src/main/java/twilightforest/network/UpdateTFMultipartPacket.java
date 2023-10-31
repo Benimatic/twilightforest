@@ -5,8 +5,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.entity.TFPart;
 
 import java.util.ArrayList;

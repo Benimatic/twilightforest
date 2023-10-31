@@ -21,7 +21,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
 
 public class HugeWaterLilyItem extends PlaceOnWaterBlockItem {
 
@@ -53,7 +53,7 @@ public class HugeWaterLilyItem extends PlaceOnWaterBlockItem {
 					BlockSnapshot blocksnapshot = BlockSnapshot.create(level.dimension(), level, blockpos1);
 					// TF - getBlock() instead of hardcoded lilypad
 					level.setBlock(blockpos1, getBlock().defaultBlockState(), 11);
-					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.core.Direction.UP)) {
+					if (net.neoforged.neoforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.core.Direction.UP)) {
 						blocksnapshot.restore(true, false);
 						return InteractionResultHolder.fail(itemstack);
 					}

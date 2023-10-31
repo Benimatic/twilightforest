@@ -5,7 +5,7 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.neoforge.fml.ModList;
 import twilightforest.TFConfig;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.init.TFBlocks;

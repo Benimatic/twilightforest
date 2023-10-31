@@ -12,8 +12,8 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.fml.ModList;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 import twilightforest.init.TFLoot;
 
 // Loot condition for checking that if a mod exists, then swap original item with its deserialized item.

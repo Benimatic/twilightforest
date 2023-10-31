@@ -15,9 +15,9 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ForgeAdvancementProvider;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.block.Experiment115Block;
@@ -126,7 +126,7 @@ public class TFAdvancementGenerator implements ForgeAdvancementProvider.Advancem
 						Component.translatable("advancement.twilightforest.progress_trophy_pedestal"),
 						Component.translatable("advancement.twilightforest.progress_trophy_pedestal.desc"),
 						null, FrameType.GOAL, true, true, false)
-				.addCriterion("trophy_pedestal", new TrophyPedestalTrigger.Instance(ContextAwarePredicate.ANY))
+				.addCriterion("trophy_pedestal", new TrophyPedestalTrigger.Instance(Optional.empty()))
 				.addCriterion("kill_lich", this.advancementTrigger(lich))
 				.requirements(RequirementsStrategy.AND)
 				.save(consumer, "twilightforest:progress_trophy_pedestal");

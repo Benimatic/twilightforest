@@ -31,11 +31,11 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.ForgeMod;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 

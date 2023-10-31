@@ -2,7 +2,7 @@ package twilightforest.capabilities.fan;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateFeatherFanFallPacket;
 

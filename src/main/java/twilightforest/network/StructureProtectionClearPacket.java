@@ -2,8 +2,8 @@ package twilightforest.network;
 
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.client.DimensionSpecialEffectsManager;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;

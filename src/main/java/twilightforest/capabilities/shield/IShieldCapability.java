@@ -3,7 +3,7 @@ package twilightforest.capabilities.shield;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import twilightforest.TwilightForestMod;
 
 public interface IShieldCapability extends INBTSerializable<CompoundTag> {

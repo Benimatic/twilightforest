@@ -1,7 +1,7 @@
 package twilightforest.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TFConfig;
 
 import java.util.List;
