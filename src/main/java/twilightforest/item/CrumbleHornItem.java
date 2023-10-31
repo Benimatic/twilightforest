@@ -120,27 +120,30 @@ public class CrumbleHornItem extends Item {
 		if (world instanceof ServerLevel level) {
 			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
 				if (flag.get()) return;
-				if (recipeHolder.value().result().is(Blocks.AIR)) {
-					if (recipeHolder.value().input().is(block) && world.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
-						if (living instanceof Player) {
+				if (recipeHolder.value().result() == Blocks.AIR) {
+					if (recipeHolder.value().input() == block && world.getRandom().nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
+						if (living instanceof Player player) {
 							if (block.canHarvestBlock(state, world, pos, (Player) living)) {
 								world.removeBlock(pos, false);
 								block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
 								world.levelEvent(2001, pos, Block.getId(state));
-								postTrigger(living);
+								if (player instanceof ServerPlayer) {
+									player.awardStat(Stats.ITEM_USED.get(this));
+								}
 								flag.set(true);
 							}
 						} else if (EventHooks.getMobGriefingEvent(world, living)) {
 							world.destroyBlock(pos, true);
-							postTrigger(living);
 							flag.set(true);
 						}
 					}
 				} else {
-					if (recipeHolder.value().input().is(block) && world.getRandom().nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
-						world.setBlock(pos, recipeHolder.value().result().getBlock().withPropertiesOf(state), 3);
+					if (recipeHolder.value().input() == block && world.getRandom().nextInt(CHANCE_CRUMBLE) == 0 && !flag.get()) {
+						world.setBlock(pos, recipeHolder.value().result().withPropertiesOf(state), 3);
 						world.levelEvent(2001, pos, Block.getId(state));
-						postTrigger(living);
+						if (living instanceof ServerPlayer player) {
+							player.awardStat(Stats.ITEM_USED.get(this));
+						}
 						flag.set(true);
 					}
 				}
@@ -148,12 +151,5 @@ public class CrumbleHornItem extends Item {
 		}
 
 		return flag.get();
-	}
-
-	private void postTrigger(LivingEntity living) {
-		if (living instanceof ServerPlayer) {
-			Player player = (Player) living;
-			player.awardStat(Stats.ITEM_USED.get(this));
-		}
 	}
 }

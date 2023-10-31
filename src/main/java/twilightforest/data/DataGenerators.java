@@ -51,7 +51,7 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
 		generator.addProvider(event.includeServer(), new LootGenerator(output));
-		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
+		generator.addProvider(event.includeServer(), new CraftingGenerator(output, provider));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
 
 		DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(output, provider);
@@ -69,7 +69,7 @@ public class DataGenerators {
 						Component.literal("Resources for Twilight Forest"),
 						DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
 						Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
-		generator.addProvider(event.includeClient(), new AtlasGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new AtlasGenerator(output, provider, helper));
 		generator.addProvider(event.includeClient(), new LangGenerator(output));
 	}
 

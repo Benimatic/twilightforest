@@ -1,16 +1,15 @@
 package twilightforest.advancements;
 
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.AdvancementRequirements;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-//Borrowed from TCon to allow us to have multiple requirement groupings
-public record CountRequirementsStrategy(int... sizes) implements RequirementsStrategy {
+public record CountRequirementsStrategy(int... sizes) implements AdvancementRequirements.Strategy {
 
 	@Override
-	public String[][] createRequirements(Collection<String> strings) {
+	public AdvancementRequirements create(Collection<String> strings) {
 		String[][] requirements = new String[sizes.length][];
 		List<String> list = new ArrayList<>(strings);
 		int nextIndex = 0;
@@ -21,6 +20,7 @@ public record CountRequirementsStrategy(int... sizes) implements RequirementsStr
 				nextIndex++;
 			}
 		}
-		return requirements;
+		return new AdvancementRequirements(requirements);
 	}
 }
+

@@ -13,8 +13,8 @@ import twilightforest.init.TFItems;
 
 public class MazeMapCloningRecipe extends CustomRecipe {
 
-	public MazeMapCloningRecipe(ResourceLocation id, CraftingBookCategory category) {
-		super(id, category);
+	public MazeMapCloningRecipe(CraftingBookCategory category) {
+		super(category);
 	}
 
 	@Override

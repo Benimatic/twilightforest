@@ -120,7 +120,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.HYDRA_TROPHY.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.HYDRA.get())))
 				.addCriterion("stroganoff", this.advancementTrigger(minoshroom))
-				.requirements(new CountAdvancementRequirements.Strategy(3, 1))
+				.requirements(new CountRequirementsStrategy(3, 1))
 				.save(consumer, "twilightforest:progress_hydra");
 
 		AdvancementHolder trophy_pedestal = Advancement.Builder.advancement().parent(lich).display(
@@ -142,7 +142,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.KNIGHT_PHANTOM_TROPHY.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.KNIGHT_PHANTOM.get())))
 				.addCriterion("previous_progression", this.advancementTrigger(trophy_pedestal))
-				.requirements(new CountAdvancementRequirements.Strategy(3, 1))
+				.requirements(new CountRequirementsStrategy(3, 1))
 				.save(consumer, "twilightforest:progress_knights");
 
 		AdvancementHolder trap = Advancement.Builder.advancement().parent(knights).display(
@@ -166,7 +166,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.UR_GHAST_TROPHY.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.UR_GHAST.get())))
 				.addCriterion("previous_progression", this.advancementTrigger(knights))
-				.requirements(new CountAdvancementRequirements.Strategy(3, 1))
+				.requirements(new CountRequirementsStrategy(3, 1))
 				.save(consumer, "twilightforest:progress_ur_ghast");
 
 		AdvancementHolder yeti = Advancement.Builder.advancement().parent(lich).display(
@@ -180,7 +180,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("fur", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ALPHA_YETI_FUR.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.ALPHA_YETI.get())))
 				.addCriterion("previous_progression", this.advancementTrigger(lich))
-				.requirements(new CountAdvancementRequirements.Strategy(4, 1))
+				.requirements(new CountRequirementsStrategy(4, 1))
 				.save(consumer, "twilightforest:progress_yeti");
 
 		AdvancementHolder snow_queen = Advancement.Builder.advancement().parent(yeti).display(
@@ -193,7 +193,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.SNOW_QUEEN_TROPHY.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.SNOW_QUEEN.get())))
 				.addCriterion("previous_progression", this.advancementTrigger(yeti))
-				.requirements(new CountAdvancementRequirements.Strategy(3, 1))
+				.requirements(new CountRequirementsStrategy(3, 1))
 				.save(consumer, "twilightforest:progress_glacier");
 
 		AdvancementHolder merge = Advancement.Builder.advancement().parent(lich).display(
@@ -392,7 +392,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("maze_wafer", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.MAZE_WAFER.get()))
 				.addCriterion("experiment_115", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.EXPERIMENT_115.get()))
 				.addCriterion("torchberries", ConsumeItemTrigger.TriggerInstance.usedItem(TFItems.TORCHBERRIES.get()))
-				.requirements(new CountAdvancementRequirements.Strategy(2, 2, 1, 1, 1, 1, 1))
+				.requirements(new CountRequirementsStrategy(2, 2, 1, 1, 1, 1, 1))
 				.rewards(AdvancementRewards.Builder.experience(75))
 				.save(consumer, "twilightforest:twilight_dinner");
 

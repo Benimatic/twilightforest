@@ -17,8 +17,8 @@ import java.util.List;
 
 public class MoonwormQueenRepairRecipe extends CustomRecipe {
 
-	public MoonwormQueenRepairRecipe(ResourceLocation id, CraftingBookCategory category) {
-		super(id, category);
+	public MoonwormQueenRepairRecipe(CraftingBookCategory category) {
+		super(category);
 	}
 
 	@Override

@@ -35,10 +35,10 @@ public class TransformPowderItem extends Item {
 		}
 		AtomicBoolean flag = new AtomicBoolean(false);
 
-		player.level().getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach((recipe) -> {
+		player.level().getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach(recipeHolder -> {
 			if (flag.get()) return;
-			if (recipe.input() == target.getType() || (recipe.isReversible() && recipe.result() == target.getType())) {
-				EntityType<?> type = recipe.isReversible() && recipe.result() == target.getType() ? recipe.input() : recipe.result();
+			if (recipeHolder.value().input() == target.getType() || (recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType())) {
+				EntityType<?> type = recipeHolder.value().isReversible() && recipeHolder.value().result() == target.getType() ? recipeHolder.value().input() : recipeHolder.value().result();
 				if (type == null) {
 					return;
 				}

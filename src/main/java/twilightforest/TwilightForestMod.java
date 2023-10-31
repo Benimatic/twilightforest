@@ -92,8 +92,8 @@ public class TwilightForestMod {
 			ClientInitiator.call();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
-		NeoForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
+		NeoForge.EVENT_BUS.addListener(CapabilityList::attachLevelCapability);
+		NeoForge.EVENT_BUS.addListener(CapabilityList::attachEntityCapability);
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -164,8 +164,6 @@ public class TwilightForestMod {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 		} else if (evt.getRegistryKey().equals(Registries.CHUNK_GENERATOR)) {
 			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
-		} else if (evt.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
-			CraftingHelper.register(UncraftingTableCondition.Serializer.INSTANCE);
 		}
 	}
 

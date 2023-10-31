@@ -3,10 +3,12 @@ package twilightforest.data.custom;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -18,7 +20,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class UncraftingRecipeBuilder implements RecipeBuilder {
 
@@ -87,7 +88,7 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 	}
 
 	@Override
-	public RecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
+	public RecipeBuilder unlockedBy(String name, Criterion<?> trigger) {
 		return this;
 	}
 
@@ -103,14 +104,14 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 	}
 
 	@Override
-	public void save(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
+	public void save(RecipeOutput output, ResourceLocation id) {
 		this.ensureValid(id);
-		consumer.accept(new Result(id, this.input, this.count, this.cost, this.pattern, this.outputs));
+		output.accept(new Result(id, this.input, this.count, this.cost, this.pattern, this.outputs));
 	}
 
 	@Override
-	public void save(Consumer<FinishedRecipe> consumer) {
-		this.save(consumer, new ResourceLocation(TwilightForestMod.ID, "uncrafting/" + this.getDefaultRecipeId(this.getResult()).getPath()));
+	public void save(RecipeOutput output) {
+		this.save(output, new ResourceLocation(TwilightForestMod.ID, "uncrafting/" + this.getDefaultRecipeId(this.getResult()).getPath()));
 	}
 
 	private void ensureValid(ResourceLocation id) {
@@ -171,13 +172,13 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 			JsonObject keys = new JsonObject();
 
 			for(Map.Entry<Character, Ingredient> entry : this.outputs.entrySet()) {
-				keys.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
+				keys.add(String.valueOf(entry.getKey()), entry.getValue().toJson(false));
 			}
 
 			object.add("key", keys);
 
 			JsonObject inputJson = new JsonObject();
-			inputJson.add("ingredient", this.input.toJson());
+			inputJson.add("ingredient", this.input.toJson(false));
 			if (this.count > 1) {
 				inputJson.addProperty("count", this.count);
 			}
@@ -190,24 +191,17 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 		}
 
 		@Override
-		public ResourceLocation getId() {
+		public ResourceLocation id() {
 			return this.id;
 		}
 
 		@Override
-		public RecipeSerializer<?> getType() {
+		public RecipeSerializer<?> type() {
 			return TFRecipes.UNCRAFTING_SERIALIZER.get();
 		}
 
-		@Nullable
 		@Override
-		public JsonObject serializeAdvancement() {
-			return null;
-		}
-
-		@Nullable
-		@Override
-		public ResourceLocation getAdvancementId() {
+		public AdvancementHolder advancement() {
 			return null;
 		}
 	}

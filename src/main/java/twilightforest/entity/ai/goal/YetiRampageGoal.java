@@ -44,7 +44,7 @@ public class YetiRampageGoal extends Goal {
 		this.currentDuration = this.tantrumDuration;
 		this.yeti.setRampaging(true);
 		this.yeti.playSound(TFSounds.ALPHA_YETI_ROAR.get(), 4F, 0.5F + yeti.getRandom().nextFloat() * 0.5F);
-		this.yeti.gameEvent(GameEvent.ENTITY_ROAR);
+		this.yeti.gameEvent(GameEvent.ENTITY_ACTION);
 	}
 
 	/**

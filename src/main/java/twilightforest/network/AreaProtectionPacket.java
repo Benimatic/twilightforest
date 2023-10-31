@@ -80,7 +80,7 @@ public class AreaProtectionPacket {
 						}
 					}
 
-					level.putNonPlayerEntity(0, new ProtectionBox(level, sbb));
+					level.addEntity(new ProtectionBox(level, sbb));
 				}
 			});
 			ctx.get().setPacketHandled(true);

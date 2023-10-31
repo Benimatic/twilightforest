@@ -26,7 +26,7 @@ public class FieryToolSmeltingModifier extends LootModifier {
 		generatedLoot.forEach((stack) -> newLoot.add(
 				context.getLevel().getRecipeManager()
 						.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
-						.map(recipe -> recipe.getResultItem(context.getLevel().registryAccess()))
+						.map(holder -> holder.value().getResultItem(context.getLevel().registryAccess()))
 						.filter(itemStack -> !itemStack.isEmpty())
 						.map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
 						.orElse(stack)));

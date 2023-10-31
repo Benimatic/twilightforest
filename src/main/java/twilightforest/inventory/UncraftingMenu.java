@@ -320,20 +320,21 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		return input.is(output.getItem()) && input.getCount() >= output.getCount();
 	}
 
-	private static RecipeHolder<?>[] getRecipesFor(CraftingContainer matrix, Level world) {
+	@SuppressWarnings("unchecked")
+	private static RecipeHolder<CraftingRecipe>[] getRecipesFor(CraftingContainer matrix, Level world) {
 		return world.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, matrix, world).toArray(new RecipeHolder[0]);
 	}
 
 	private void chooseRecipe(CraftingContainer inventory) {
 
-		RecipeHolder<?>[] recipes = getRecipesFor(inventory, this.level);
+		RecipeHolder<CraftingRecipe>[] recipes = getRecipesFor(inventory, this.level);
 
 		if (recipes.length == 0) {
 			this.tinkerResult.setItem(0, ItemStack.EMPTY);
 			return;
 		}
 
-		RecipeHolder<?> recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
+		RecipeHolder<CraftingRecipe> recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
 		if (recipe != null && !recipe.value().isSpecial() && (!this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe.id()))) {
 			this.tinkerResult.setRecipeUsed(recipe);

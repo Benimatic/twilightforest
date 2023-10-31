@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -80,13 +81,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements CurioIt
 	@Override
 	public void verifyTagAfterLoad(CompoundTag tag) {
 		super.verifyTagAfterLoad(tag);
-		if (tag.contains("SkullOwner", 8) && !StringUtils.isBlank(tag.getString("SkullOwner"))) {
-			GameProfile gameprofile = new GameProfile(null, tag.getString("SkullOwner"));
-			SkullCandleBlockEntity.updateGameprofile(gameprofile, (p_151177_) -> {
-				tag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_151177_));
-			});
-		}
-
+		SkullBlockEntity.resolveGameProfile(tag);
 	}
 
 	@Override

@@ -90,11 +90,6 @@ public class GiantMiner extends Monster {
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return -2.5D;
-	}
-
-	@Override
 	public int getMaxSpawnClusterSize() {
 		return 1;
 	}

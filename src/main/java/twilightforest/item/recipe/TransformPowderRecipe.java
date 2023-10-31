@@ -1,6 +1,8 @@
 package twilightforest.item.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +19,7 @@ import twilightforest.init.TFRecipes;
 
 import org.jetbrains.annotations.Nullable;
 
-public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result, boolean isReversible) implements Recipe<Container> {
+public record TransformPowderRecipe(EntityType<?> input, EntityType<?> result, boolean isReversible) implements Recipe<Container> {
 
 	@Override
 	public boolean matches(Container container, Level level) {
@@ -40,11 +42,6 @@ public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> inp
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		return this.recipeID;
-	}
-
-	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return TFRecipes.TRANSFORMATION_SERIALIZER.get();
 	}
@@ -56,24 +53,25 @@ public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> inp
 
 	public static class Serializer implements RecipeSerializer<TransformPowderRecipe> {
 
+		private static final Codec<TransformPowderRecipe> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						ForgeRegistries.ENTITY_TYPES.getCodec().fieldOf("from").forGetter(o -> o.input),
+						ForgeRegistries.ENTITY_TYPES.getCodec().fieldOf("to").forGetter(o -> o.result),
+						Codec.BOOL.fieldOf("reversible").forGetter(o -> o.isReversible)
+				).apply(instance, TransformPowderRecipe::new));
+
 		@Override
-		public TransformPowderRecipe fromJson(ResourceLocation id, JsonObject object) {
-			EntityType<?> input = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
-			EntityType<?> output = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
-			boolean reversible = GsonHelper.getAsBoolean(object, "reversible");
-			if (input != null && output != null) {
-				return new TransformPowderRecipe(id, input, output, reversible);
-			}
-			return new TransformPowderRecipe(id, EntityType.PIG, EntityType.ZOMBIFIED_PIGLIN, false);
+		public Codec<TransformPowderRecipe> codec() {
+			return CODEC;
 		}
 
 		@Nullable
 		@Override
-		public TransformPowderRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
+		public TransformPowderRecipe fromNetwork(FriendlyByteBuf buffer) {
 			EntityType<?> input = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITY_TYPES);
 			EntityType<?> output = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITY_TYPES);
 			boolean reversible = buffer.readBoolean();
-			return new TransformPowderRecipe(id, input, output, reversible);
+			return new TransformPowderRecipe(input, output, reversible);
 		}
 
 		@Override

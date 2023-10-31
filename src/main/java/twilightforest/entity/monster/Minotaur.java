@@ -149,11 +149,6 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	@Override
-	public double getMyRidingOffset() {
-		return -0.5D;
-	}
-
-	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.MINOTAUR_AMBIENT.get();
 	}

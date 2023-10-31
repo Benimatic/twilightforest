@@ -23,12 +23,12 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		if (!level.isClientSide()) {
 			if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
 				level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipeHolder -> {
-					if (recipeHolder.value().input().is(state.getBlock())) {
-						if (recipeHolder.value().result().is(Blocks.AIR)) {
+					if (recipeHolder.value().input() == state.getBlock()) {
+						if (recipeHolder.value().result() == Blocks.AIR) {
 							level.removeBlock(pos, true);
 							level.levelEvent(2001, pos, Block.getId(state));
 						} else {
-							level.setBlock(pos, recipeHolder.value().result().getBlock().withPropertiesOf(state), 3);
+							level.setBlock(pos, recipeHolder.value().result().withPropertiesOf(state), 3);
 						}
 						stack.hurt(1, level.getRandom(), null);
 						this.fired = true;
