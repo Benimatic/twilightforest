@@ -38,8 +38,8 @@ public class SpawnFallenLeafFromPacket {
 	public static class Handler {
 
 		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(SpawnFallenLeafFromPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(SpawnFallenLeafFromPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					Random rand = new Random();
@@ -59,7 +59,7 @@ public class SpawnFallenLeafFromPacket {
 					);
 				}
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

@@ -41,8 +41,8 @@ public class MazeMapPacket {
 	public static class Handler {
 
 		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(MazeMapPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(MazeMapPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
@@ -60,7 +60,7 @@ public class MazeMapPacket {
 					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

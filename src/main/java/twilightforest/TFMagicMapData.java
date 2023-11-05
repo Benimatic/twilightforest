@@ -3,6 +3,8 @@ package twilightforest;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.neoforge.network.PlayNetworkDirection;
 import org.joml.Matrix4f;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
@@ -128,13 +130,19 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level world, String name) {
 		if (world.isClientSide) return CLIENT_DATA.get(name);
-		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
+		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMagicMapData.factory(), name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level world, TFMagicMapData data, String id) {
 		if (world.isClientSide) CLIENT_DATA.put(id, data);
 		else ((ServerLevel)world).getServer().overworld().getDataStorage().set(id, data);
+	}
+
+	public static SavedData.Factory<MapItemSavedData> factory() {
+		return new SavedData.Factory<>(() -> {
+			throw new IllegalStateException("Should never create an empty map saved data");
+		}, TFMagicMapData::load, DataFixTypes.SAVED_DATA_MAP_DATA);
 	}
 
 	@Nullable
@@ -184,7 +192,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn, Component.translatable("map.magic.text"));
+			super(Type.TARGET_X, xIn, yIn, rotationIn, null);
 			this.featureId = featureId;
 		}
 
@@ -213,18 +221,18 @@ public class TFMagicMapData extends MapItemSavedData {
 			return true;
 		}
 
-		@Override
-		public boolean equals(Object o) {
-			if (super.equals(o) && o instanceof TFMapDecoration tfMapDecoration) {
-				return this.featureId == tfMapDecoration.featureId;
-			}
-
-			return false;
-		}
-
-		@Override
-		public int hashCode() {
-			return super.hashCode() * 31 + featureId;
-		}
+//		@Override
+//		public boolean equals(Object o) {
+//			if (super.equals(o) && o instanceof TFMapDecoration tfMapDecoration) {
+//				return this.featureId == tfMapDecoration.featureId;
+//			}
+//
+//			return false;
+//		}
+//
+//		@Override
+//		public int hashCode() {
+//			return super.hashCode() * 31 + featureId;
+//		}
 	}
 }

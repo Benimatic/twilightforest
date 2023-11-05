@@ -40,8 +40,8 @@ public class UpdateShieldPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(UpdateShieldPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(UpdateShieldPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
 				if (entity instanceof LivingEntity) {
 					entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
@@ -51,7 +51,7 @@ public class UpdateShieldPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

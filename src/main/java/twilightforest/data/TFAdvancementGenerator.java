@@ -2,7 +2,9 @@ package twilightforest.data;
 
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -474,7 +476,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 						Component.translatable("advancement.twilightforest.experiment_115_3"),
 						Component.translatable("advancement.twilightforest.experiment_115_3.desc"),
 						null, FrameType.CHALLENGE, true, true, true)
-				.addCriterion("eat_115_e115", PlayerTrigger.TriggerInstance.located(EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM.get(TFStats.E115_SLICES_EATEN.get()), MinMaxBounds.Ints.atLeast(115)).build()).build()))
+				.addCriterion("eat_115_e115", PlayerTrigger.TriggerInstance.located(Optional.of(EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().addStat(Stats.CUSTOM, registries.lookupOrThrow(Registries.CUSTOM_STAT).getOrThrow(TFStats.E115_SLICES_EATEN.getKey()), MinMaxBounds.Ints.atLeast(115)).build()).build())))
 				.save(consumer, "twilightforest:experiment_115_115");
 
 		Advancement.Builder.advancement().parent(e115).display(

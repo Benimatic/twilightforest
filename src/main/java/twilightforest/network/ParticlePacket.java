@@ -64,8 +64,8 @@ public class ParticlePacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(ParticlePacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(ParticlePacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				ClientLevel level = Minecraft.getInstance().level;
 				if (level == null)
 					return;
@@ -73,7 +73,7 @@ public class ParticlePacket {
 					level.addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
 				}
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

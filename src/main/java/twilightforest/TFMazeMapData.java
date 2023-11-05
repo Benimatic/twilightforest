@@ -6,8 +6,10 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.network.PlayNetworkDirection;
 import org.jetbrains.annotations.Nullable;
@@ -74,7 +76,13 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMazeMapData getMazeMapData(Level world, String name) {
 		if (world.isClientSide) return CLIENT_DATA.get(name);
-		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMazeMapData::load, name);
+		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
+	}
+
+	public static SavedData.Factory<MapItemSavedData> factory() {
+		return new SavedData.Factory<>(() -> {
+			throw new IllegalStateException("Should never create an empty map saved data");
+		}, TFMazeMapData::load, DataFixTypes.SAVED_DATA_MAP_DATA);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData

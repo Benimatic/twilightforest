@@ -31,10 +31,10 @@ public class ThrowPlayerPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(ThrowPlayerPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() ->
+		public static boolean onMessage(ThrowPlayerPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() ->
 					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ));
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

@@ -48,8 +48,8 @@ public class AreaProtectionPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(AreaProtectionPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					ClientLevel level = Minecraft.getInstance().level;
@@ -83,7 +83,7 @@ public class AreaProtectionPacket {
 					level.addEntity(new ProtectionBox(level, sbb));
 				}
 			});
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

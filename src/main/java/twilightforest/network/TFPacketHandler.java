@@ -1,12 +1,8 @@
 package twilightforest.network;
 
-import net.neoforged.neoforge.network.NetworkEvent;
 import net.neoforged.neoforge.network.NetworkRegistry;
 import net.neoforged.neoforge.network.simple.SimpleChannel;
 import twilightforest.TwilightForestMod;
-
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 public class TFPacketHandler {
 	// Bump this number every time theres a breaking change, to ensure people dont mess things up when joining on the wrong version

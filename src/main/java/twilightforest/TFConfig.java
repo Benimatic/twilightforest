@@ -7,10 +7,14 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.exceptions.InsufficientPrivilegesException;
 import com.mojang.authlib.exceptions.InvalidCredentialsException;
 import com.mojang.authlib.exceptions.UserBannedException;
+import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.minecraft.client.ObjectMapper;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment;
+import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
 import com.mojang.authlib.yggdrasil.response.MinecraftProfilePropertiesResponse;
+import com.mojang.util.UndashedUuid;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -501,43 +505,16 @@ public class TFConfig {
 				@Override
 				public void run() {
 					GAME_PROFILES.clear();
-
 					YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
-					String baseUrl = EnvironmentParser.getEnvironmentFromProperties().orElse(YggdrasilEnvironment.PROD.getEnvironment()).getSessionHost() + "/session/minecraft/";
-					boolean requireSecure = false;
+					MinecraftSessionService session = service.createMinecraftSessionService();
 					for (String stringUUID : TFConfig.CLIENT_CONFIG.giantSkinUUIDs.get()) {
 						try {
-							UUID uuid = UUID.fromString(stringUUID);
-
-							URL url = HttpAuthenticationService.constantURL(baseUrl + "profile/" + uuid);
-							url = HttpAuthenticationService.concatenateURL(url, "unsigned=" + !requireSecure);
-
-							final MinecraftProfilePropertiesResponse response = ObjectMapper.create().readValue(service.performGetRequest(url), MinecraftProfilePropertiesResponse.class);
-
-							if (StringUtils.isNotBlank(response.getError())) {
-								if ("UserMigratedException".equals(response.getCause())) {
-									throw new UserMigratedException(response.getErrorMessage());
-								} else if ("ForbiddenOperationException".equals(response.getError())) {
-									throw new InvalidCredentialsException(response.getErrorMessage());
-								} else if ("InsufficientPrivilegesException".equals(response.getError())) {
-									throw new InsufficientPrivilegesException(response.getErrorMessage());
-								} else if ("multiplayer.access.banned".equals(response.getError())) {
-									throw new UserBannedException();
-								} else {
-									throw new AuthenticationException(response.getErrorMessage());
-								}
-							}
-
-							if (response.getId() != null) {
-								final GameProfile result = new GameProfile(response.getId(), response.getName());
-								if (response.getProperties() != null)
-									result.getProperties().putAll(response.getProperties());
-								GAME_PROFILES.add(result);
+							ProfileResult result = session.fetchProfile(UUID.fromString(stringUUID), false);
+							if (result != null) {
+								GAME_PROFILES.add(result.profile());
 							}
 						} catch (IllegalArgumentException e) {
 							TwilightForestMod.LOGGER.error("\"{}\" is not a valid UUID!", stringUUID);
-						} catch (AuthenticationException | IOException e) {
-							e.printStackTrace();
 						}
 					}
 					super.run();

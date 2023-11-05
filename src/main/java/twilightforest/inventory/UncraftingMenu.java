@@ -320,7 +320,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		return input.is(output.getItem()) && input.getCount() >= output.getCount();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static RecipeHolder<CraftingRecipe>[] getRecipesFor(CraftingContainer matrix, Level world) {
 		return world.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, matrix, world).toArray(new RecipeHolder[0]);
 	}

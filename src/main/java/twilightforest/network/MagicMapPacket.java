@@ -36,8 +36,8 @@ public class MagicMapPacket {
 	public static class Handler {
 
 		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(MagicMapPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(MagicMapPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
@@ -71,7 +71,7 @@ public class MagicMapPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

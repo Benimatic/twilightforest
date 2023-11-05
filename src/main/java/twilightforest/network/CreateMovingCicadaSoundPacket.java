@@ -28,8 +28,8 @@ public class CreateMovingCicadaSoundPacket {
 	public static class Handler {
 
 		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(CreateMovingCicadaSoundPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(CreateMovingCicadaSoundPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
@@ -39,7 +39,7 @@ public class CreateMovingCicadaSoundPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

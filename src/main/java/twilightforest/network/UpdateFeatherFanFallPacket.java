@@ -36,8 +36,8 @@ public class UpdateFeatherFanFallPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(UpdateFeatherFanFallPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(UpdateFeatherFanFallPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
 				if (entity instanceof LivingEntity) {
 					entity.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(cap -> {
@@ -46,7 +46,7 @@ public class UpdateFeatherFanFallPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

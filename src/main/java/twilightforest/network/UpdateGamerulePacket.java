@@ -24,13 +24,13 @@ public class UpdateGamerulePacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(UpdateGamerulePacket packet, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(UpdateGamerulePacket packet, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				if (Minecraft.getInstance().level != null)
 					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(packet.enforced, null);
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

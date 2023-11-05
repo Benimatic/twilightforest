@@ -36,8 +36,8 @@ public class StructureProtectionPacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(StructureProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(StructureProtectionPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed
@@ -46,7 +46,7 @@ public class StructureProtectionPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

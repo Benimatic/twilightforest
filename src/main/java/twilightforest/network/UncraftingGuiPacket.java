@@ -25,10 +25,10 @@ public class UncraftingGuiPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(UncraftingGuiPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ServerPlayer player = ctx.get().getSender();
+		public static boolean onMessage(UncraftingGuiPacket message, NetworkEvent.Context ctx) {
+			ServerPlayer player = ctx.getSender();
 
-			ctx.get().enqueueWork(() -> {
+			ctx.enqueueWork(() -> {
 				AbstractContainerMenu container = player.containerMenu;
 
 				if (container instanceof UncraftingMenu uncrafting) {
@@ -49,7 +49,7 @@ public class UncraftingGuiPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}

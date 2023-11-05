@@ -47,8 +47,8 @@ public class UpdateThrownPacket {
 
 	public static class Handler {
 
-		public static boolean onMessage(UpdateThrownPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(UpdateThrownPacket message, NetworkEvent.Context ctx) {
+			ctx.enqueueWork(() -> {
 				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
 				if (entity instanceof LivingEntity) {
 					entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
@@ -60,7 +60,7 @@ public class UpdateThrownPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
+			ctx.setPacketHandled(true);
 			return true;
 		}
 	}
