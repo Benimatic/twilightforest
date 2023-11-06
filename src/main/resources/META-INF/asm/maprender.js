@@ -10,7 +10,7 @@ var FieldInsnNode = Java.type('org.objectweb.asm.tree.FieldInsnNode');
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
     return {
-        'maprendercontext': {
+        'decorations': {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.gui.MapRenderer$MapInstance',
@@ -19,17 +19,33 @@ function initializeCoreMod() {
             },
             'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                var insn = null;
+                for (var index = 0; index < instructions.size() - 1; index++) {
+                    var /*org.objectweb.asm.tree.VarInsnNode*/ node = instructions.get(index);
+                    if (insn == null &&
+
+                        node instanceof VarInsnNode &&
+
+                        node.getOpcode() === Opcodes.ISTORE &&
+
+                        node.var === 5
+
+                    )
+                        insn = node;
+
+                }
                 instructions.insertBefore(
-                    ASM.findFirstInstruction(methodNode, Opcodes.ISTORE),
+                    insn,
                     ASM.listOf(
+                        new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/gui/MapRenderer$MapInstance', 'data', 'net/minecraft/world/level/saveddata/maps/MapItemSavedData'),
                         new VarInsnNode(Opcodes.ALOAD, 1),
                         new VarInsnNode(Opcodes.ALOAD, 2),
                         new VarInsnNode(Opcodes.ILOAD, 4),
                         new MethodInsnNode(
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',
-                            'mapRenderContext',
-                            '(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V',
+                            'mapRenderDecorations',
+                            '(ILnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V',
                             false
                             )
                         )
@@ -139,8 +155,8 @@ function initializeCoreMod() {
                     ASM.listOf(
                         new VarInsnNode(Opcodes.ALOAD, 4),
                         new VarInsnNode(Opcodes.ALOAD, 0),
-                        new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/renderer/ItemInHandRenderer', ASM.mapField('f_109299_'), 'Lnet/minecraft/client/Minecraft;'),
-                        new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/Minecraft', ASM.mapField('f_91073_'), 'Lnet/minecraft/client/multiplayer/ClientLevel;'),
+                        new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/renderer/ItemInHandRenderer', 'minecraft', 'Lnet/minecraft/client/Minecraft;'),
+                        new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/Minecraft', 'level', 'Lnet/minecraft/client/multiplayer/ClientLevel;'),
                         new MethodInsnNode(
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',

@@ -52,20 +52,7 @@ public class MagicMapPacket {
 					message.inner.applyToMap(mapdata);
 
 					// TF - handle custom decorations
-					{
-						mapdata.deserializeFeatures(message.featureData);
-
-						// Cheat and put tfDecorations into main collection so they are called by renderer
-						// However, ensure they come before vanilla's markers, so player markers go above feature markers.
-						Map<String, MapDecoration> saveVanilla = new LinkedHashMap<>(mapdata.decorations);
-						mapdata.decorations.clear();
-
-						for (TFMagicMapData.TFMapDecoration tfDecor : mapdata.tfDecorations) {
-							mapdata.decorations.put(tfDecor.toString(), tfDecor);
-						}
-
-						mapdata.decorations.putAll(saveVanilla);
-					}
+					mapdata.deserializeFeatures(message.featureData);
 
 					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}

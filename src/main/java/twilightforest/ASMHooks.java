@@ -78,12 +78,16 @@ public class ASMHooks {
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.gui.MapRenderer.MapInstance#draw(PoseStack, MultiBufferSource, boolean, int)}<br>
-	 * [BEFORE FIRST ISTORE]
+	 * [BEFORE ISTORE 5]
 	 */
-	public static void mapRenderContext(PoseStack stack, MultiBufferSource buffer, int light) {
-		TFMagicMapData.TFMapDecoration.RenderContext.stack = stack;
-		TFMagicMapData.TFMapDecoration.RenderContext.buffer = buffer;
-		TFMagicMapData.TFMapDecoration.RenderContext.light = light;
+	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
+		if (data instanceof TFMagicMapData mapData) {
+			for (TFMagicMapData.TFMapDecoration decoration : mapData.tfDecorations) {
+				decoration.render(o, stack, buffer, light);
+				o++;
+			}
+		}
+		return o;
 	}
 
 	private static boolean isOurMap(ItemStack stack) {

@@ -30,12 +30,7 @@ import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LegacyLandmarkPlacements;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TFMagicMapData extends MapItemSavedData {
 	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
@@ -86,13 +81,13 @@ public class TFMagicMapData extends MapItemSavedData {
 		List<TFMapDecoration> toAdd = new ArrayList<>();
 
 		for (TFMapDecoration coord : tfDecorations) {
-			int worldX = (coord.x() << this.scale - 1) + this.centerX;
-			int worldZ = (coord.y() << this.scale - 1) + this.centerZ;
+			int worldX = (coord.x << this.scale - 1) + this.centerX;
+			int worldZ = (coord.y << this.scale - 1) + this.centerZ;
 
 			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
-				toAdd.add(new TFMapDecoration(trueId, coord.x(), coord.y(), coord.rot()));
+				toAdd.add(new TFMapDecoration(trueId, coord.x, coord.y, coord.rot));
 			}
 		}
 
@@ -118,8 +113,8 @@ public class TFMagicMapData extends MapItemSavedData {
 		int i = 0;
 		for (TFMapDecoration featureCoord : tfDecorations) {
 			storage[i * 3] = (byte) featureCoord.featureId;
-			storage[i * 3 + 1] = featureCoord.x();
-			storage[i * 3 + 2] = featureCoord.y();
+			storage[i * 3 + 1] = featureCoord.x;
+			storage[i * 3 + 2] = featureCoord.y;
 			i++;
 		}
 
@@ -152,7 +147,9 @@ public class TFMagicMapData extends MapItemSavedData {
 		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(this, mapItemDataPacket), PlayNetworkDirection.PLAY_TO_CLIENT) : packet;
 	}
 
-	public static class TFMapDecoration extends MapDecoration {
+	public static class TFMapDecoration {
+		
+		private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
 
 		private static final Int2ObjectArrayMap<TFLandmark> ICONS = new Int2ObjectArrayMap<>(){{
 			defaultReturnValue(TFLandmark.NOTHING);
@@ -177,62 +174,56 @@ public class TFMagicMapData extends MapItemSavedData {
 			ICONS.forEach((k, v) -> put(v, k.intValue()));
 		}};
 
-		@OnlyIn(Dist.CLIENT)
-		public static class RenderContext {
-			private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
-			public static PoseStack stack;
-			public static MultiBufferSource buffer;
-			public static int light;
-		}
-
 		final int featureId;
+		final byte x;
+		final byte y;
+		final byte rot;
 
 		public TFMapDecoration(TFLandmark featureId, byte xIn, byte yIn, byte rotationIn) {
 			this(ICONS_FLIPPED.getInt(featureId), xIn, yIn, rotationIn);
 		}
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn, null);
 			this.featureId = featureId;
+			this.x = xIn;
+			this.y = yIn;
+			this.rot = rotationIn;
 		}
 
-		@Override
 		@OnlyIn(Dist.CLIENT)
-		public boolean render(int idx) {
-			// TODO: Forge needs to pass in the ms and buffers, but for now this works
+		public boolean render(int idx, PoseStack stack, MultiBufferSource buffer, int light) {
 			if (ICONS.get(featureId).isStructureEnabled) {
-				RenderContext.stack.pushPose();
-				RenderContext.stack.translate(0.0F + this.x() / 2.0F + 64.0F, 0.0F + this.y() / 2.0F + 64.0F, -0.02F);
-				RenderContext.stack.mulPose(Axis.ZP.rotationDegrees(this.rot() * 360 / 16.0F));
-				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
-				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
+				stack.pushPose();
+				stack.translate(0.0F + this.x / 2.0F + 64.0F, 0.0F + this.y / 2.0F + 64.0F, -0.02F);
+				stack.mulPose(Axis.ZP.rotationDegrees(this.rot * 360 / 16.0F));
+				stack.scale(4.0F, 4.0F, 3.0F);
+				stack.translate(-0.125D, 0.125D, 0.0D);
 				float f1 = featureId % 8.0F / 8.0F;
 				float f2 = featureId / 8 / 8.0F;
 				float f3 = (featureId % 8 + 1) / 8.0F;
 				float f4 = (featureId / 8 + 1) / 8.0F;
-				Matrix4f matrix4f1 = RenderContext.stack.last().pose();
-				VertexConsumer ivertexbuilder1 = RenderContext.buffer.getBuffer(RenderContext.MAP_ICONS);
-				ivertexbuilder1.vertex(matrix4f1, -1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f2).uv2(RenderContext.light).endVertex();
-				ivertexbuilder1.vertex(matrix4f1, 1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f2).uv2(RenderContext.light).endVertex();
-				ivertexbuilder1.vertex(matrix4f1, 1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f4).uv2(RenderContext.light).endVertex();
-				ivertexbuilder1.vertex(matrix4f1, -1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f4).uv2(RenderContext.light).endVertex();
-				RenderContext.stack.popPose();
+				Matrix4f matrix4f1 = stack.last().pose();
+				VertexConsumer ivertexbuilder1 = buffer.getBuffer(MAP_ICONS);
+				ivertexbuilder1.vertex(matrix4f1, -1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f2).uv2(light).endVertex();
+				ivertexbuilder1.vertex(matrix4f1, 1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f2).uv2(light).endVertex();
+				ivertexbuilder1.vertex(matrix4f1, 1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f4).uv2(light).endVertex();
+				ivertexbuilder1.vertex(matrix4f1, -1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f4).uv2(light).endVertex();
+				stack.popPose();
 			}
 			return true;
 		}
 
-//		@Override
-//		public boolean equals(Object o) {
-//			if (super.equals(o) && o instanceof TFMapDecoration tfMapDecoration) {
-//				return this.featureId == tfMapDecoration.featureId;
-//			}
-//
-//			return false;
-//		}
-//
-//		@Override
-//		public int hashCode() {
-//			return super.hashCode() * 31 + featureId;
-//		}
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			TFMapDecoration that = (TFMapDecoration) o;
+			return featureId == that.featureId && x == that.x && y == that.y && rot == that.rot;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(featureId, x, y, rot);
+		}
 	}
 }
