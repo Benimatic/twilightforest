@@ -327,7 +327,7 @@ public class TFClientEvents {
 	}
 
 	@SubscribeEvent
-	public static void unrenderHeadWithTrophies(RenderLivingEvent<?, ?> event) {
+	public static void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
 		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
 		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
 

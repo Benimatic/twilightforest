@@ -20,7 +20,6 @@ import twilightforest.TwilightForestMod;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class FierySwordItem extends SwordItem {
 
 	public FierySwordItem(Tier toolMaterial, Properties properties) {

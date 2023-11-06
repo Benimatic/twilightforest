@@ -137,16 +137,23 @@ public class ToolEvents {
 	}
 
 	@SubscribeEvent
-	public static void onEntityInteract(PlayerInteractEvent event) {
-		if (event instanceof PlayerInteractEvent.EntityInteractSpecific entityInteractSpecific) {
-			checkEntityTooFar(entityInteractSpecific, entityInteractSpecific.getTarget(), entityInteractSpecific.getEntity(), entityInteractSpecific.getHand());
-		} else if (event instanceof PlayerInteractEvent.EntityInteract entityInteract) {
-			checkEntityTooFar(entityInteract, entityInteract.getTarget(), entityInteract.getEntity(), entityInteract.getHand());
-		} else if (event instanceof PlayerInteractEvent.RightClickBlock rightClickBlock) {
-			checkBlockTooFar(event, rightClickBlock.getEntity(), rightClickBlock.getHand());
-		} else if (event instanceof PlayerInteractEvent.RightClickItem rightClickItem) {
-			INTERACTION_HAND = rightClickItem.getHand();
-		}
+	public static void giantToolEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
+		checkEntityTooFar(event, event.getTarget(), event.getEntity(), event.getHand());
+	}
+
+	@SubscribeEvent
+	public static void giantToolEntityInteract(PlayerInteractEvent.EntityInteract event) {
+		checkEntityTooFar(event, event.getTarget(), event.getEntity(), event.getHand());
+	}
+
+	@SubscribeEvent
+	public static void giantToolBlockInteract(PlayerInteractEvent.RightClickBlock event) {
+		checkBlockTooFar(event, event.getEntity(), event.getHand());
+	}
+
+	@SubscribeEvent
+	public static void giantToolItemInteract(PlayerInteractEvent.RightClickItem event) {
+		INTERACTION_HAND = event.getHand();
 	}
 
 	private static void checkEntityTooFar(PlayerInteractEvent event, Entity target, Player player, InteractionHand hand) {

@@ -240,7 +240,7 @@ public class TFClientSetup {
 		}
 		if (field_EntityRenderersEvent$AddLayers_renderers != null) {
 			event.getSkins().forEach(renderer -> {
-				LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer.id());
+				LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
 				attachRenderLayers(Objects.requireNonNull(skin));
 			});
 			try {
