@@ -37,7 +37,8 @@ function initializeCoreMod() {
                 instructions.insertBefore(
                     insn,
                     ASM.listOf(
-                        new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/gui/MapRenderer$MapInstance', 'data', 'net/minecraft/world/level/saveddata/maps/MapItemSavedData'),
+                        new VarInsnNode(Opcodes.ALOAD, 0),
+                        new FieldInsnNode(Opcodes.GETFIELD, 'net/minecraft/client/gui/MapRenderer$MapInstance', 'data', 'Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;'),
                         new VarInsnNode(Opcodes.ALOAD, 1),
                         new VarInsnNode(Opcodes.ALOAD, 2),
                         new VarInsnNode(Opcodes.ILOAD, 4),
@@ -45,7 +46,7 @@ function initializeCoreMod() {
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',
                             'mapRenderDecorations',
-                            '(ILnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V',
+                            '(ILnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)I',
                             false
                             )
                         )
