@@ -23,7 +23,7 @@ function initializeCoreMod() {
                         methodNode,
                         ASM.MethodType.INTERFACE,
                         'net/minecraft/world/level/LevelReader',
-                        ASM.mapMethod('m_45524_'), // getRawBrightness
+                        'getRawBrightness',
                         '(Lnet/minecraft/core/BlockPos;I)I'
                     ),
                     ASM.listOf(

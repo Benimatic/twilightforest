@@ -116,7 +116,7 @@ function initializeCoreMod() {
 
                         equate(node.owner, 'net/minecraft/client/multiplayer/ClientLevel') &&
 
-                        equate(node.name, ASM.mapMethod('m_104735_')) &&
+                        equate(node.name, 'entitiesForRendering') &&
 
                         equate(node.desc, '()Ljava/lang/Iterable;')
 
