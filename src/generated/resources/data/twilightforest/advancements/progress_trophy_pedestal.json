@@ -21,7 +21,6 @@
       "trigger": "minecraft:tick"
     },
     "trophy_pedestal": {
-      "conditions": {},
       "trigger": "twilightforest:placed_on_trophy_pedestal"
     }
   },

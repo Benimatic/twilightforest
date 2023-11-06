@@ -17,7 +17,6 @@
       "trigger": "minecraft:location"
     },
     "make_portal": {
-      "conditions": {},
       "trigger": "twilightforest:make_tf_portal"
     }
   },

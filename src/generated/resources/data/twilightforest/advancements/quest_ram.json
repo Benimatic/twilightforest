@@ -2,7 +2,6 @@
   "parent": "twilightforest:root",
   "criteria": {
     "quest_ram_complete": {
-      "conditions": {},
       "trigger": "twilightforest:complete_quest_ram"
     }
   },

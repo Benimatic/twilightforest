@@ -2,7 +2,6 @@
   "parent": "twilightforest:progress_hydra",
   "criteria": {
     "hydra_chop": {
-      "conditions": {},
       "trigger": "twilightforest:consume_hydra_chop_on_low_hunger"
     }
   },

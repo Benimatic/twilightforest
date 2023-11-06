@@ -92,14 +92,16 @@
   },
   "requirements": [
     [
-      "fiery_pick",
-      "fiery_sword"
+      null,
+      null,
+      null,
+      null
     ],
     [
-      "fiery_helmet",
-      "fiery_chestplate",
-      "fiery_leggings",
-      "fiery_boots"
+      null,
+      null,
+      null,
+      null
     ]
   ],
   "rewards": {

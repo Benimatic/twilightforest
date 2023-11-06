@@ -2,7 +2,6 @@
   "parent": "twilightforest:progress_trophy_pedestal",
   "criteria": {
     "all_knights": {
-      "conditions": {},
       "trigger": "twilightforest:kill_all_phantoms"
     },
     "previous_progression": {

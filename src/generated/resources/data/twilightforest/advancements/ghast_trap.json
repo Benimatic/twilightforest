@@ -2,7 +2,6 @@
   "parent": "twilightforest:progress_knights",
   "criteria": {
     "activate_ghast_trap": {
-      "conditions": {},
       "trigger": "twilightforest:activate_ghast_trap"
     }
   },
