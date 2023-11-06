@@ -99,7 +99,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("shield_scepter", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FORTIFICATION_SCEPTER.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.TriggerInstance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.LICH.get())))
 				.addCriterion("kill_naga", this.advancementTrigger(naga))
-				.requirements(new AdvancementRequirements(new String[7][1]))
+				.requirements(new CountRequirementsStrategy(7, 1))
 				.save(consumer, "twilightforest:progress_lich");
 
 		AdvancementHolder minoshroom = Advancement.Builder.advancement().parent(lich).display(
@@ -459,7 +459,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 				.addCriterion("fiery_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_CHESTPLATE.get()))
 				.addCriterion("fiery_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_LEGGINGS.get()))
 				.addCriterion("fiery_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_BOOTS.get()))
-				.requirements(new AdvancementRequirements(new String[2][4]))
+				.requirements(new CountRequirementsStrategy(2, 4))
 				.rewards(AdvancementRewards.Builder.experience(75))
 				.save(consumer, "twilightforest:fiery_set");
 

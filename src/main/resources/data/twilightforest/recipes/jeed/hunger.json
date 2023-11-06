@@ -1,11 +1,11 @@
 {
-  "type": "forge:conditional",
+  "type": "neoforge:conditional",
   "recipes": [
     {
       "conditions": [
         {
           "modid": "jeed",
-          "type": "forge:mod_loaded"
+          "type": "neoforge:mod_loaded"
         }
       ],
       "recipe": {

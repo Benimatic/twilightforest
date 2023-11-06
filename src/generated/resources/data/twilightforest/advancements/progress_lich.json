@@ -131,25 +131,16 @@
   },
   "requirements": [
     [
-      null
+      "kill_lich",
+      "trophy",
+      "lifedrain_scepter",
+      "twilight_scepter",
+      "zombie_scepter",
+      "shield_scepter",
+      "was_in_fight"
     ],
     [
-      null
-    ],
-    [
-      null
-    ],
-    [
-      null
-    ],
-    [
-      null
-    ],
-    [
-      null
-    ],
-    [
-      null
+      "kill_naga"
     ]
   ],
   "sends_telemetry_event": true
