@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_iron_bars",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_iron_bars"
     ]
   ],
   "rewards": {

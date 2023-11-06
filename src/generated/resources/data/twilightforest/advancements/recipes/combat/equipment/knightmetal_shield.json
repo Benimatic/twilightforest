@@ -32,9 +32,9 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_ingot",
-      "has_ring",
-      "has_the_recipe"
+      "has_ring"
     ]
   ],
   "rewards": {
