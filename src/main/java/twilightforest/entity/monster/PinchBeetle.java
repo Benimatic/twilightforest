@@ -114,10 +114,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	@Override
 	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		float distance = 0.75F;
-		float dx = Mth.cos((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
-		float dz = Mth.sin((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
-		return new Vector3f(dx,  dimensions.height * 0.25F, dz);
+		return new Vector3f(0.0F, this.getEyeHeight(), 0.75F);
 	}
 
 	@Override
@@ -129,7 +126,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	public EntityDimensions getDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
-			return EntityDimensions.scalable(2.25F, 1.25F);
+			return EntityDimensions.scalable(2.2F, 1.45F);
 		} else {
 			return super.getDimensions(pose);
 		}

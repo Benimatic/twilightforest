@@ -76,6 +76,6 @@ public class KingSpider extends Spider {
 
 	@Override
 	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vector3f(0.0F, dimensions.height * 0.75F, 0.0F);
+		return new Vector3f(0.0F, dimensions.height * 0.85F, 0.0F);
 	}
 }

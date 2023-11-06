@@ -234,16 +234,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	@Override
-	protected float ridingOffset(Entity p_294652_) {
-		return super.ridingOffset(p_294652_);
-	}
-
-	@Override
 	protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		float distance = 0.4F;
-		float dx = Mth.cos((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
-		float dz = Mth.sin((this.getYRot() + 90) * Mth.DEG_TO_RAD) * distance;
-		return new Vector3f(dx, dimensions.height * 2.0F, dz);
+		return new Vector3f(0.0F, dimensions.height, 0.4F);
 	}
 
 	@Override
