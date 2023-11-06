@@ -85,9 +85,9 @@ public class EntityUtil {
 	}
 
 	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "m_5592_");
+	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "getDeathSound");
 	private static final MethodHandle handle_LivingEntity_getDeathSound;
-	private static final Method HangingEntity_setDirection = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "m_6022_", Direction.class);
+	private static final Method HangingEntity_setDirection = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "setDirection", Direction.class);
 	private static final MethodHandle handle_HangingEntity_setDirection;
 
 	static {
