@@ -78,8 +78,13 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		if (!entity.hasArmor() && !entity.isVehicle()) {
+			this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+			this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		} else {
+			this.rightArm.xRot = 0.0F;
+			this.leftArm.xRot = 0.0F;
+		}
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -106,10 +111,12 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 		this.leftArm.yRot = 0.0F;
 
 
-		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		if (!entity.hasArmor() && !entity.isVehicle()) {
+			this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+			this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+			this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+			this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		}
 
 		this.tunic.visible = entity.hasArmor();
 	}
