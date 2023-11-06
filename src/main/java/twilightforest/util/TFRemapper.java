@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.MissingMappingsEvent;
 import twilightforest.TwilightForestMod;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFRemapper {
 
 	@SubscribeEvent

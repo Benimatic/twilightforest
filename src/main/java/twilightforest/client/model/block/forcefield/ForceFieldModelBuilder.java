@@ -110,7 +110,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 						faceObj.addProperty("tintindex", face.tintIndex);
 					}
 					if (!face.getFaceData().equals(ExtraFaceData.DEFAULT)) {
-						faceObj.add("forge_data", ExtraFaceData.CODEC.encodeStart(JsonOps.INSTANCE, face.getFaceData()).result().get());
+						faceObj.add("neoforge_data", ExtraFaceData.CODEC.encodeStart(JsonOps.INSTANCE, face.getFaceData()).result().get());
 					}
 					faces.add(dir.getSerializedName(), faceObj);
 				}
