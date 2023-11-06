@@ -76,6 +76,7 @@ public class TwilightForestMod {
 
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
+	@SuppressWarnings("removal") // addGenericListener is still required for AttachCapabilitiesEvent according to https://neoforged.net/news/20.2eventbus-changes/
 	public TwilightForestMod() {
 		{
 			final Pair<TFConfig.Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Common::new);
@@ -92,8 +93,8 @@ public class TwilightForestMod {
 			ClientInitiator.call();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(CapabilityList::attachLevelCapability);
-		NeoForge.EVENT_BUS.addListener(CapabilityList::attachEntityCapability);
+		NeoForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
+		NeoForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
