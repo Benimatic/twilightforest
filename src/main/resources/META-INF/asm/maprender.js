@@ -1,6 +1,6 @@
 // noinspection ES6ConvertVarToLetConst
 
-var ASM = Java.type('net.neoforged.neoforge.coremod.api.ASMAPI');
+var ASM = Java.type('net.neoforged.coremod.api.ASMAPI');
 var Opcodes = Java.type('org.objectweb.asm.Opcodes');
 
 var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
@@ -73,7 +73,7 @@ function initializeCoreMod() {
 
                         equate(node.owner, 'net/minecraft/world/item/Items') &&
 
-                        equate(node.name, ASM.mapField('f_42573_'))
+                        equate(node.name, 'FILLED_MAP')
 
                     )
                         i = index + 1;
