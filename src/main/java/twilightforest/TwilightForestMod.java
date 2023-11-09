@@ -21,6 +21,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.crafting.CraftingHelper;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.*;
@@ -55,8 +56,10 @@ import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.ControlledSpawnsCache;
 
 import java.util.Locale;
+import java.util.function.Consumer;
 
 @Mod(TwilightForestMod.ID)
 public class TwilightForestMod {
@@ -96,6 +99,7 @@ public class TwilightForestMod {
 		NeoForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
 		NeoForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
+		NeoForge.EVENT_BUS.addListener((Consumer<AddReloadListenerEvent>) ControlledSpawnsCache::reload);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 

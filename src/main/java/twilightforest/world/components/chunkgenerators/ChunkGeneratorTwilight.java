@@ -837,8 +837,21 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Nullable
-	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (Structure structure : structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE)) {
+	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(@Nullable ChunkGeneratorTwilight key, StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		Iterable<Structure> structures = structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE);
+		if (key != null) {
+			List<Structure> l = ControlledSpawnsCache.CONTROLLED_SPAWNS.get(key);
+			if (l == null) {
+				List<Structure> list = new ArrayList<>();
+				for (Structure structure : structures)
+					if (structure instanceof ControlledSpawns)
+						list.add(structure);
+				ControlledSpawnsCache.CONTROLLED_SPAWNS.put(key, list);
+				structures = list;
+			} else
+				structures = l;
+		}
+		for (Structure structure : structures) {
 			if (structure instanceof ControlledSpawns landmark) {
 				StructureStart start = structureManager.getStructureAt(pos, structure);
 				if (!start.isValid())
@@ -865,7 +878,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Override
 	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory mobCategory, BlockPos pos) {
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(structureManager, mobCategory, pos);
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(this, structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
 
