@@ -662,6 +662,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addEntityType(TFEntities.ICE_SNOWBALL, "Ice Snowball");
 		this.addEntityType(TFEntities.ICE_ARROW, "Ice Arrow");
+		this.addEntityType(TFEntities.THROWN_ICE, "Ice Bomb");
 		this.addEntityType(TFEntities.SEEKER_ARROW, "Seeker Arrow");
 		this.addEntityType(TFEntities.MOONWORM_SHOT, "Moonworm");
 		this.addEntityType(TFEntities.NATURE_BOLT, "Nature Bolt");
@@ -879,6 +880,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.TINY_BIRD_HURT, "Bird squeaks in pain");
 		this.addSubtitle(TFSounds.TINY_BIRD_SONG, "Bird sings");
 		this.addSubtitle(TFSounds.TINY_BIRD_TAKEOFF, "Bird takes off");
+
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_AMBIENT, "Towerwood Borer hisses");
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_DEATH, "Towerwood Borer dies");
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_HURT, "Towerwood Borer hurts");
 
 		this.addSubtitle(TFSounds.TROLL_THROWS_ROCK, "Troll chucks block");
 
