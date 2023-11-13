@@ -74,12 +74,22 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 
 	@Override
 	public void setupAnim(LowerGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		if (entity.isVehicle()) {
+			this.head.yRot = 0;
+			this.head.xRot = 0;
+		} else {
+			this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+			this.head.xRot = headPitch / (180F / (float) Math.PI);
+		}
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
-		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		if (!entity.hasArmor() && !entity.isVehicle()) {
+			this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+			this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		} else {
+			this.rightArm.xRot = 0.0F;
+			this.leftArm.xRot = 0.0F;
+		}
 		this.rightArm.zRot = 0.0F;
 		this.leftArm.zRot = 0.0F;
 		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -87,29 +97,12 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
 
-		if (entity.isVehicle()) {
-			this.head.yRot = 0;
-			this.head.xRot = 0;
-			this.hat.yRot = this.head.yRot;
-			this.hat.xRot = this.head.xRot;
+		if (!entity.hasArmor() && !entity.isVehicle()) {
+			this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+			this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+			this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+			this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 		}
-
-		if (this.leftArmPose != ArmPose.EMPTY) {
-			this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float) Math.PI / 10F);
-		}
-
-		if (this.rightArmPose != ArmPose.EMPTY) {
-			this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
-		}
-
-		this.rightArm.yRot = 0.0F;
-		this.leftArm.yRot = 0.0F;
-
-
-		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
 
 		this.tunic.visible = entity.hasArmor();
 	}
