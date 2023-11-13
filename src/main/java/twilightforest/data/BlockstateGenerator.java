@@ -345,8 +345,9 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		}, TomeSpawnerBlock.SPAWNER);
 
 		getMultipartBuilder(TFBlocks.WROUGHT_IRON_FENCE.get())
-				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, true).end()
-				
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST).end()
+				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_post_capped"))).addModel().condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED).end()
+
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_full"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).addModel().condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
@@ -366,11 +367,6 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_top"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_middle"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE).end()
 				.part().modelFile(models().getExistingFile(prefix("wrought_iron_fence_bottom"))).rotationY(270).addModel().condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM).end();
-
-		getVariantBuilder(TFBlocks.WROUGHT_IRON_FINIAL.get()).forAllStatesExcept(state ->
-				ConfiguredModel.builder().modelFile(state.getValue(WroughtIronFinialBlock.ROTATED) ? models().getExistingFile(prefix("wrought_iron_finial_ew")) : models().getExistingFile(prefix("wrought_iron_finial_ns")))
-						.rotationX(state.getValue(WroughtIronFinialBlock.FACING) == Direction.DOWN ? 180 : state.getValue(WroughtIronFinialBlock.FACING).getAxis().isHorizontal() ? 90 : 0)
-						.rotationY(state.getValue(WroughtIronFinialBlock.FACING).getAxis().isVertical() ? 0 : (((int) state.getValue(WroughtIronFinialBlock.FACING).toYRot()) + 180) % 360).build(), WroughtIronFinialBlock.WATERLOGGED);
 
 		registerWoodBlocks();
 		registerNagastone();

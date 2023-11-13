@@ -101,7 +101,6 @@ public class TFBlocks {
 	public static final RegistryObject<AbstractSkullCandleBlock> PIGLIN_SKULL_CANDLE = BLOCKS.register("piglin_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.copy(Blocks.PIGLIN_HEAD)));
 	public static final RegistryObject<AbstractSkullCandleBlock> PIGLIN_WALL_SKULL_CANDLE = BLOCKS.register("piglin_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.copy(Blocks.PIGLIN_WALL_HEAD)));
 	public static final RegistryObject<WroughtIronFenceBlock> WROUGHT_IRON_FENCE = register("wrought_iron_fence", () -> new WroughtIronFenceBlock(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
-	public static final RegistryObject<Block> WROUGHT_IRON_FINIAL = register("wrought_iron_finial", () -> new WroughtIronFinialBlock(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
 
 	//labyrinth
 	public static final RegistryObject<Block> MAZESTONE = register("mazestone", () -> new Block(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(100.0F, 5.0F)));

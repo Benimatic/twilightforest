@@ -195,8 +195,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFItems.BRITTLE_FLASK.get(),
 				TFItems.GREATER_FLASK.get(),
 				TFItems.CUBE_OF_ANNIHILATION.get(),
-				TFBlocks.WROUGHT_IRON_FENCE.get().asItem(),
-				TFBlocks.WROUGHT_IRON_FINIAL.get().asItem()
+				TFBlocks.WROUGHT_IRON_FENCE.get().asItem()
 		);
 
 		tag(NYI).add(

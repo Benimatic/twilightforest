@@ -302,7 +302,6 @@ public class TFCreativeTabs {
 				output.accept(TFBlocks.TWISTED_STONE_PILLAR.get());
 				output.accept(TFBlocks.CANDELABRA.get());
 				output.accept(TFBlocks.WROUGHT_IRON_FENCE.get());
-				output.accept(TFBlocks.WROUGHT_IRON_FINIAL.get());
 				makeSkullCandle(output, TFItems.ZOMBIE_SKULL_CANDLE.get());
 				makeSkullCandle(output, TFItems.SKELETON_SKULL_CANDLE.get());
 				makeSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE.get());
