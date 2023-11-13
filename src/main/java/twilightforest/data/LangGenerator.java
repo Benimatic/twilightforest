@@ -451,6 +451,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("container.twilightforest.uncrafting_table.disabled_item", "Uncrafting this item is disabled.");
 		this.add("container.twilightforest.uncrafting_table.uncrafting_disabled", "Uncrafting is disabled via config");
 
+		this.add("item.twilightforest.boarkchop", "Raw Boarkchop");
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");
 		this.addItem(TFItems.NAGA_CHESTPLATE, "Naga Scale Tunic");
 		this.addItem(TFItems.NAGA_LEGGINGS, "Naga Scale Leggings");
