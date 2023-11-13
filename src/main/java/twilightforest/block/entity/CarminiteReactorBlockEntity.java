@@ -48,7 +48,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteReactorBlockEntity te) {
 
-		if (state.getValue(CarminiteReactorBlock.ACTIVE)) {
+		if (!level.isDebug() && state.getValue(CarminiteReactorBlock.ACTIVE)) {
 			te.counter++;
 
 			if (!level.isClientSide()) {
@@ -128,7 +128,6 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 					}
 
 				}
-
 
 				if (te.counter >= 350) {
 					// deactivate & explode
