@@ -14,13 +14,14 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
-public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
+public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> TOWERWOOD = BlockTags.create(TwilightForestMod.prefix("towerwood"));
 	public static final TagKey<Block> MAZESTONE = BlockTags.create(TwilightForestMod.prefix("mazestone"));
 	public static final TagKey<Block> CASTLE_BLOCKS = BlockTags.create(TwilightForestMod.prefix("castle_blocks"));
@@ -88,13 +89,16 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 	public static final TagKey<Block> CLOUDS = BlockTags.create(TwilightForestMod.prefix("clouds"));
 
+	public static final TagKey<Block> TF_CHESTS = BlockTags.create(TwilightForestMod.prefix("chests"));
+
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
-		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TwilightForestMod.ID, helper);
+		super(output, future, helper);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
+		super.addTags(provider);
 		tag(TWILIGHT_OAK_LOGS)
 				.add(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 		tag(CANOPY_LOGS)
@@ -536,6 +540,16 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
 
 		tag(CLOUDS).add(TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
+
+		tag(TF_CHESTS).add(
+				TFBlocks.TWILIGHT_OAK_CHEST.get(),
+				TFBlocks.CANOPY_CHEST.get(),
+				TFBlocks.MANGROVE_CHEST.get(),
+				TFBlocks.DARK_CHEST.get(),
+				TFBlocks.TIME_CHEST.get(),
+				TFBlocks.TRANSFORMATION_CHEST.get(),
+				TFBlocks.MINING_CHEST.get(),
+				TFBlocks.SORTING_CHEST.get());
 
 		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());

@@ -2,7 +2,6 @@ package twilightforest.data.tags;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -13,74 +12,67 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.compat.ModdedItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ItemTagGenerator extends ItemTagsProvider {
-	public static final TagKey<Item> TWILIGHT_OAK_LOGS = ItemTags.create(TwilightForestMod.prefix("twilight_oak_logs"));
-	public static final TagKey<Item> CANOPY_LOGS = ItemTags.create(TwilightForestMod.prefix("canopy_logs"));
-	public static final TagKey<Item> MANGROVE_LOGS = ItemTags.create(TwilightForestMod.prefix("mangrove_logs"));
-	public static final TagKey<Item> DARKWOOD_LOGS = ItemTags.create(TwilightForestMod.prefix("darkwood_logs"));
-	public static final TagKey<Item> TIME_LOGS = ItemTags.create(TwilightForestMod.prefix("timewood_logs"));
-	public static final TagKey<Item> TRANSFORMATION_LOGS = ItemTags.create(TwilightForestMod.prefix("transwood_logs"));
-	public static final TagKey<Item> MINING_LOGS = ItemTags.create(TwilightForestMod.prefix("mining_logs"));
-	public static final TagKey<Item> SORTING_LOGS = ItemTags.create(TwilightForestMod.prefix("sortwood_logs"));
+public class ItemTagGenerator extends ModdedItemTagGenerator {
+	public static final TagKey<Item> TWILIGHT_OAK_LOGS = create("twilight_oak_logs");
+	public static final TagKey<Item> CANOPY_LOGS = create("canopy_logs");
+	public static final TagKey<Item> MANGROVE_LOGS = create("mangrove_logs");
+	public static final TagKey<Item> DARKWOOD_LOGS = create("darkwood_logs");
+	public static final TagKey<Item> TIME_LOGS = create("timewood_logs");
+	public static final TagKey<Item> TRANSFORMATION_LOGS = create("transwood_logs");
+	public static final TagKey<Item> MINING_LOGS = create("mining_logs");
+	public static final TagKey<Item> SORTING_LOGS = create("sortwood_logs");
 
-	public static final TagKey<Item> TWILIGHT_LOGS = ItemTags.create(TwilightForestMod.prefix("logs"));
+	public static final TagKey<Item> TWILIGHT_LOGS = create("logs");
 
-	public static final TagKey<Item> PAPER = ItemTags.create(new ResourceLocation("forge", "paper"));
+	public static final TagKey<Item> PAPER = makeForgeTag("paper");
 
-	public static final TagKey<Item> TOWERWOOD = ItemTags.create(TwilightForestMod.prefix("towerwood"));
+	public static final TagKey<Item> TOWERWOOD = create("towerwood");
 
-	public static final TagKey<Item> FIERY_VIAL = ItemTags.create(TwilightForestMod.prefix("fiery_vial"));
+	public static final TagKey<Item> FIERY_VIAL = create("fiery_vial");
 
-	public static final TagKey<Item> ARCTIC_FUR = ItemTags.create(TwilightForestMod.prefix("arctic_fur"));
-	public static final TagKey<Item> CARMINITE_GEMS = ItemTags.create(new ResourceLocation("forge", "gems/carminite"));
-	public static final TagKey<Item> FIERY_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/fiery"));
-	public static final TagKey<Item> IRONWOOD_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/ironwood"));
-	public static final TagKey<Item> KNIGHTMETAL_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/knightmetal"));
-	public static final TagKey<Item> STEELEAF_INGOTS = ItemTags.create(new ResourceLocation("forge", "ingots/steeleaf"));
+	public static final TagKey<Item> ARCTIC_FUR = create("arctic_fur");
+	public static final TagKey<Item> CARMINITE_GEMS = makeForgeTag("gems/carminite");
+	public static final TagKey<Item> FIERY_INGOTS = makeForgeTag("ingots/fiery");
+	public static final TagKey<Item> IRONWOOD_INGOTS = makeForgeTag("ingots/ironwood");
+	public static final TagKey<Item> KNIGHTMETAL_INGOTS = makeForgeTag("ingots/knightmetal");
+	public static final TagKey<Item> STEELEAF_INGOTS = makeForgeTag("ingots/steeleaf");
 
-	public static final TagKey<Item> STORAGE_BLOCKS_ARCTIC_FUR = ItemTags.create(new ResourceLocation("forge", "storage_blocks/arctic_fur"));
-	public static final TagKey<Item> STORAGE_BLOCKS_CARMINITE = ItemTags.create(new ResourceLocation("forge", "storage_blocks/carminite"));
-	public static final TagKey<Item> STORAGE_BLOCKS_FIERY = ItemTags.create(new ResourceLocation("forge", "storage_blocks/fiery"));
-	public static final TagKey<Item> STORAGE_BLOCKS_IRONWOOD = ItemTags.create(new ResourceLocation("forge", "storage_blocks/ironwood"));
-	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "storage_blocks/knightmetal"));
-	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.create(new ResourceLocation("forge", "storage_blocks/steeleaf"));
+	public static final TagKey<Item> STORAGE_BLOCKS_ARCTIC_FUR = makeForgeTag("storage_blocks/arctic_fur");
+	public static final TagKey<Item> STORAGE_BLOCKS_CARMINITE = makeForgeTag("storage_blocks/carminite");
+	public static final TagKey<Item> STORAGE_BLOCKS_FIERY = makeForgeTag("storage_blocks/fiery");
+	public static final TagKey<Item> STORAGE_BLOCKS_IRONWOOD = makeForgeTag("storage_blocks/ironwood");
+	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = makeForgeTag("storage_blocks/knightmetal");
+	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = makeForgeTag("storage_blocks/steeleaf");
 
-	public static final TagKey<Item> RAW_MATERIALS_IRONWOOD = ItemTags.create(new ResourceLocation("forge", "raw_materials/ironwood"));
-	public static final TagKey<Item> RAW_MATERIALS_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "raw_materials/knightmetal"));
+	public static final TagKey<Item> RAW_MATERIALS_IRONWOOD = makeForgeTag("raw_materials/ironwood");
+	public static final TagKey<Item> RAW_MATERIALS_KNIGHTMETAL = makeForgeTag("raw_materials/knightmetal");
 
-	public static final TagKey<Item> PORTAL_ACTIVATOR = ItemTags.create(TwilightForestMod.prefix("portal/activator"));
+	public static final TagKey<Item> PORTAL_ACTIVATOR = create("portal/activator");
 
-	public static final TagKey<Item> WIP = ItemTags.create(TwilightForestMod.prefix("wip"));
-	public static final TagKey<Item> NYI = ItemTags.create(TwilightForestMod.prefix("nyi"));
+	public static final TagKey<Item> WIP = create("wip");
+	public static final TagKey<Item> NYI = create("nyi");
 
-	public static final TagKey<Item> KOBOLD_PACIFICATION_BREADS = ItemTags.create(TwilightForestMod.prefix("kobold_pacification_breads"));
+	public static final TagKey<Item> KOBOLD_PACIFICATION_BREADS = create("kobold_pacification_breads");
 
-	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = ItemTags.create(TwilightForestMod.prefix("banned_uncrafting_ingredients"));
-	public static final TagKey<Item> BANNED_UNCRAFTABLES = ItemTags.create(TwilightForestMod.prefix("banned_uncraftables"));
-	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = ItemTags.create(TwilightForestMod.prefix("uncrafting_ignores_cost"));
+	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = create("banned_uncrafting_ingredients");
+	public static final TagKey<Item> BANNED_UNCRAFTABLES = create("banned_uncraftables");
+	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = create("uncrafting_ignores_cost");
 
-	public static final TagKey<Item> KEPT_ON_DEATH = ItemTags.create(TwilightForestMod.prefix("kept_on_death"));
-
-	private static final TagKey<Item> CHARM = ItemTags.create(new ResourceLocation("curios", "charm"));
-	private static final TagKey<Item> HEAD = ItemTags.create(new ResourceLocation("curios", "head"));
-
-	public static final TagKey<Item> CA_PLANTS = ItemTags.create(new ResourceLocation("createaddition", "plants"));
-	public static final TagKey<Item> CA_PLANT_FOODS = ItemTags.create(new ResourceLocation("createaddition", "plant_foods"));
-
-	public static final TagKey<Item> RANDOMIUM_BLACKLIST = ItemTags.create(new ResourceLocation("randomium", "blacklist"));
-
+	public static final TagKey<Item> KEPT_ON_DEATH = create("kept_on_death");
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
-		super(output, future, provider, TwilightForestMod.ID, helper);
+		super(output, future, provider, helper);
 	}
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
+		super.addTags(provider);
 		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, TWILIGHT_OAK_LOGS);
 		this.copy(BlockTagGenerator.CANOPY_LOGS, CANOPY_LOGS);
 		this.copy(BlockTagGenerator.MANGROVE_LOGS, MANGROVE_LOGS);
@@ -240,31 +232,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 
-		tag(CHARM).add(
-				TFItems.CHARM_OF_LIFE_1.get(), TFItems.CHARM_OF_LIFE_2.get(),
-				TFItems.CHARM_OF_KEEPING_1.get(), TFItems.CHARM_OF_KEEPING_2.get(), TFItems.CHARM_OF_KEEPING_3.get()
-		);
-
-		tag(HEAD).add(
-				TFItems.NAGA_TROPHY.get(),
-				TFItems.LICH_TROPHY.get(),
-				TFItems.MINOSHROOM_TROPHY.get(),
-				TFItems.HYDRA_TROPHY.get(),
-				TFItems.KNIGHT_PHANTOM_TROPHY.get(),
-				TFItems.UR_GHAST_TROPHY.get(),
-				TFItems.ALPHA_YETI_TROPHY.get(),
-				TFItems.SNOW_QUEEN_TROPHY.get(),
-				TFItems.QUEST_RAM_TROPHY.get(),
-				TFItems.CICADA.get(),
-				TFItems.FIREFLY.get(),
-				TFItems.MOONWORM.get(),
-				TFItems.CREEPER_SKULL_CANDLE.get(),
-				TFItems.PIGLIN_SKULL_CANDLE.get(),
-				TFItems.PLAYER_SKULL_CANDLE.get(),
-				TFItems.SKELETON_SKULL_CANDLE.get(),
-				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
-				TFItems.ZOMBIE_SKULL_CANDLE.get());
-
 		tag(Tags.Items.HEADS).add(
 				TFItems.ZOMBIE_SKULL_CANDLE.get(),
 				TFItems.SKELETON_SKULL_CANDLE.get(),
@@ -350,32 +317,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.get().asItem());
 
-		tag(CA_PLANT_FOODS).add(TFItems.TORCHBERRIES.get());
-
-		tag(CA_PLANTS).add(TFItems.LIVEROOT.get(), TFItems.MAGIC_BEANS.get(),
-				TFBlocks.HUGE_WATER_LILY.get().asItem(), TFBlocks.HUGE_LILY_PAD.get().asItem(),
-				TFBlocks.TROLLVIDR.get().asItem(), TFBlocks.UNRIPE_TROLLBER.get().asItem(),
-				TFBlocks.TROLLBER.get().asItem(), TFBlocks.HUGE_STALK.get().asItem(),
-				TFBlocks.THORN_ROSE.get().asItem(), TFBlocks.MAYAPPLE.get().asItem(),
-				TFBlocks.CLOVER_PATCH.get().asItem(), TFBlocks.FIDDLEHEAD.get().asItem(),
-				TFBlocks.MUSHGLOOM.get().asItem(), TFBlocks.TORCHBERRY_PLANT.get().asItem(),
-				TFBlocks.ROOT_STRAND.get().asItem(), TFBlocks.FALLEN_LEAVES.get().asItem(),
-				TFBlocks.HEDGE.get().asItem(), TFBlocks.ROOT_BLOCK.get().asItem(), TFBlocks.LIVEROOT_BLOCK.get().asItem());
-
-		tag(RANDOMIUM_BLACKLIST).addTag(NYI).addTag(WIP).add(TFItems.GLASS_SWORD.get(), //this one is here because the ore can give the unbreakable one
-				TFBlocks.TIME_LOG_CORE.get().asItem(), TFBlocks.TRANSFORMATION_LOG_CORE.get().asItem(),
-				TFBlocks.MINING_LOG_CORE.get().asItem(), TFBlocks.SORTING_LOG_CORE.get().asItem(),
-				TFBlocks.ANTIBUILDER.get().asItem(), TFBlocks.STRONGHOLD_SHIELD.get().asItem(),
-				TFBlocks.LOCKED_VANISHING_BLOCK.get().asItem(), TFBlocks.BROWN_THORNS.get().asItem(),
-				TFBlocks.GREEN_THORNS.get().asItem(), TFBlocks.BURNT_THORNS.get().asItem(),
-				TFBlocks.PINK_FORCE_FIELD.get().asItem(), TFBlocks.ORANGE_FORCE_FIELD.get().asItem(),
-				TFBlocks.GREEN_FORCE_FIELD.get().asItem(), TFBlocks.BLUE_FORCE_FIELD.get().asItem(),
-				TFBlocks.VIOLET_FORCE_FIELD.get().asItem(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().asItem(),
-				TFBlocks.NAGA_BOSS_SPAWNER.get().asItem(), TFBlocks.LICH_BOSS_SPAWNER.get().asItem(),
-				TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().asItem(), TFBlocks.HYDRA_BOSS_SPAWNER.get().asItem(),
-				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().asItem(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().asItem(),
-				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().asItem(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().asItem());
-
 		tag(ItemTags.TRIMMABLE_ARMOR)
 				.add(TFItems.IRONWOOD_HELMET.get(), TFItems.IRONWOOD_CHESTPLATE.get(), TFItems.IRONWOOD_LEGGINGS.get(), TFItems.IRONWOOD_BOOTS.get())
 				.add(TFItems.STEELEAF_HELMET.get(), TFItems.STEELEAF_CHESTPLATE.get(), TFItems.STEELEAF_LEGGINGS.get(), TFItems.STEELEAF_BOOTS.get())
@@ -392,5 +333,13 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	@Override
 	public String getName() {
 		return "Twilight Forest Item Tags";
+	}
+
+	public static TagKey<Item> create(String tagName) {
+		return ItemTags.create(TwilightForestMod.prefix(tagName));
+	}
+
+	public static TagKey<Item> makeForgeTag(String tagName) {
+		return ItemTags.create(new ResourceLocation("forge", tagName));
 	}
 }

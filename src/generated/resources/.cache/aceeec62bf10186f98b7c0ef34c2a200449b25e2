@@ -1,4 +1,10 @@
-// 1.20.1	2023-08-18T12:35:03.038368	Twilight Forest Block Tags
+// 1.20.1	2023-11-13T14:23:30.5141507	Twilight Forest Block Tags
+a10ef0864e630b44949959994b373ec7ee07dcb1 data/alexscaves/tags/blocks/ferromagnetic_blocks.json
+ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/blocks/gloomoth_light_sources.json
+c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/blocks/underzealot_light_sources.json
+21c5678245eaba6b9d0d5a52cf8b03948dd1d8d8 data/artifacts/tags/blocks/campsite_chests.json
+27fc8e32e0e71b8dcbb82f0ada3b954d906256b6 data/farmersdelight/tags/blocks/compost_activators.json
+58368024917f3977d742816bf7ea2eb9a1d5d1b7 data/farmersdelight/tags/blocks/heat_sources.json
 3d56c0ea016f639fad4fae4272d928867251da04 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -62,6 +68,7 @@ af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/blocks/baniste
 65138d47619b3b87ed5cdf3b4ec226e0bfebfb64 data/twilightforest/tags/blocks/carminite_reactor_immune.json
 66c63c2aea9e2f572dee901056877665b812ae56 data/twilightforest/tags/blocks/carminite_reactor_ores.json
 ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/blocks/castle_blocks.json
+3d56c0ea016f639fad4fae4272d928867251da04 data/twilightforest/tags/blocks/chests.json
 63d6b8afab51c74ed26723c1e8a1588cbba120cb data/twilightforest/tags/blocks/clouds.json
 4955c5a75150132ea89493a413fbb4431eeba532 data/twilightforest/tags/blocks/common_protections.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
