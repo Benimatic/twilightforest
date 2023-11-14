@@ -18,12 +18,12 @@ public class ControlledSpawnsCache extends SimplePreparableReloadListener<Object
 	}
 
 	@Override
-	protected Object prepare(ResourceManager p_10796_, ProfilerFiller p_10797_) {
+	protected Object prepare(ResourceManager manager, ProfilerFiller filler) {
 		return 0;
 	}
 
 	@Override
-	protected void apply(Object p_10793_, ResourceManager p_10794_, ProfilerFiller p_10795_) {
+	protected void apply(Object obj, ResourceManager manager, ProfilerFiller filler) {
 		CONTROLLED_SPAWNS.clear();
 	}
 }

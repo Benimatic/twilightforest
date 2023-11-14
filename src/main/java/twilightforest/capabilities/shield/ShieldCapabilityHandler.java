@@ -25,10 +25,12 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	@Override
 	public void update() {
-		if (!this.host.level().isClientSide() && temporaryShieldsLeft() > 0 && this.timer-- <= 0 && this.breakTimer <= 0 && (!(this.host instanceof Player player) || !player.isCreative()))
-			breakShield();
-		if (this.breakTimer > 0)
-			this.breakTimer--;
+		if (!(this.host instanceof Player player) || !player.getAbilities().invulnerable) {
+			if (!this.host.level().isClientSide() && this.temporaryShieldsLeft() > 0 && this.timer-- <= 0 && this.breakTimer <= 0 && (!(this.host instanceof Player player) || !player.isCreative()))
+				this.breakShield();
+			if (this.breakTimer > 0)
+				this.breakTimer--;
+		}
 	}
 
 	@Override

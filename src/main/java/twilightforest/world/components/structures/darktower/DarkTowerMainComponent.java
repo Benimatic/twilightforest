@@ -492,7 +492,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private void decorateReappearingMaze(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource decoRNG, BoundingBox sbb, Rotation rotation, int y) {
 		// make maze object
 		int mazeSize = 6;
-		TFMaze maze = new TFMaze(mazeSize, mazeSize);
+		TFMaze maze = new TFMaze(mazeSize, mazeSize, decoRNG);
 
 		// set the seed to a fixed value based on this maze's x and z
 		maze.setSeed(world.getSeed() + this.boundingBox.minX() * 90342903L + y * 90342903L ^ this.boundingBox.minZ());

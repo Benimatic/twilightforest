@@ -48,10 +48,10 @@ public class TFTeleporter implements ITeleporter {
 	// destinationCoordinateCache is (src -> dest) [DestWorld, [SrcPos, DestPos]]
 	private static final Map<ResourceLocation, Map<ColumnPos, PortalPosition>> destinationCoordinateCache = new HashMap<>();
 
-	private static boolean locked;
+	private final boolean locked;
 
 	public TFTeleporter(boolean locked) {
-		TFTeleporter.locked = locked;
+		this.locked = locked;
 	}
 
 	public static CompoundTag saveLinks() {
@@ -534,7 +534,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south().below(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (this.locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);

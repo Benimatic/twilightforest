@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-06T10:12:23.332162	Loot Tables
+// 1.20.1	2023-11-13T14:38:56.4750071	Loot Tables
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_tables/blocks/acacia_banister.json
 d29388fb46e8211e8d3624b744d195b3a6f4c6ff data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 3f04f0369241cf99202c72b4d56bc5368396e367 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -420,7 +420,6 @@ b27c1c09c023afb170647cfa704d2f45b15cc2d7 data/twilightforest/loot_tables/blocks/
 df0aea94b36896095e88152eedb6fd01ee8c1fe3 data/twilightforest/loot_tables/blocks/worn_castle_brick.json
 ed2fd0767031e9cc8ec81ff6c8671180848cd0f5 data/twilightforest/loot_tables/blocks/worn_castle_brick_stairs.json
 190b3aa04d3cbd5888e58417d1ad612b7c23c45a data/twilightforest/loot_tables/blocks/wrought_iron_fence.json
-3df1877466a0d494cc05f359288136d75c505feb data/twilightforest/loot_tables/blocks/wrought_iron_finial.json
 b3507ca92af17635402d16ecbab1ac502deafc3e data/twilightforest/loot_tables/blocks/yellow_castle_door.json
 9a9fef9ac1eee0cfd653a6157e7e8bfe329bb420 data/twilightforest/loot_tables/blocks/yellow_castle_rune_brick.json
 f6f955a9b6eab3108071104319701e84fc4ce5d5 data/twilightforest/loot_tables/blocks/zombie_skull_candle.json
@@ -475,7 +474,7 @@ e6fbe38900aceb47150dfcb00779eec439560754 data/twilightforest/loot_tables/entitie
 dfc29f3604259127d1b98b39727976b3bb06cfb4 data/twilightforest/loot_tables/entities/bighorn_sheep/white.json
 67326f3e8130e3cf2e517ee4aabdedd1174b872c data/twilightforest/loot_tables/entities/bighorn_sheep/yellow.json
 648a399e8dfb020ee922b124f2f081606a4cbb06 data/twilightforest/loot_tables/entities/blockchain_goblin.json
-8bdcdfb5261bbb6b84995954b0ed168b843032c9 data/twilightforest/loot_tables/entities/boar.json
+2909749f9b47c4740d573632cab73531d4ee5787 data/twilightforest/loot_tables/entities/boar.json
 f1080f50e2ebc8f46f391b77f56cd9af7c5c701f data/twilightforest/loot_tables/entities/carminite_broodling.json
 fbfe0a035e29ca9f3faf047de64c03d59975c550 data/twilightforest/loot_tables/entities/carminite_ghastguard.json
 def4704c931e850c4a49316c13a12ebf5e6468a0 data/twilightforest/loot_tables/entities/carminite_ghastling.json

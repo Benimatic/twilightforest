@@ -60,7 +60,7 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (result.getEntity() instanceof LivingEntity living) {
-			if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), this.random.nextBoolean() ? TFDamageTypes.LOST_WORDS : TFDamageTypes.SCHOOLED, this.getOwner(), this), 3)) {
+			if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), this.random.nextBoolean() ? TFDamageTypes.LOST_WORDS : TFDamageTypes.SCHOOLED, this, this.getOwner()), 3)) {
 				// inflict move slowdown
 				int duration = this.level().getDifficulty() == Difficulty.EASY ? 2 : this.level().getDifficulty() == Difficulty.NORMAL ? 6 : 8;
 				living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration * 20, 1));

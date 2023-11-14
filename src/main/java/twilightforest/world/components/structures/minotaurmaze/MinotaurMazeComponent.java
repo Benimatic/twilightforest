@@ -34,7 +34,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		this.rcoords = nbt.getIntArray("roomCoords");
 
 		// recreate maze object
-		maze = new TFMaze(getMazeSize(), getMazeSize());
+		maze = new TFMaze(getMazeSize(), getMazeSize(), RandomSource.create());
 		setFixedMazeSeed();
 
 		// blank out rcoords above 1 so that the room generation works properly
@@ -50,14 +50,14 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.generateRecursiveBacktracker(0, 0);
 	}
 
-	public MinotaurMazeComponent(int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
+	public MinotaurMazeComponent(int index, int x, int y, int z, int entranceX, int entranceZ, int level, RandomSource random) {
 		super(TFStructurePieceTypes.TFMMaze.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.level = level;
 		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2 + 2, 5, getRadius() * 2 + 2, Direction.SOUTH, false);
 
 		// make maze object
-		maze = new TFMaze(getMazeSize(), getMazeSize());
+		maze = new TFMaze(getMazeSize(), getMazeSize(), random);
 
 		// set the seed to a fixed value based on this maze's x and z
 		setFixedMazeSeed();
@@ -97,8 +97,8 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		maze.setSeed(this.boundingBox.minX() * 90342903L + this.boundingBox.minY() * 90342903L ^ this.boundingBox.minZ());
 	}
 
-	public MinotaurMazeComponent(int index, int x, int y, int z, int level) {
-		this(index, x, y, z, 11, 11, level);
+	public MinotaurMazeComponent(int index, int x, int y, int z, int level, RandomSource random) {
+		this(index, x, y, z, 11, 11, level, random);
 	}
 
 	@Override
@@ -244,7 +244,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 			int centerX = boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2);
 			int centerZ = boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2);
 
-			MinotaurMazeComponent maze = new MinotaurMazeComponent(1, centerX, boundingBox.minY() - 10, centerZ, rcoords[2], rcoords[3], 2);
+			MinotaurMazeComponent maze = new MinotaurMazeComponent(1, centerX, boundingBox.minY() - 10, centerZ, rcoords[2], rcoords[3], 2, random);
 			list.addPiece(maze);
 			maze.addChildren(this, list, random);
 		}

@@ -74,8 +74,13 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 
 	@Override
 	public void setupAnim(LowerGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		if (entity.isVehicle()) {
+			this.head.yRot = 0;
+			this.head.xRot = 0;
+		} else {
+			this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+			this.head.xRot = headPitch / (180F / (float) Math.PI);
+		}
 		this.hat.yRot = this.head.yRot;
 		this.hat.xRot = this.head.xRot;
 		if (!entity.hasArmor() && !entity.isVehicle()) {
@@ -91,25 +96,6 @@ public class LowerGoblinKnightModel extends HumanoidModel<LowerGoblinKnight> {
 		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
-
-		if (entity.isVehicle()) {
-			this.head.yRot = 0;
-			this.head.xRot = 0;
-			this.hat.yRot = this.head.yRot;
-			this.hat.xRot = this.head.xRot;
-		}
-
-		if (this.leftArmPose != ArmPose.EMPTY) {
-			this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float) Math.PI / 10F);
-		}
-
-		if (this.rightArmPose != ArmPose.EMPTY) {
-			this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
-		}
-
-		this.rightArm.yRot = 0.0F;
-		this.leftArm.yRot = 0.0F;
-
 
 		if (!entity.hasArmor() && !entity.isVehicle()) {
 			this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;

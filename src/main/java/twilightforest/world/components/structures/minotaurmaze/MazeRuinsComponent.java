@@ -41,7 +41,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 		super.addChildren(structurecomponent, list, random);
 
 		// add a maze
-		MinotaurMazeComponent maze = new MinotaurMazeComponent(1, boundingBox.minX(), boundingBox.minY() - 14, boundingBox.minZ(), 1);
+		MinotaurMazeComponent maze = new MinotaurMazeComponent(1, boundingBox.minX(), boundingBox.minY() - 14, boundingBox.minZ(), 1, random);
 		list.addPiece(maze);
 		maze.addChildren(this, list, random);
 

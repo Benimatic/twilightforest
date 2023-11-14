@@ -38,6 +38,7 @@ public class CapabilityEvents {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntity();
 		// shields
+		if (event.getEntity() instanceof Player player && player.getAbilities().invulnerable) return;
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
 			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {

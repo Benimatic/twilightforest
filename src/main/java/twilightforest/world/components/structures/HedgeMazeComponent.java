@@ -46,7 +46,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		TFMaze maze = new TFMaze(MSIZE, MSIZE);
+		TFMaze maze = new TFMaze(MSIZE, MSIZE, rand);
 
 		maze.oddBias = 2;
 		maze.torchBlockState = TFBlocks.FIREFLY.get().defaultBlockState();
