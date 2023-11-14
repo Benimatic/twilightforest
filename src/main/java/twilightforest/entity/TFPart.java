@@ -2,9 +2,12 @@ package twilightforest.entity;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -107,6 +110,11 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	@Override
 	public boolean isPickable() {
 		return true;
+	}
+
+	@Override
+	public InteractionResult interact(Player player, InteractionHand hand) {
+		return this.getParent().interact(player, hand);
 	}
 
 	@Override
