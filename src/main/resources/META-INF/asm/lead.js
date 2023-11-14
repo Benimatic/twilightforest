@@ -7,7 +7,7 @@ var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 // noinspection JSUnusedGlobalSymbols
 function initializeCoreMod() {
     return {
-        'book': {
+        'lead': {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.world.entity.decoration.LeashFenceKnotEntity',
