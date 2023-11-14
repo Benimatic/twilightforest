@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.Block;
@@ -67,6 +69,23 @@ public class EntityEvents {
 	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
 		if (event.getAdvancement().getId().equals(TwilightForestMod.prefix("progression_end"))) {
 			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/twilightforest")))));
+		}
+	}
+
+	@SubscribeEvent
+	public static void attachLeadToWroughtFence(PlayerInteractEvent.RightClickBlock event) {
+		Player player = event.getEntity();
+		ItemStack stack = player.getItemInHand(event.getHand());
+		if (stack.is(Items.LEAD)) {
+			BlockPos pos = event.getPos();
+			BlockState state = event.getLevel().getBlockState(pos);
+			if (state.is(TFBlocks.WROUGHT_IRON_FENCE.get()) && state.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE) {
+				if (!event.getLevel().isClientSide()) {
+					LeadItem.bindPlayerMobs(player, event.getLevel(), event.getPos());
+					event.setCanceled(true);
+					event.setCancellationResult(InteractionResult.SUCCESS);
+				}
+			}
 		}
 	}
 
