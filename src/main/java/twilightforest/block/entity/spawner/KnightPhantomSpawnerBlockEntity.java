@@ -10,11 +10,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.boss.KnightPhantom;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
 
 public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<KnightPhantom> {
 

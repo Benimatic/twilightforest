@@ -9,8 +9,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
-import java.util.function.Supplier;
-
 public class StructureProtectionPacket {
 
 	private final BoundingBox sbb;

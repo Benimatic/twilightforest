@@ -2,8 +2,8 @@ package twilightforest.data;
 
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,7 +19,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.block.Experiment115Block;
@@ -530,7 +529,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 		ItemStack itemstack = new ItemStack(TFItems.GREATER_FLASK.get());
 		CompoundTag compoundtag = itemstack.getOrCreateTag();
 		compoundtag.putInt("Uses", 4);
-		compoundtag.putString("Potion", ForgeRegistries.POTIONS.getKey(Potions.STRONG_HARMING).toString());
+		compoundtag.putString("Potion", BuiltInRegistries.POTION.getKey(Potions.STRONG_HARMING).toString());
 		return itemstack;
 	}
 
@@ -554,7 +553,7 @@ public class TFAdvancementGenerator implements AdvancementProvider.AdvancementGe
 
 	private Advancement.Builder addDendrologistBlock(Advancement.Builder builder) {
 		for (ItemLike dendrologistBlock : DENDROLOGIST_BLOCKS) {
-			builder.addCriterion(ForgeRegistries.ITEMS.getKey(dendrologistBlock.asItem()).getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
+			builder.addCriterion(BuiltInRegistries.ITEM.getKey(dendrologistBlock.asItem()).getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
 		}
 		return builder;
 	}

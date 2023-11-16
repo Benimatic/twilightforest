@@ -14,10 +14,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
 public class DarkTowerBridgeComponent extends TowerWingComponent {
 

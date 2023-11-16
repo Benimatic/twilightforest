@@ -24,12 +24,12 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.EventHooks;
-import org.joml.Vector3f;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
-import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
-
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
+
 import java.util.Objects;
 
 public class LowerGoblinKnight extends Monster {

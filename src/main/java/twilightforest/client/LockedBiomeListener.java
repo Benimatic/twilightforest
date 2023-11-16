@@ -4,14 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.TickEvent;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.Restriction;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.util.LandmarkUtil;
+import twilightforest.util.Restriction;
 
 import java.util.Optional;
 

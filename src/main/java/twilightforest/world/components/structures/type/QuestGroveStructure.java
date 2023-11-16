@@ -17,7 +17,6 @@ import twilightforest.world.components.structures.QuestGrove;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class QuestGroveStructure extends LandmarkStructure {

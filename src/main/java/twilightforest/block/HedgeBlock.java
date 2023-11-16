@@ -23,9 +23,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.util.EntityUtil;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class HedgeBlock extends Block {

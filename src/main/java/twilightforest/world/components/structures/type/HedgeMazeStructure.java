@@ -17,7 +17,6 @@ import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class HedgeMazeStructure extends LandmarkStructure {

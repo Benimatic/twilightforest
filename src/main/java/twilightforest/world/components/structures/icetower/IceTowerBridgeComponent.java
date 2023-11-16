@@ -12,10 +12,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class IceTowerBridgeComponent extends TFStructureComponentOld {

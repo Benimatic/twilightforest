@@ -9,8 +9,6 @@ import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
 
-import java.util.function.Supplier;
-
 public class UpdateThrownPacket {
 
 	private final int entityID;

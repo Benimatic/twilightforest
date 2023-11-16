@@ -25,7 +25,6 @@ import twilightforest.world.components.structures.util.ProgressionStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TrollCaveStructure extends ProgressionStructure implements ConfigurableSpawns {

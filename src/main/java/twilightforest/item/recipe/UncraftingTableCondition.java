@@ -1,7 +1,6 @@
 package twilightforest.item.recipe;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.world.entity.animal.Cod;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import twilightforest.TFConfig;
 

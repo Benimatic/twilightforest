@@ -19,9 +19,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.function.Predicate;

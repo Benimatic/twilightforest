@@ -8,8 +8,8 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
 import twilightforest.block.entity.TwilightChestEntity;
+import twilightforest.init.TFBlocks;
 
 import java.util.EnumMap;
 import java.util.Map;

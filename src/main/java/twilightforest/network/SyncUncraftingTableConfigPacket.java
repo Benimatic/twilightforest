@@ -5,7 +5,6 @@ import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TFConfig;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class SyncUncraftingTableConfigPacket {
 

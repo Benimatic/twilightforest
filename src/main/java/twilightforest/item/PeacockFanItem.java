@@ -23,7 +23,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.block.LightableBlock;
-import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;

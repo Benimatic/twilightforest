@@ -10,10 +10,9 @@ import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.init.TFBlocks;
-
-import org.jetbrains.annotations.Nullable;
 
 public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
 	public RedThreadBlock(Properties properties) {

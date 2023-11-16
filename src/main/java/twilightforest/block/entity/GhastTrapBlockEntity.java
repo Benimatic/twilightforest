@@ -10,14 +10,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.GhastTrapBlock;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFParticleType;
 import twilightforest.entity.boss.UrGhast;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
 import java.util.ArrayList;
 import java.util.List;

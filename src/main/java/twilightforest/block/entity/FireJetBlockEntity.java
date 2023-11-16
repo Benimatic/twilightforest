@@ -1,20 +1,16 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.FireJetBlock;
-import twilightforest.init.TFBlocks;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFDamageTypes;
+import twilightforest.init.*;
 
 import java.util.List;
 

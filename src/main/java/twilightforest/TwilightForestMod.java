@@ -17,22 +17,21 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.crafting.CraftingHelper;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.*;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -41,16 +40,15 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.ClientInitiator;
 import twilightforest.command.TFCommand;
-import twilightforest.item.recipe.UncraftingTableCondition;
-import twilightforest.loot.modifiers.GiantToolGroupingModifier;
-import twilightforest.network.UpdateGamerulePacket;
-import twilightforest.util.MagicPaintingVariant;
-import twilightforest.util.Restriction;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
+import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.network.UpdateGamerulePacket;
+import twilightforest.util.MagicPaintingVariant;
+import twilightforest.util.Restriction;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
@@ -80,7 +78,7 @@ public class TwilightForestMod {
 	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
 
 	@SuppressWarnings("removal") // addGenericListener is still required for AttachCapabilitiesEvent according to https://neoforged.net/news/20.2eventbus-changes/
-	public TwilightForestMod() {
+	public TwilightForestMod(IEventBus bus, Dist dist) {
 		{
 			final Pair<TFConfig.Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFConfig.Common::new);
 			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
@@ -92,7 +90,7 @@ public class TwilightForestMod {
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
-		if (FMLEnvironment.dist.isClient()) {
+		if (dist.isClient()) {
 			ClientInitiator.call();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
@@ -101,56 +99,54 @@ public class TwilightForestMod {
 		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 		NeoForge.EVENT_BUS.addListener((Consumer<AddReloadListenerEvent>) ControlledSpawnsCache::reload);
 
-		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+		TFBannerPatterns.BANNER_PATTERNS.register(bus);
+		TFBlockEntities.BLOCK_ENTITIES.register(bus);
+		TFBlocks.BLOCKS.register(bus);
+		TFLoot.CONDITIONS.register(bus);
+		TFMenuTypes.CONTAINERS.register(bus);
+		TFEnchantments.ENCHANTMENTS.register(bus);
+		TFEntities.ENTITIES.register(bus);
+		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);
+		BiomeLayerStack.BIOME_LAYER_STACKS.register(bus);
+		TFFeatures.FEATURES.register(bus);
+		TFFeatureModifiers.FOLIAGE_PLACERS.register(bus);
+		TFLoot.FUNCTIONS.register(bus);
+		TFItems.ITEMS.register(bus);
+		TFLootModifiers.LOOT_MODIFIERS.register(bus);
+		TFMobEffects.MOB_EFFECTS.register(bus);
+		TFParticleType.PARTICLE_TYPES.register(bus);
+		TFPOITypes.POIS.register(bus);
+		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(bus);
+		TFRecipes.RECIPE_SERIALIZERS.register(bus);
+		TFRecipes.RECIPE_TYPES.register(bus);
+		TFSounds.SOUNDS.register(bus);
+		TFEntities.SPAWN_EGGS.register(bus);
+		TFStats.STATS.register(bus);
+		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
+		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);
+		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(bus);
+		TFStructureTypes.STRUCTURE_TYPES.register(bus);
+		TFCreativeTabs.TABS.register(bus);
+		TFFeatureModifiers.TREE_DECORATORS.register(bus);
+		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
 
-		TFBannerPatterns.BANNER_PATTERNS.register(modbus);
-		TFBlockEntities.BLOCK_ENTITIES.register(modbus);
-		TFBlocks.BLOCKS.register(modbus);
-		TFLoot.CONDITIONS.register(modbus);
-		TFMenuTypes.CONTAINERS.register(modbus);
-		TFEnchantments.ENCHANTMENTS.register(modbus);
-		TFEntities.ENTITIES.register(modbus);
-		BiomeLayerTypes.BIOME_LAYER_TYPES.register(modbus);
-		BiomeLayerStack.BIOME_LAYER_STACKS.register(modbus);
-		TFFeatures.FEATURES.register(modbus);
-		TFFeatureModifiers.FOLIAGE_PLACERS.register(modbus);
-		TFLoot.FUNCTIONS.register(modbus);
-		TFItems.ITEMS.register(modbus);
-		TFLootModifiers.LOOT_MODIFIERS.register(modbus);
-		TFMobEffects.MOB_EFFECTS.register(modbus);
-		TFParticleType.PARTICLE_TYPES.register(modbus);
-		TFPOITypes.POIS.register(modbus);
-		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(modbus);
-		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
-		TFRecipes.RECIPE_TYPES.register(modbus);
-		TFSounds.SOUNDS.register(modbus);
-		TFEntities.SPAWN_EGGS.register(modbus);
-		TFStats.STATS.register(modbus);
-		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
-		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
-		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modbus);
-		TFStructureTypes.STRUCTURE_TYPES.register(modbus);
-		TFCreativeTabs.TABS.register(modbus);
-		TFFeatureModifiers.TREE_DECORATORS.register(modbus);
-		TFFeatureModifiers.TRUNK_PLACERS.register(modbus);
+		DwarfRabbitVariant.DWARF_RABBITS.register(bus);
+		TinyBirdVariant.TINY_BIRDS.register(bus);
+		WoodPalettes.WOOD_PALETTES.register(bus);
+		Enforcement.ENFORCEMENTS.register(bus);
+		Restrictions.RESTRICTIONS.register(bus);
+		MagicPaintingVariants.MAGIC_PAINTINGS.register(bus);
 
-		DwarfRabbitVariant.DWARF_RABBITS.register(modbus);
-		TinyBirdVariant.TINY_BIRDS.register(modbus);
-		WoodPalettes.WOOD_PALETTES.register(modbus);
-		Enforcement.ENFORCEMENTS.register(modbus);
-		Restrictions.RESTRICTIONS.register(modbus);
-		MagicPaintingVariants.MAGIC_PAINTINGS.register(modbus);
-
-		modbus.addListener(this::sendIMCs);
-		modbus.addListener(this::init);
-		modbus.addListener(this::registerExtraStuff);
-		modbus.addListener(this::setRegistriesForDatapack);
-		modbus.addListener(CapabilityList::registerCapabilities);
+		bus.addListener(this::sendIMCs);
+		bus.addListener(this::init);
+		bus.addListener(this::registerExtraStuff);
+		bus.addListener(this::setRegistriesForDatapack);
+		bus.addListener(CapabilityList::registerCapabilities);
 
 		if (ModList.get().isLoaded("curios")) {
 //			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
-//			modbus.addListener(CuriosCompat::registerCurioRenderers);
-//			modbus.addListener(CuriosCompat::registerCurioLayers);
+//			bus.addListener(CuriosCompat::registerCurioRenderers);
+//			bus.addListener(CuriosCompat::registerCurioLayers);
 		}
 
 		BiomeGrassColors.init();

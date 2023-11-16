@@ -1,15 +1,14 @@
 package twilightforest.item.recipe;
 
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFRecipes;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFRecipes;
 
 public class MagicMapCloningRecipe extends CustomRecipe {
 

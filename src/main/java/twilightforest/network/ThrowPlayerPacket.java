@@ -4,8 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.neoforged.neoforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
 public class ThrowPlayerPacket {
 	private final double motionX;
 	private final double motionY;

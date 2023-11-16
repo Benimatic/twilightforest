@@ -14,9 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 
 import java.util.List;
 

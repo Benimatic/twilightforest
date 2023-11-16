@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -30,7 +29,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.ToolActions;
 import net.neoforged.neoforge.registries.RegistryObject;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 
 public class HollowLogClimbable extends HorizontalDirectionalBlock implements WaterloggedBlock {

@@ -23,11 +23,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.block.entity.TomeSpawnerBlockEntity;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.block.entity.TomeSpawnerBlockEntity;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
 
 public class TomeSpawnerBlock extends BaseEntityBlock {
 

@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-
 import org.jetbrains.annotations.Nullable;
 
 public class DiagonalBlock extends Block {

@@ -20,11 +20,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 public class SwarmSpider extends Spider {

@@ -12,10 +12,10 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.loot.TFLootTables;
-import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class TrollVaultComponent extends TFStructureComponentOld {

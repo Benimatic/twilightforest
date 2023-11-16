@@ -1,16 +1,16 @@
 package twilightforest.inventory.slot;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.inventory.UncraftingMenu;
 import twilightforest.inventory.UncraftingContainer;
+import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.UncraftingRecipe;
 
 public class UncraftingSlot extends Slot {

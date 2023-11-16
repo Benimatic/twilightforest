@@ -7,8 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.client.MovingCicadaSoundInstance;
 
-import java.util.function.Supplier;
-
 public class CreateMovingCicadaSoundPacket {
 
 	private final int entityID;

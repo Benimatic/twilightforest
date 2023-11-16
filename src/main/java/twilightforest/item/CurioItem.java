@@ -1,8 +1,8 @@
 package twilightforest.item;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.Nullable;
 
 public interface CurioItem {

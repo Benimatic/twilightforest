@@ -23,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -31,8 +32,6 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
-
-import org.jetbrains.annotations.Nullable;
 
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {
 

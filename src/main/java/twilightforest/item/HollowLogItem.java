@@ -8,11 +8,11 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.HollowLogHorizontal;
 import twilightforest.block.HollowLogVertical;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class HollowLogItem extends BlockItem {

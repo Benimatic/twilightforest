@@ -36,9 +36,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.Enforcement;
-import twilightforest.util.Restriction;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.util.LandmarkUtil;
+import twilightforest.util.Restriction;
 
 import java.util.Optional;
 import java.util.Random;

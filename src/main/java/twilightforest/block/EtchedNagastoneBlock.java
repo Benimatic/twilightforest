@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-
 import org.jetbrains.annotations.Nullable;
 
 public class EtchedNagastoneBlock extends DirectionalBlock {

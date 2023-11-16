@@ -9,9 +9,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.alchemy.Potion;
 import net.neoforged.neoforge.registries.ForgeRegistries;
-import twilightforest.TwilightForestMod;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 
 import java.util.Optional;
 

@@ -4,14 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
-import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TFMagicMapData;
 import twilightforest.item.MagicMapItem;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
 // Rewraps vanilla SPacketMaps to properly expose our custom decorations
 public class MagicMapPacket {

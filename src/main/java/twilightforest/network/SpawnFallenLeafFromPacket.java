@@ -11,7 +11,6 @@ import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.client.particle.data.LeafParticleData;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class SpawnFallenLeafFromPacket {
 

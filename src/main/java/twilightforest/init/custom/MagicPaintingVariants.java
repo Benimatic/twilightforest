@@ -20,7 +20,8 @@ import twilightforest.util.MagicPaintingVariant.Layer;
 import java.util.List;
 import java.util.Optional;
 
-import static twilightforest.util.MagicPaintingVariant.Layer.*;
+import static twilightforest.util.MagicPaintingVariant.Layer.OpacityModifier;
+import static twilightforest.util.MagicPaintingVariant.Layer.Parallax;
 
 public class MagicPaintingVariants {
     public static final ResourceKey<Registry<MagicPaintingVariant>> REGISTRY_KEY = ResourceKey.createRegistryKey(TwilightForestMod.namedRegistry("magic_paintings"));

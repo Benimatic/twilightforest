@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.PlayerAdvancements;

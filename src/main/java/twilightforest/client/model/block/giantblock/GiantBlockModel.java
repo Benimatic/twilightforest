@@ -1,7 +1,6 @@
 package twilightforest.client.model.block.giantblock;
 
 import com.google.common.collect.Iterables;
-import org.joml.Vector3f;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -20,6 +19,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import twilightforest.block.GiantBlock;
 import twilightforest.util.Vec2i;
 

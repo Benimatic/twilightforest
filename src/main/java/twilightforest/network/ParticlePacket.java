@@ -11,7 +11,6 @@ import net.neoforged.neoforge.network.NetworkEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class ParticlePacket {
 	private final List<QueuedParticle> queuedParticles = new ArrayList<>();

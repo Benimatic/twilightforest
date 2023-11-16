@@ -5,8 +5,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 
-import java.util.function.Supplier;
-
 public class UpdateGamerulePacket {
 
 	private final boolean enforced;

@@ -6,8 +6,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.inventory.UncraftingMenu;
 
-import java.util.function.Supplier;
-
 public class UncraftingGuiPacket {
 	private final int type;
 

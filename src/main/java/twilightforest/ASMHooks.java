@@ -45,14 +45,15 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.TFClientSetup;
+import twilightforest.entity.TFPart;
 import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimensionSettings;
-import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
 import twilightforest.item.GiantItem;
 import twilightforest.network.TFPacketHandler;
@@ -60,9 +61,10 @@ import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {

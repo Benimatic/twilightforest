@@ -26,10 +26,9 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CinderFurnaceBlockEntity;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 

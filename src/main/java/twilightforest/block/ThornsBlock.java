@@ -23,10 +23,9 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
-
-import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 

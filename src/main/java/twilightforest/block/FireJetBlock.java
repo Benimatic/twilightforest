@@ -17,13 +17,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 
 public class FireJetBlock extends BaseEntityBlock {
 

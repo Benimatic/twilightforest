@@ -19,9 +19,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
-import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.entity.monster.BlockChainGoblin;
 
 public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends BlockChainGoblinModel<T>> extends HumanoidMobRenderer<T, M> {

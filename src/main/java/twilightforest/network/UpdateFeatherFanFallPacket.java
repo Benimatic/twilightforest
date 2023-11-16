@@ -9,8 +9,6 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanCapabilityHandler;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 
-import java.util.function.Supplier;
-
 public class UpdateFeatherFanFallPacket {
 	private final int entityID;
 	private final boolean falling;

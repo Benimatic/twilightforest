@@ -8,8 +8,6 @@ import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.TFMazeMapData;
 import twilightforest.item.MazeMapItem;
 
-import java.util.function.Supplier;
-
 /**
  * Vanilla's SPacketMaps handler looks for and loads the vanilla MapData instances.
  * We rewrap the packet here in order to load our own MapData instances properly.

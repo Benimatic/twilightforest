@@ -8,8 +8,6 @@ import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 
-import java.util.function.Supplier;
-
 public class UpdateShieldPacket {
 
 	private final int entityID;

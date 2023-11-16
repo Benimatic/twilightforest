@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -42,6 +41,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.client.MissingAdvancementToast;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -54,8 +54,6 @@ import twilightforest.util.PlayerHelper;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 import twilightforest.world.registration.TFGenerationSettings;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 

@@ -7,8 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.NetworkEvent;
 import twilightforest.client.MissingAdvancementToast;
 
-import java.util.function.Supplier;
-
 public class MissingAdvancementToastPacket {
 	private final Component title;
 	private final ItemStack icon;
