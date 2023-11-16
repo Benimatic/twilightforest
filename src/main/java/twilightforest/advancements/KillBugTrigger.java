@@ -6,12 +6,12 @@ import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
@@ -30,7 +30,7 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Trigge
 	private static Block deserializeBug(JsonObject object) {
 		if (object.has("bug")) {
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(object, "bug"));
-			return ForgeRegistries.BLOCKS.getValue(resourcelocation);
+			return BuiltInRegistries.BLOCK.get(resourcelocation);
 		} else {
 			return null;
 		}
@@ -62,7 +62,7 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Trigge
 		public JsonObject serializeToJson() {
 			JsonObject object = super.serializeToJson();
 			if (bugType != null) {
-				object.addProperty("bug", ForgeRegistries.BLOCKS.getKey(this.bugType).toString());
+				object.addProperty("bug", BuiltInRegistries.BLOCK.getKey(this.bugType).toString());
 			}
 			return object;
 		}

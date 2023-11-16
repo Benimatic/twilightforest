@@ -10,13 +10,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import twilightforest.TwilightForestMod;
@@ -77,7 +77,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 						modelView.popPose();
 						RenderSystem.applyModelViewMatrix();
 					} catch (Exception e) {
-						TwilightForestMod.LOGGER.error("Error drawing entity " + ForgeRegistries.ENTITY_TYPES.getKey(type), e);
+						TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 						IGNORED_ENTITIES.add(type);
 						this.ENTITY_MAP.remove(type);
 					}
@@ -95,7 +95,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 		List<Component> tooltip = new ArrayList<>();
 		tooltip.add(type.getDescription());
 		if (flag.isAdvanced()) {
-			tooltip.add(Component.literal(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(type)).toString()).withStyle(ChatFormatting.DARK_GRAY));
+			tooltip.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type)).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
 		return tooltip;
 	}
