@@ -6,11 +6,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 
@@ -93,7 +93,7 @@ public abstract class StalactiteProvider implements DataProvider {
 	protected void makeStalactite(Stalactite stalactite, Stalactite.HollowHillType type) {
 		var nameBuilder = new StringJoiner("_", "", "_stalactite");
 
-		for (ResourceLocation entry : stalactite.ores().keySet().stream().map(ForgeRegistries.BLOCKS::getKey).sorted().toList())
+		for (ResourceLocation entry : stalactite.ores().keySet().stream().map(BuiltInRegistries.BLOCK::getKey).sorted().toList())
 			nameBuilder.add(entry.getPath());
 
 		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, nameBuilder.toString()), stalactite), type);

@@ -3,6 +3,7 @@ package twilightforest.item.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -11,7 +12,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFRecipes;
 
@@ -51,8 +51,8 @@ public record CrumbleRecipe(Block input, Block result) implements Recipe<Contain
 
 		private static final Codec<CrumbleRecipe> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
-						ForgeRegistries.BLOCKS.getCodec().fieldOf("from").forGetter(o -> o.input),
-						ForgeRegistries.BLOCKS.getCodec().fieldOf("to").forGetter(o -> o.result)
+						BuiltInRegistries.BLOCK.byNameCodec().fieldOf("from").forGetter(o -> o.input),
+						BuiltInRegistries.BLOCK.byNameCodec().fieldOf("to").forGetter(o -> o.result)
 				).apply(instance, CrumbleRecipe::new));
 
 		@Override
@@ -63,15 +63,15 @@ public record CrumbleRecipe(Block input, Block result) implements Recipe<Contain
 		@Nullable
 		@Override
 		public CrumbleRecipe fromNetwork(FriendlyByteBuf buffer) {
-			Block input = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
-			Block output = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
+			Block input = buffer.readById(BuiltInRegistries.BLOCK);
+			Block output = buffer.readById(BuiltInRegistries.BLOCK);
 			return new CrumbleRecipe(input, output);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, CrumbleRecipe recipe) {
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.input);
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.result);
+			buffer.writeId(BuiltInRegistries.BLOCK, recipe.input);
+			buffer.writeId(BuiltInRegistries.BLOCK, recipe.result);
 		}
 	}
 }

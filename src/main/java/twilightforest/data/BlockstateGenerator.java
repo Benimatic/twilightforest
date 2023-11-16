@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
@@ -14,7 +15,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -917,7 +917,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void castleDoor(Block b) {
-		ModelFile vanished = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath() + "_vanished", "block/block")
+		ModelFile vanished = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
@@ -925,7 +925,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.renderType(CUTOUT)
 				.customLoader(CastleDoorBuilder::begin).end();
 
-		ModelFile main = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), "block/block")
+		ModelFile main = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))

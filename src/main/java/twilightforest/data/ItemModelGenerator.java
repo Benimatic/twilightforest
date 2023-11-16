@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.ItemLayerModelBuilder;
 import net.neoforged.neoforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
@@ -766,27 +766,27 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void woodenButton(Block button, String variant) {
-		getBuilder(ForgeRegistries.BLOCKS.getKey(button).getPath())
+		getBuilder(BuiltInRegistries.BLOCK.getKey(button).getPath())
 						.parent(getExistingFile(mcLoc("block/button_inventory")))
 						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void woodenFence(Block fence, String variant) {
-		getBuilder(ForgeRegistries.BLOCKS.getKey(fence).getPath())
+		getBuilder(BuiltInRegistries.BLOCK.getKey(fence).getPath())
 						.parent(getExistingFile(mcLoc("block/fence_inventory")))
 						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void hollowLog(RegistryObject<Item> hollowLog) {
-		getBuilder(ForgeRegistries.ITEMS.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath() + "_horizontal"), this.existingFileHelper));
+		getBuilder(BuiltInRegistries.ITEM.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath() + "_horizontal"), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {
-		toBlockModel(b, ForgeRegistries.BLOCKS.getKey(b).getPath());
+		toBlockModel(b, BuiltInRegistries.BLOCK.getKey(b).getPath());
 	}
 
 	private void woodBlock(Block b, String variant) {
-		woodBlockModel(b, ForgeRegistries.BLOCKS.getKey(b).getPath(), variant);
+		woodBlockModel(b, BuiltInRegistries.BLOCK.getKey(b).getPath(), variant);
 	}
 
 	private void toBlockModel(Block b, String model) {
@@ -798,7 +798,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toBlockModel(Block b, ResourceLocation model) {
-		withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), model);
+		withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), model);
 	}
 
 	private void toGiantModel(Block b, ResourceLocation model, ItemModelBuilder base, ItemModelBuilder gui) {
@@ -806,7 +806,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toGiantModel(Block b, ResourceLocation model, ResourceLocation top, ItemModelBuilder base, ItemModelBuilder gui) {
-		String name = ForgeRegistries.BLOCKS.getKey(b).getPath();
+		String name = BuiltInRegistries.BLOCK.getKey(b).getPath();
 		withExistingParent(name, model).customLoader(SeparateTransformsModelBuilder::begin)
 				.base(withExistingParent(name + "_base", base.getLocation()).texture("all", model).texture("top", top))
 				.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", model).texture("top", top)).end();

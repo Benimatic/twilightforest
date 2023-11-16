@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.TFCavesCarver;
@@ -30,9 +29,9 @@ public class TFCaveCarvers {
 	//this one has to stay, configured versions dont work otherwise
 	@SubscribeEvent
 	public static void register(RegisterEvent evt) {
-		if (Objects.equals(evt.getForgeRegistry(), ForgeRegistries.WORLD_CARVERS)) {
-			evt.register(ForgeRegistries.Keys.WORLD_CARVERS, helper -> helper.register(TwilightForestMod.prefix("tf_caves"), TFCAVES));
-			evt.register(ForgeRegistries.Keys.WORLD_CARVERS, helper -> helper.register(TwilightForestMod.prefix("highland_caves"), HIGHLANDCAVES));
+		if (Objects.equals(evt.getRegistryKey(), Registries.CARVER)) {
+			evt.register(Registries.CARVER, helper -> helper.register(TwilightForestMod.prefix("tf_caves"), TFCAVES));
+			evt.register(Registries.CARVER, helper -> helper.register(TwilightForestMod.prefix("highland_caves"), HIGHLANDCAVES));
 		}
 	}
 

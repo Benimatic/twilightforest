@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -7,7 +8,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.MissingMappingsEvent;
 import twilightforest.TwilightForestMod;
 
@@ -254,7 +254,7 @@ public class TFRemapper {
 		if (oldKey.contains(oldId)) {
 			String newName = oldKey.replace(oldId, newId);
 			ResourceLocation remap = new ResourceLocation(TwilightForestMod.ID, newName);
-			mapping.remap(ForgeRegistries.BLOCKS.getValue(remap));
+			mapping.remap(BuiltInRegistries.BLOCK.get(remap));
 			TwilightForestMod.LOGGER.debug("Twilight Forest successfully remapped block {} to {}!", mapping.getKey().getPath(), newName);
 		}
 	}
@@ -264,7 +264,7 @@ public class TFRemapper {
 		if (oldKey.contains(oldId)) {
 			String newName = oldKey.replace(oldId, newId);
 			ResourceLocation remap = new ResourceLocation(TwilightForestMod.ID, newName);
-			mapping.remap(ForgeRegistries.ITEMS.getValue(remap));
+			mapping.remap(BuiltInRegistries.ITEM.get(remap));
 			TwilightForestMod.LOGGER.debug("Twilight Forest successfully remapped item {} to {}!", mapping.getKey().getPath(), newName);
 		}
 	}
@@ -274,7 +274,7 @@ public class TFRemapper {
 		if (oldKey.contains(oldId)) {
 			String newName = oldKey.replace(oldId, newId);
 			ResourceLocation remap = new ResourceLocation(TwilightForestMod.ID, newName);
-			mapping.remap(ForgeRegistries.ENTITY_TYPES.getValue(remap));
+			mapping.remap(BuiltInRegistries.ENTITY_TYPE.get(remap));
 			TwilightForestMod.LOGGER.debug("Twilight Forest successfully remapped entity {} to {}!", mapping.getKey().getPath(), newName);
 		}
 	}

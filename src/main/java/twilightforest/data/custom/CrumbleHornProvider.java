@@ -3,6 +3,7 @@ package twilightforest.data.custom;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -75,9 +76,9 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	private JsonObject serializeToJson(BlockState transformFrom, BlockState transformTo) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", ForgeRegistries.RECIPE_SERIALIZERS.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
-		jsonobject.addProperty("from", ForgeRegistries.BLOCKS.getKey(transformFrom.getBlock()).toString());
-		jsonobject.addProperty("to", ForgeRegistries.BLOCKS.getKey(transformTo.getBlock()).toString());
+		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
+		jsonobject.addProperty("from", BuiltInRegistries.BLOCK.getKey(transformFrom.getBlock()).toString());
+		jsonobject.addProperty("to", BuiltInRegistries.BLOCK.getKey(transformTo.getBlock()).toString());
 		return jsonobject;
 	}
 
@@ -88,10 +89,10 @@ public abstract class CrumbleHornProvider implements DataProvider {
 
 	//helper methods
 	public void addTransform(Block from, Block to) {
-		this.builders.put(ForgeRegistries.BLOCKS.getKey(from).getPath() + "_to_" + ForgeRegistries.BLOCKS.getKey(to).getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
+		this.builders.put(BuiltInRegistries.BLOCK.getKey(from).getPath() + "_to_" + BuiltInRegistries.BLOCK.getKey(to).getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
 	}
 
 	public void addDissolve(Block dissolveBlock) {
-		this.builders.put("dissolve_" + ForgeRegistries.BLOCKS.getKey(dissolveBlock).getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
+		this.builders.put("dissolve_" + BuiltInRegistries.BLOCK.getKey(dissolveBlock).getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
 	}
 }

@@ -2,11 +2,11 @@ package twilightforest.data.custom.stalactites.entry;
 
 import com.google.gson.*;
 import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Type;
 import java.util.Comparator;
@@ -45,7 +45,7 @@ public record Stalactite(Map<Block, Integer> ores, float sizeVariation, int maxL
 			JsonArray array = GsonHelper.getAsJsonArray(json, "blocks");
 			Map<Block, Integer> map = new HashMap<>();
 			array.forEach(jsonElement -> {
-				map.put(ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(jsonElement.getAsJsonObject(), "block"))), GsonHelper.getAsInt(jsonElement.getAsJsonObject(), "weight"));
+				map.put(BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(jsonElement.getAsJsonObject(), "block"))), GsonHelper.getAsInt(jsonElement.getAsJsonObject(), "weight"));
 			});
 			return map;
 		}
@@ -56,7 +56,7 @@ public record Stalactite(Map<Block, Integer> ores, float sizeVariation, int maxL
 			JsonArray array = new JsonArray();
 
 			List<Pair<ResourceLocation, Integer>> blockWeights = stalactite.ores().entrySet().stream()
-					.map(e -> Pair.of(ForgeRegistries.BLOCKS.getKey(e.getKey()), e.getValue()))
+					.map(e -> Pair.of(BuiltInRegistries.BLOCK.getKey(e.getKey()), e.getValue()))
 					.sorted(Comparator.comparing(Pair::left)) // Compare only the resource locations
 					.toList();
 

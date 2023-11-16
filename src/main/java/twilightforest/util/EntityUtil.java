@@ -3,6 +3,8 @@ package twilightforest.util;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
@@ -11,7 +13,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
@@ -31,10 +36,9 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 
@@ -185,7 +189,7 @@ public class EntityUtil {
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
-		painting.setVariant(ForgeRegistries.PAINTING_VARIANTS.getHolder(chosenPainting).get());
+		painting.setVariant(BuiltInRegistries.PAINTING_VARIANT.getHolder(chosenPainting).get());
 
 		if (checkValidPaintingPosition(world, painting))
 			world.addFreshEntity(painting);
@@ -199,14 +203,14 @@ public class EntityUtil {
 	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int width, int height, boolean exactMeasurements) {
 		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
 
-		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS.tags().getTag(PaintingVariantTags.PLACEABLE)) {
+		for (Holder<PaintingVariant> art : BuiltInRegistries.PAINTING_VARIANT.getTag(PaintingVariantTags.PLACEABLE).get()) {
 			if (exactMeasurements) {
-				if (art.getWidth() == width && art.getHeight() == height) {
-					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(ForgeRegistries.PAINTING_VARIANTS.getKey(art))));
+				if (art.value().getWidth() == width && art.value().getHeight() == height) {
+					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(BuiltInRegistries.PAINTING_VARIANT.getKey(art.value()))));
 				}
 			} else {
-				if (art.getWidth() >= width || art.getHeight() >= height) {
-					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(ForgeRegistries.PAINTING_VARIANTS.getKey(art))));
+				if (art.value().getWidth() >= width || art.value().getHeight() >= height) {
+					valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(BuiltInRegistries.PAINTING_VARIANT.getKey(art.value()))));
 				}
 			}
 		}

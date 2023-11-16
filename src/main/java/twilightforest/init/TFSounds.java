@@ -1,16 +1,16 @@
 package twilightforest.init;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.animal.Parrot;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import net.neoforged.neoforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 
 public final class TFSounds {
 	
-	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, TwilightForestMod.ID);
+	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, TwilightForestMod.ID);
 
 	public static final RegistryObject<SoundEvent> ACID_RAIN_BURNS = createEvent("environment.twilightforest.acid_rain");
 	public static final RegistryObject<SoundEvent> ALPHA_YETI_ALERT = createEvent("entity.twilightforest.alpha_yeti.alert");

@@ -2,9 +2,8 @@ package twilightforest.data.tags;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -784,8 +782,8 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
-		return ForgeRegistries.BLOCKS.getValues().stream()
-				.filter(b -> ForgeRegistries.BLOCKS.getKey(b) != null && (ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals(TwilightForestMod.ID) || ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
+		return BuiltInRegistries.BLOCK.stream()
+				.filter(b -> BuiltInRegistries.BLOCK.getKey(b) != null && (BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(TwilightForestMod.ID) || BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
 				.toArray(Block[]::new);
 	}
 

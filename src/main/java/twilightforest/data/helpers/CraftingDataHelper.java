@@ -5,6 +5,7 @@ import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.PartialNBTIngredient;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -46,7 +46,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	public final PartialNBTIngredient potion(Potion potion) {
 		return PartialNBTIngredient.of(Items.POTION, Util.make(() -> {
 			CompoundTag nbt = new CompoundTag();
-			nbt.putString("Potion", ForgeRegistries.POTIONS.getKey(potion).toString());
+			nbt.putString("Potion", BuiltInRegistries.POTION.getKey(potion).toString());
 			return nbt;
 		}));
 	}
@@ -64,7 +64,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.pattern("##")
 				.define('#', Ingredient.of(ingredients))
 				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
-				.save(output, locCastle(ForgeRegistries.BLOCKS.getKey(result.get()).getPath()));
+				.save(output, locCastle(BuiltInRegistries.BLOCK.getKey(result.get()).getPath()));
 	}
 
 	protected final void stairsBlock(RecipeOutput output, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
@@ -322,7 +322,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.requires(armor)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), vials)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(output, locEquip("fiery_" + ForgeRegistries.ITEMS.getKey(result.get()).getPath()));
+				.save(output, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(result.get()).getPath()));
 	}
 
 	protected final void buildBoats(RecipeOutput output, Supplier<? extends Item> boat, Supplier<? extends Item> chestBoat, Supplier<? extends Block> planks) {
