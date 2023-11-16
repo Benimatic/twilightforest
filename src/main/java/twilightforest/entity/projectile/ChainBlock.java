@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +29,7 @@ import net.neoforged.neoforge.entity.IEntityAdditionalSpawnData;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import twilightforest.entity.Chain;
 import twilightforest.entity.monster.BlockChainGoblin;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEnchantments;

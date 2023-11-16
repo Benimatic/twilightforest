@@ -29,7 +29,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -92,7 +92,7 @@ public class ProgressionEvents {
 			return false;
 		}
 
-		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(level);
+		TwilightChunkGenerator chunkGenerator = WorldUtil.getChunkGenerator(level);
 
 		if (chunkGenerator != null) {
 			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));

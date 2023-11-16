@@ -18,7 +18,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
-import twilightforest.entity.ChainBlock;
+import twilightforest.entity.projectile.ChainBlock;
 
 public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 

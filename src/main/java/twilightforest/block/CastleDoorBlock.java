@@ -22,7 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 
 public class CastleDoorBlock extends Block {
 
@@ -97,7 +97,7 @@ public class CastleDoorBlock extends Block {
 	private static boolean isBlockLocked(Level level, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!level.isClientSide()) {
-			ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(level);
+			TwilightChunkGenerator generator = WorldUtil.getChunkGenerator(level);
 			//return generator != null && generator.isStructureLocked(pos, lockIndex);
 		}
 		return false;

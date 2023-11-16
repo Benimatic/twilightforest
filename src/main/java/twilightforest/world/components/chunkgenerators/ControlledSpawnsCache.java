@@ -11,7 +11,7 @@ import java.util.WeakHashMap;
 
 public class ControlledSpawnsCache extends SimplePreparableReloadListener<Object> {
 
-	public static WeakHashMap<ChunkGeneratorTwilight, List<Structure>> CONTROLLED_SPAWNS = new WeakHashMap<>();
+	public static WeakHashMap<TwilightChunkGenerator, List<Structure>> CONTROLLED_SPAWNS = new WeakHashMap<>();
 
 	public static void reload(AddReloadListenerEvent event) {
 		event.addListener(new ControlledSpawnsCache());

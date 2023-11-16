@@ -19,7 +19,7 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.registration.TFGenerationSettings;
 
 
-public class StrongholdUpperAscenderComponent extends StructureTFStrongholdComponent {
+public class StrongholdUpperAscenderComponent extends KnightStrongholdComponent {
 
 	boolean exitTop;
 

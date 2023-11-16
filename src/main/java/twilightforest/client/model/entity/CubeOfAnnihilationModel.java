@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.CubeOfAnnihilation;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
 
 public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 	private final ModelPart box, boxX, boxY, boxZ;

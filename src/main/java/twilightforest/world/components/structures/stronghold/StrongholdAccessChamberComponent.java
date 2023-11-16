@@ -19,7 +19,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 
 
-public class StrongholdAccessChamberComponent extends StructureTFStrongholdComponent {
+public class StrongholdAccessChamberComponent extends KnightStrongholdComponent {
 
 	public StrongholdAccessChamberComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSAC.get(), nbt);

@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.TierSortingRegistry;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.entity.ChainBlock;
+import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;

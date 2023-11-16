@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
-import twilightforest.entity.CubeOfAnnihilation;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
 
 public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilation> {
 

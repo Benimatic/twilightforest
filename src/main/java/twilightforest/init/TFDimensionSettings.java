@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.registration.biomes.BiomeMaker;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
@@ -160,7 +160,7 @@ public class TFDimensionSettings {
 
 		LevelStem stem = new LevelStem(
 				dimTypes.getOrThrow(TFDimensionSettings.TWILIGHT_DIM_TYPE),
-				new ChunkGeneratorTwilight(
+				new TwilightChunkGenerator(
 						wrappedChunkGenerator,
 						noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN),
 						true,

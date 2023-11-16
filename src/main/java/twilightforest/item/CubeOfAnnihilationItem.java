@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.entity.CubeOfAnnihilation;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
 import twilightforest.init.TFEntities;
 
 import java.util.UUID;

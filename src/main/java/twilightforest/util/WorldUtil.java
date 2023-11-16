@@ -8,7 +8,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public final class WorldUtil {
@@ -41,15 +41,15 @@ public final class WorldUtil {
 	}
 
 	@Nullable
-	public static ChunkGeneratorTwilight getChunkGenerator(LevelAccessor level) {
-		if (level.getChunkSource() instanceof ServerChunkCache chunkSource && chunkSource.chunkMap.generator() instanceof ChunkGeneratorTwilight chunkGenerator)
+	public static TwilightChunkGenerator getChunkGenerator(LevelAccessor level) {
+		if (level.getChunkSource() instanceof ServerChunkCache chunkSource && chunkSource.chunkMap.generator() instanceof TwilightChunkGenerator chunkGenerator)
 			return chunkGenerator;
 
 		return null;
 	}
 
 	public static int getSeaLevel(ChunkGenerator generator) {
-		if (generator instanceof ChunkGeneratorTwilight) {
+		if (generator instanceof TwilightChunkGenerator) {
 			return generator.getSeaLevel();
 		} else return TFGenerationSettings.SEALEVEL;
 	}

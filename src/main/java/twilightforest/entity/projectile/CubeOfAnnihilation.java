@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

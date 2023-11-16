@@ -23,16 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class StructureTFStrongholdComponent extends TFStructureComponentOld {
+public abstract class KnightStrongholdComponent extends TFStructureComponentOld {
 
 	public final List<BlockPos> doors = new ArrayList<>();
 
-	public StructureTFStrongholdComponent(StructurePieceType piece, CompoundTag nbt) {
+	public KnightStrongholdComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
 	}
 
-	public StructureTFStrongholdComponent(StructurePieceType type, int i, Direction facing, int x, int y, int z) {
+	public KnightStrongholdComponent(StructurePieceType type, int i, Direction facing, int x, int y, int z) {
 		super(type, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setOrientation(facing);
@@ -107,7 +107,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		}
 
 		// are we looking at a point we can possibly break in to?
-		StructureTFStrongholdComponent breakIn = (StructureTFStrongholdComponent) this.findBreakInComponent(list, nx, ny, nz);
+		KnightStrongholdComponent breakIn = (KnightStrongholdComponent) this.findBreakInComponent(list, nx, ny, nz);
 		if (breakIn != null && breakIn.attemptToBreakIn(nx, ny, nz)) {
 			// success!
 			this.addDoorwayTo(x, y, z, facing);
@@ -144,7 +144,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	protected void addNewUpperComponent(StructurePiece parent, StructurePieceAccessor list, RandomSource random, Rotation facing, int x, int y, int z) {
-		StructureTFStrongholdComponent attempted;
+		KnightStrongholdComponent attempted;
 
 		int index = this.genDepth + 1;
 		Direction nFacing = getStructureRelativeRotation(facing);
@@ -498,7 +498,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		}
 	}
 
-	public interface Factory<T extends StructureTFStrongholdComponent> {
+	public interface Factory<T extends KnightStrongholdComponent> {
 		T newInstance(int i, Direction facing, int x, int y, int z);
 	}
 }

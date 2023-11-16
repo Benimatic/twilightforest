@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePlacementTypes;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.chunkgenerators.TwilightChunkGenerator;
 
 import java.util.Optional;
 
@@ -31,7 +31,7 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
     }
 
     public boolean isTFPlacementChunk(ChunkGenerator chunkGen, ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
-        if (chunkGen instanceof ChunkGeneratorTwilight twilightGenerator)
+        if (chunkGen instanceof TwilightChunkGenerator twilightGenerator)
             return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGen.getBiomeSource().getNoiseBiome(chunkX << 2, this.scanHeight, chunkZ << 2, state.randomState().sampler()), chunkX, chunkZ, state.getLevelSeed());
 
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))

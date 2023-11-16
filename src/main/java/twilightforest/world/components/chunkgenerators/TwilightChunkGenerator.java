@@ -58,14 +58,14 @@ import java.util.function.Predicate;
 
 // TODO override getBaseHeight and getBaseColumn for our advanced structure terraforming
 @SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "SuspiciousNameCombination", "deprecation"})
-public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
-	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
+	public static final Codec<TwilightChunkGenerator> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
 			Codec.unboundedMap(ResourceKey.codec(Registries.BIOME), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
-	).apply(instance, ChunkGeneratorTwilight::new));
+	).apply(instance, TwilightChunkGenerator::new));
 
 	private final Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides;
 
@@ -80,7 +80,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
+	public TwilightChunkGenerator(ChunkGenerator delegate, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
 		super(delegate);
 
 		this.biomeLandmarkOverrides = biomeLandmarkOverrides;
@@ -840,7 +840,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Nullable
-	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(@Nullable ChunkGeneratorTwilight key, StructureManager structureManager, MobCategory classification, BlockPos pos) {
+	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(@Nullable TwilightChunkGenerator key, StructureManager structureManager, MobCategory classification, BlockPos pos) {
 		Iterable<Structure> structures = structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE);
 		if (key != null) {
 			List<Structure> l = ControlledSpawnsCache.CONTROLLED_SPAWNS.get(key);
