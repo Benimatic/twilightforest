@@ -166,13 +166,13 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
         BlockState above = level.getBlockState(pos);
         BlockState below = level.getBlockState(pos.below(2));
         BlockState blockstate = this.updateSides(state, above, below, north, east, south, west);
-        return blockstate.setValue(POST, makePost(blockstate, neighbor, above.isAir()));
+        return blockstate.setValue(POST, makePost(blockstate, neighbor, above.isAir(), below));
     }
 
-    private PostState makePost(BlockState state, BlockState neighbor, boolean freeTop) {
+    private PostState makePost(BlockState state, BlockState neighbor, boolean freeTop, BlockState below) {
         boolean flag = neighbor.is(this) && neighbor.getValue(POST) != PostState.NONE;
         if (state.getValue(POST) == PostState.CAPPED && freeTop) return PostState.CAPPED;
-        if (flag) {
+        if (flag || (below.is(this) && below.getValue(POST) != PostState.NONE)) {
             return PostState.POST;
         } else {
             //get sides
