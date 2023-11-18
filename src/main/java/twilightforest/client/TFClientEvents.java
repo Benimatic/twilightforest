@@ -136,24 +136,8 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void renderWorldLast(RenderLevelStageEvent event) {
 		if (Minecraft.getInstance().level == null) return;
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) { // after particles says its best for special rendering effects, and thats what I consider this
-			if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
-			Options settings = Minecraft.getInstance().options;
-			if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;
-
-			Entity entity = Minecraft.getInstance().getCameraEntity();
-			if (entity instanceof LivingEntity) {
-				EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
-				if (renderer instanceof LivingEntityRenderer<?, ?>) {
-					for (EffectRenders effect : EffectRenders.VALUES) {
-						if (effect.shouldRender((LivingEntity) entity, true)) {
-							effect.render((LivingEntity) entity, ((LivingEntityRenderer<?, ?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
-						}
-					}
-				}
-			}
-		} else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
+		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
 			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
 			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
