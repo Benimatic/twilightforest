@@ -1,11 +1,13 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +20,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -155,8 +158,12 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.level().isClientSide() && !this.level().isEmptyBlock(result.getBlockPos())) {
-			if (!this.stack.isCorrectToolForDrops(this.level().getBlockState(result.getBlockPos()))) {
+		BlockPos pos = result.getBlockPos();
+		Level level = this.level();
+		if (!level.isClientSide()) {
+			BlockState state = level.getBlockState(pos);
+			boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
+			if (!state.isAir() && !this.canBreakBlockAt(pos, state, restrictedPlaceMode)) {
 				if (!this.isReturning && !this.hitEntity) {
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
 					this.gameEvent(GameEvent.HIT_GROUND);
@@ -223,15 +230,20 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 		}
 	}
 
+	private boolean canBreakBlockAt(BlockPos pos, BlockState state, boolean restrictedPlaceMode) {
+		return this.stack.isCorrectToolForDrops(state)
+				&& (!restrictedPlaceMode || this.stack.hasAdventureModeBreakTagForBlock(this.level().registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(this.level(), pos, false)));
+	}
+
 	private void affectBlocksInAABB(AABB box) {
-		if (this.getOwner() instanceof Player player) {
+		if (this.getOwner() instanceof ServerPlayer player) {
 			boolean creative = player.getAbilities().instabuild;
 
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = this.level().getBlockState(pos);
 				Block block = state.getBlock();
 
-				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.level(), pos, this)) {
+				if (!state.isAir() && this.canBreakBlockAt(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && block.canEntityDestroy(state, this.level(), pos, this)) {
 					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
 						if (EventHooks.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
 							this.level().destroyBlock(pos, false);

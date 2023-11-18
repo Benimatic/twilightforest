@@ -1,7 +1,10 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -9,9 +12,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
@@ -25,14 +30,16 @@ import twilightforest.util.WorldUtil;
 public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	private boolean hasHitObstacle = false;
+	private ItemStack stack;
 
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world) {
 		super(type, world);
 	}
 
-	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower) {
+	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower, ItemStack stack) {
 		super(type, thrower, world);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
+		this.stack = stack;
 	}
 
 	@Override
@@ -89,9 +96,9 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			BlockState state = this.level().getBlockState(pos);
 			if (!state.isAir()) {
-				if (this.getOwner() instanceof Player player) {
+				if (this.getOwner() instanceof ServerPlayer player) {
 					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
-						if (this.canAnnihilate(pos, state)) {
+						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
 							this.annihilateParticles(this.level(), pos);
@@ -107,10 +114,11 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		}
 	}
 
-	private boolean canAnnihilate(BlockPos pos, BlockState state) {
+	private boolean canAnnihilate(BlockPos pos, BlockState state, boolean restrictedPlaceMode) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0;
+		return (state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
+				&& (!restrictedPlaceMode || this.stack.hasAdventureModeBreakTagForBlock(this.level().registryAccess().registryOrThrow(Registries.BLOCK), new BlockInWorld(this.level(), pos, false)));
 	}
 
 	private void annihilateParticles(Level level, BlockPos pos) {
@@ -197,5 +205,19 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 		} else {
 			return !player.isUsingItem();
 		}
+	}
+
+	@Override
+	protected void readAdditionalSaveData(CompoundTag pCompound) {
+		super.readAdditionalSaveData(pCompound);
+		if (pCompound.contains("CubeOfAnnihilationStack", 10)) {
+			this.stack = ItemStack.of(pCompound.getCompound("CubeOfAnnihilationStack"));
+		}
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag pCompound) {
+		super.addAdditionalSaveData(pCompound);
+		pCompound.put("CubeOfAnnihilationStack", this.stack.save(new CompoundTag()));
 	}
 }
