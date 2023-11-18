@@ -574,7 +574,7 @@ public class TFTeleporter implements ITeleporter {
 
 	private static BlockState randNatureBlock(RandomSource random) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-				.getTag(BlockTagGenerator.PORTAL_DECO)
+				.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
 				.flatMap(tag -> tag.getRandomElement(random))
 				.map(Holder::value);
 		return optional.map(Block::defaultBlockState).orElseGet(Blocks.GRASS::defaultBlockState);
