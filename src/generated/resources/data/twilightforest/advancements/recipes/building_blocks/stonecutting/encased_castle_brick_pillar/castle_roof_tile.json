@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "twilightforest:towerwood"
+              "twilightforest:encased_castle_brick_pillar"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "twilightforest:stonecutting/towerwood/encased_towerwood"
+        "recipe": "twilightforest:stonecutting/encased_castle_brick_pillar/castle_roof_tile"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "twilightforest:stonecutting/towerwood/encased_towerwood"
+      "twilightforest:stonecutting/encased_castle_brick_pillar/castle_roof_tile"
     ]
   },
   "sends_telemetry_event": false

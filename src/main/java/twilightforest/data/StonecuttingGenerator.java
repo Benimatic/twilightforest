@@ -25,22 +25,52 @@ import static twilightforest.TwilightForestMod.prefix;
 public class StonecuttingGenerator {
 
 	protected static void buildRecipes(RecipeOutput output) {
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.CASTLE_BRICK_STAIRS.get());
 		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get());
-		stonecutting(output, TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get());
-		stonecutting(output, TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get());
-		stonecutting(output, TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get());
-
 		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK.get());
-		stonecutting(output, TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.ENCASED_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.CASTLE_ROOF_TILE.get());
+
+		stonecutting(output, TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get());
+		stonecutting(output, TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+
+		stonecutting(output, TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get());
+		stonecutting(output, TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+
+		stonecutting(output, TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get());
+		stonecutting(output, TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+
+		stonecutting(output, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
 		stonecutting(output, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
-		stonecutting(output, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), TFBlocks.ENCASED_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.BOLD_CASTLE_BRICK_TILE.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
 
 		stonecutting(output, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get());
-		stonecutting(output, TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
-		stonecutting(output, TFBlocks.CASTLE_BRICK.get(), TFBlocks.CASTLE_BRICK_STAIRS.get());
-		stonecutting(output, TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.get());
-		stonecutting(output, TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get());
-		stonecutting(output, TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), TFBlocks.ENCASED_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(), TFBlocks.CASTLE_ROOF_TILE.get());
+
+		stonecutting(output, TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get());
+		stonecutting(output, TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(), TFBlocks.CASTLE_ROOF_TILE.get());
+
+		stonecutting(output, TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get());
+		stonecutting(output, TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_TILE.get());
+		stonecutting(output, TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
 
 		stonecutting(output, TFBlocks.ETCHED_NAGASTONE.get(), TFBlocks.NAGASTONE_STAIRS_LEFT.get());
 		stonecutting(output, TFBlocks.ETCHED_NAGASTONE.get(), TFBlocks.NAGASTONE_STAIRS_RIGHT.get());
@@ -58,7 +88,8 @@ public class StonecuttingGenerator {
 
 		stonecutting(output, TFBlocks.DARK_LOG.get(), TFBlocks.TOWERWOOD.get());
 		stonecutting(output, TFBlocks.DARK_WOOD.get(), TFBlocks.TOWERWOOD.get());
-		stonecutting(output, TFBlocks.TOWERWOOD.get(), TFBlocks.ENCASED_TOWERWOOD.get());
+		stonecutting(output, TFBlocks.DARK_LOG.get(), TFBlocks.ENCASED_TOWERWOOD.get());
+		stonecutting(output, TFBlocks.DARK_WOOD.get(), TFBlocks.ENCASED_TOWERWOOD.get());
 
 		stonecutting(output, TFBlocks.MAZESTONE.get(), TFBlocks.MAZESTONE_BORDER.get());
 		stonecutting(output, TFBlocks.MAZESTONE.get(), TFBlocks.MAZESTONE_BRICK.get());
@@ -112,6 +143,8 @@ public class StonecuttingGenerator {
 		stonecutting(output, Blocks.CHERRY_LOG, TFItems.HOLLOW_CHERRY_LOG.get());
 		stonecutting(output, Blocks.STONE, TFBlocks.TWISTED_STONE.get());
 		stonecutting(output, Blocks.STONE, TFBlocks.BOLD_STONE_PILLAR.get());
+		stonecutting(output, Blocks.STONE, TFBlocks.TWISTED_STONE_PILLAR.get());
+		stonecutting(output, Blocks.STONE, TFBlocks.SPIRAL_BRICKS.get());
 		stonecutting(output, TFBlocks.TWISTED_STONE.get(), TFBlocks.TWISTED_STONE_PILLAR.get());
 
 		stonecutting(output, TFBlocks.UNDERBRICK.get(), TFBlocks.UNDERBRICK_FLOOR.get());
@@ -122,7 +155,7 @@ public class StonecuttingGenerator {
 	}
 
 	private static void stonecutting(RecipeOutput recipe, ItemLike input, ItemLike output, int count) {
-		new SingleItemRecipeBuilder(RecipeCategory.BUILDING_BLOCKS, RecipeSerializer.STONECUTTER, Ingredient.of(input), output.asItem(), count).unlockedBy("has_block", has(input)).save(recipe, getIdFor(input, output));
+		SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output.asItem(), count).unlockedBy("has_block", has(input)).save(recipe, getIdFor(input, output));
 	}
 
 	private static ResourceLocation getIdFor(ItemLike input, ItemLike output) {
