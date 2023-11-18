@@ -67,7 +67,7 @@ public class UpperGoblinKnight extends Monster {
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
 			@Override
 			public boolean canUse() {
-				return !this.mob.isPassenger() && !(((UpperGoblinKnight) this.mob).heavySpearTimer > 0) && super.canUse();
+				return !(((UpperGoblinKnight) this.mob).heavySpearTimer > 0) && super.canUse();
 			}
 		});
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
