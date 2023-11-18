@@ -1,5 +1,6 @@
 package twilightforest.inventory;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -7,6 +8,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -15,10 +17,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.IShapedRecipe;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
@@ -29,12 +34,9 @@ import twilightforest.inventory.slot.UncraftingSlot;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.TFItemStackUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class UncraftingMenu extends AbstractContainerMenu {
+public class UncraftingMenu extends RecipeBookMenu<CraftingContainer> {
 
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
@@ -103,6 +105,19 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		}
 
 		this.slotsChanged(this.assemblyMatrix);
+
+		if (!FMLLoader.isProduction()) {
+			// Debug slot listing
+            NonNullList<Slot> slots = this.slots;
+
+			StringJoiner joiner = new StringJoiner(",\n", "Uncrafting Menu Slots:\n", "(" + slots.size() + " total slots)");
+
+			for (Slot slot : this.slots) {
+				joiner.add("[index " + slot.index + ": " + slot.getClass().getName() + " (container slot: " + slot.getContainerSlot() + ")]");
+			}
+
+			TwilightForestMod.LOGGER.info(joiner.toString());
+		}
 	}
 
 	@Override
@@ -464,7 +479,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	public void clicked(int slotNum, int mouseButton, ClickType clickType, Player player) {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
-		if (slotNum > 0 && this.slots.get(slotNum).container == this.assemblyMatrix
+		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.assemblyMatrix
 				&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
@@ -474,13 +489,13 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		}
 
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
-		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerResult
+		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.tinkerResult
 				&& this.calculateRecraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 
 			return;
 		}
 
-		if (slotNum > 0 && this.slots.get(slotNum).container == this.uncraftingMatrix) {
+		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.uncraftingMatrix) {
 
 			// don't allow uncrafting normal recipes if the server option is turned off
 			if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() && !(this.storedGhostRecipe instanceof UncraftingRecipe)) {
@@ -502,9 +517,14 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		super.clicked(slotNum, mouseButton, clickType, player);
 
 		// just trigger this event whenever the input slot is clicked for any reason
-		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerInput) {
+		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.tinkerInput) {
 			this.slotsChanged(this.tinkerInput);
 		}
+	}
+
+	@NotNull
+	private Container getSlotContainer(int slotNum) {
+		return this.slots.get(slotNum).container;
 	}
 
 	/**
@@ -613,5 +633,58 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	@Override
 	public boolean stillValid(Player player) {
 		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get() && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
+	}
+
+	@Override
+	public void fillCraftSlotsStackedContents(StackedContents stackedContents) {
+		this.assemblyMatrix.fillStackedContents(stackedContents);
+	}
+
+	@Override
+	public void clearCraftingContent() {
+		this.tinkerInput.clearContent();
+		this.assemblyMatrix.clearContent();
+		this.tinkerResult.clearContent();
+	}
+
+	@Override
+	public int getResultSlotIndex() {
+		return 1; // tinkerResult slot
+	}
+
+	@Override
+	public int getGridWidth() {
+		return this.assemblyMatrix.getWidth();
+	}
+
+	@Override
+	public int getGridHeight() {
+		return this.assemblyMatrix.getHeight();
+	}
+
+	@Override
+	public int getSize() {
+		return 20;
+	}
+
+	@Override
+	public RecipeBookType getRecipeBookType() {
+		return RecipeBookType.CRAFTING;
+	}
+
+	@Override
+	public boolean shouldMoveToInventory(int slot) {
+		return slot == 0 || (11 <= slot && slot <= 19);
+	}
+
+	@Override
+	public boolean recipeMatches(RecipeHolder<? extends Recipe<CraftingContainer>> recipeHolder) {
+		return recipeHolder.value().matches(this.assemblyMatrix, this.player.level());
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes", "RedundantSuppression"})
+	@Override
+	public void handlePlacement(boolean placeAll, RecipeHolder<?> recipe, ServerPlayer player) {
+		new UncrafterPlaceRecipe<>(this).recipeClicked(player, (RecipeHolder<? extends Recipe<CraftingContainer>>) recipe, placeAll);
 	}
 }
