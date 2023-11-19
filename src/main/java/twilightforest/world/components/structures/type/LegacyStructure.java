@@ -9,15 +9,15 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 @Deprecated
-public class LegacyStructure extends ConquerableStructure {
+public class LegacyStructure extends ControlledSpawningStructure {
     public final TFLandmark feature;
 
     public static final Codec<LegacyStructure> CODEC = RecordCodecBuilder.create(instance -> instance
             .group(TFLandmark.CODEC.fieldOf("legacy_landmark_start").forGetter(LegacyStructure::getFeatureType))
-            .and(conquerStatusCodec(instance))
+            .and(controlledSpawningCodec(instance))
             .apply(instance, LegacyStructure::new)
     );
 

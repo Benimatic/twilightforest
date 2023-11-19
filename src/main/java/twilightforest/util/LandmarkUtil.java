@@ -17,6 +17,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.components.structures.util.CustomStructureData;
 
 import java.util.Map;
 import java.util.Optional;
@@ -41,15 +42,15 @@ public final class LandmarkUtil {
 
     public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, HolderSet<Structure> matching, int chunkX, int chunkZ) {
         Set<Structure> structures = matching.stream().map(Holder::get).collect(Collectors.toSet());
-        return locateNearestMatchingLandmark(level, structures::contains, chunkX, chunkZ);
+        return locateNearestMatchingLandmark(level, structures::contains, chunkX, chunkZ, true);
     }
 
-    public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, Predicate<Structure> filter, int chunkX, int chunkZ) {
+    public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, Predicate<Structure> filter, int chunkX, int chunkZ, boolean checkReady) {
         BlockPos nearestFeature = LegacyLandmarkPlacements.getNearestCenterXZ(chunkX, chunkZ);
         int centerX = SectionPos.blockToSectionCoord(nearestFeature.getX());
         int centerZ =  SectionPos.blockToSectionCoord(nearestFeature.getZ());
 
-        if (!level.hasChunk(centerX, centerZ)) return Optional.empty();
+        if (checkReady && !level.hasChunk(centerX, centerZ)) return Optional.empty();
 
         ChunkAccess chunkAccess = level.getChunk(centerX, centerZ, ChunkStatus.STRUCTURE_STARTS);
 
@@ -58,6 +59,11 @@ public final class LandmarkUtil {
                 return Optional.of(structureEntry.getValue());
 
         return Optional.empty();
+    }
+
+    public static boolean isConquered(Level level, int blockX, int blockZ) {
+        Optional<StructureStart> start = locateNearestMatchingLandmark(level, s -> s instanceof CustomStructureData, blockX >> 4, blockZ >> 4, false);
+        return start.filter(structureStart -> structureStart instanceof TFStructureStart tfStructureStart && tfStructureStart.isConquered()).isPresent();
     }
 
     public static void markStructureConquered(Level level, EnforcedHomePoint mobHome, ResourceKey<Structure> structureKey, boolean conquered) {

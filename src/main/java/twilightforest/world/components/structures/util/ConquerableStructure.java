@@ -1,7 +1,5 @@
 package twilightforest.world.components.structures.util;
 
-import com.mojang.datafixers.Products;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.level.ChunkPos;
@@ -20,18 +18,9 @@ import twilightforest.world.components.structures.start.TFStructureStart;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public abstract class ConquerableStructure extends ProgressionStructure implements CustomStructureData, ConfigurableSpawns {
-    protected static <S extends ConquerableStructure> Products.P5<RecordCodecBuilder.Mu<S>, ControlledSpawningConfig, AdvancementLockConfig, HintConfig, DecorationConfig, StructureSettings> conquerStatusCodec(RecordCodecBuilder.Instance<S> instance) {
-        return instance.group(
-                ControlledSpawningConfig.FLAT_CODEC.forGetter(ConquerableStructure::getConfig)
-        ).and(progressionCodec(instance));
-    }
-
-    protected final ControlledSpawningConfig controlledSpawningConfig;
-
-    public ConquerableStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-        super(advancementLockConfig, hintConfig, decorationConfig, structureSettings);
-        this.controlledSpawningConfig = controlledSpawningConfig;
+public abstract class ConquerableStructure extends LandmarkStructure implements CustomStructureData {
+    public ConquerableStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
+        super(decorationConfig, structureSettings);
     }
 
     @Override
@@ -53,10 +42,5 @@ public abstract class ConquerableStructure extends ProgressionStructure implemen
         }
 
         return StructureStart.INVALID_START;
-    }
-
-    @Override
-    public ControlledSpawningConfig getConfig() {
-        return this.controlledSpawningConfig;
     }
 }

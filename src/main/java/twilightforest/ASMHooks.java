@@ -86,7 +86,7 @@ public class ASMHooks {
 	 */
 	public static int mapRenderDecorations(int o, MapItemSavedData data, PoseStack stack, MultiBufferSource buffer, int light) {
 		if (data instanceof TFMagicMapData mapData) {
-			for (TFMagicMapData.TFMapDecoration decoration : mapData.tfDecorations) {
+			for (TFMagicMapData.TFMapDecoration decoration : mapData.tfDecorations.values()) {
 				decoration.render(o, stack, buffer, light);
 				o++;
 			}

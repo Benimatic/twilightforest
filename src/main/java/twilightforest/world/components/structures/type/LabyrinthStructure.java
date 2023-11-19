@@ -19,15 +19,15 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.minotaurmaze.MazeRuinsComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
-import twilightforest.world.components.structures.util.ConquerableStructure;
+import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LabyrinthStructure extends ConquerableStructure implements ConfigurableSpawns {
+public class LabyrinthStructure extends ControlledSpawningStructure implements ConfigurableSpawns {
     public static final Codec<LabyrinthStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, LabyrinthStructure::new)
+            controlledSpawningCodec(instance).apply(instance, LabyrinthStructure::new)
     );
 
     public LabyrinthStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {

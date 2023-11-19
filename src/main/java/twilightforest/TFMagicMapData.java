@@ -3,7 +3,7 @@ package twilightforest;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,7 @@ import org.joml.Matrix4f;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 import java.util.*;
@@ -32,7 +34,7 @@ import java.util.*;
 public class TFMagicMapData extends MapItemSavedData {
 	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
 
-	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
+	public final Int2ObjectMap<TFMapDecoration> tfDecorations = new Int2ObjectLinkedOpenHashMap<>();
 
 	public TFMagicMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
@@ -63,7 +65,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	public CompoundTag save(CompoundTag cmp) {
 		cmp = super.save(cmp);
 
-		if (this.tfDecorations.size() > 0) {
+		if (!this.tfDecorations.isEmpty()) {
 			cmp.putByteArray("features", serializeFeatures());
 		}
 
@@ -74,33 +76,35 @@ public class TFMagicMapData extends MapItemSavedData {
 	 * Checks existing features against the feature cache changes wrong ones
 	 */
 	public void checkExistingFeatures(Level world) {
-		List<TFMapDecoration> toRemove = new ArrayList<>();
-		List<TFMapDecoration> toAdd = new ArrayList<>();
+        IntArrayList toRemove = new IntArrayList();
+        Int2ObjectLinkedOpenHashMap<TFMapDecoration> toAdd = new Int2ObjectLinkedOpenHashMap<>();
 
-		for (TFMapDecoration coord : tfDecorations) {
+		for (var entry : tfDecorations.int2ObjectEntrySet()) {
+			TFMapDecoration coord = entry.getValue();
 			int worldX = (coord.x << this.scale - 1) + this.centerX;
 			int worldZ = (coord.y << this.scale - 1) + this.centerZ;
 
 			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
-				toRemove.add(coord);
-				toAdd.add(new TFMapDecoration(trueId, coord.x, coord.y, coord.rot));
+				toRemove.add(entry.getIntKey());
+				toAdd.put(entry.getIntKey(), new TFMapDecoration(trueId, coord.x, coord.y, coord.rot, LandmarkUtil.isConquered(world, worldX, worldZ)));
 			}
 		}
 
-		toRemove.forEach(tfDecorations::remove);
-		tfDecorations.addAll(toAdd);
+		for (int packedCoords : toRemove)
+			tfDecorations.remove(packedCoords);
+		tfDecorations.putAll(toAdd);
 	}
 
 	public void deserializeFeatures(byte[] arr) {
 		this.tfDecorations.clear();
 
 		for (int i = 0; i < arr.length / 3; ++i) {
-			byte featureId = arr[i * 3];
+			byte featureInfo = arr[i * 3];
 			byte mapX = arr[i * 3 + 1];
 			byte mapZ = arr[i * 3 + 2];
 			byte mapRotation = 8;
-			this.tfDecorations.add(new TFMapDecoration(featureId, mapX, mapZ, mapRotation));
+			this.tfDecorations.put(packCoordBytes(mapX, mapZ), new TFMapDecoration(featureInfo & 0b111_1111, mapX, mapZ, mapRotation, (featureInfo & 0b1000_0000) != 0));
 		}
 	}
 
@@ -108,8 +112,9 @@ public class TFMagicMapData extends MapItemSavedData {
 		byte[] storage = new byte[this.tfDecorations.size() * 3];
 
 		int i = 0;
-		for (TFMapDecoration featureCoord : tfDecorations) {
-			storage[i * 3] = (byte) featureCoord.featureId;
+		for (TFMapDecoration featureCoord : tfDecorations.values()) {
+			byte featureInfo = (featureCoord.conquered ? (byte) (featureCoord.featureId | 0b1000_0000) : (byte) featureCoord.featureId);
+			storage[i * 3] = featureInfo;
 			storage[i * 3 + 1] = featureCoord.x;
 			storage[i * 3 + 2] = featureCoord.y;
 			i++;
@@ -144,9 +149,18 @@ public class TFMagicMapData extends MapItemSavedData {
 		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(this, mapItemDataPacket), PlayNetworkDirection.PLAY_TO_CLIENT) : packet;
 	}
 
+	public void putMapData(TFMapDecoration info) {
+		this.tfDecorations.put(packCoordBytes(info.x, info.y), info);
+	}
+
+	private static int packCoordBytes(byte x, byte y) {
+		return (x & 0xFF) | ((y & 0xFF) << 8);
+	}
+
 	public static class TFMapDecoration {
 		
 		private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
+		private static final RenderType VANILLA_ICONS = RenderType.text(new ResourceLocation("textures/map/map_icons.png"));
 
 		private static final Int2ObjectArrayMap<TFLandmark> ICONS = new Int2ObjectArrayMap<>(){{
 			defaultReturnValue(TFLandmark.NOTHING);
@@ -175,16 +189,18 @@ public class TFMagicMapData extends MapItemSavedData {
 		final byte x;
 		final byte y;
 		final byte rot;
+		final boolean conquered;
 
-		public TFMapDecoration(TFLandmark featureId, byte xIn, byte yIn, byte rotationIn) {
-			this(ICONS_FLIPPED.getInt(featureId), xIn, yIn, rotationIn);
+		public TFMapDecoration(TFLandmark featureId, byte xIn, byte yIn, byte rotationIn, boolean conquered) {
+			this(ICONS_FLIPPED.getInt(featureId), xIn, yIn, rotationIn, conquered);
 		}
 
-		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
+		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn, boolean conquered) {
 			this.featureId = featureId;
 			this.x = xIn;
 			this.y = yIn;
 			this.rot = rotationIn;
+			this.conquered = conquered;
 		}
 
 		@OnlyIn(Dist.CLIENT)
@@ -195,16 +211,30 @@ public class TFMagicMapData extends MapItemSavedData {
 				stack.mulPose(Axis.ZP.rotationDegrees(this.rot * 360 / 16.0F));
 				stack.scale(4.0F, 4.0F, 3.0F);
 				stack.translate(-0.125D, 0.125D, 0.0D);
-				float f1 = featureId % 8.0F / 8.0F;
-				float f2 = featureId / 8 / 8.0F;
-				float f3 = (featureId % 8 + 1) / 8.0F;
-				float f4 = (featureId / 8 + 1) / 8.0F;
-				Matrix4f matrix4f1 = stack.last().pose();
-				VertexConsumer ivertexbuilder1 = buffer.getBuffer(MAP_ICONS);
-				ivertexbuilder1.vertex(matrix4f1, -1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f2).uv2(light).endVertex();
-				ivertexbuilder1.vertex(matrix4f1, 1.0F, 1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f2).uv2(light).endVertex();
-				ivertexbuilder1.vertex(matrix4f1, 1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f3, f4).uv2(light).endVertex();
-				ivertexbuilder1.vertex(matrix4f1, -1.0F, -1.0F, idx * -0.001F).color(255, 255, 255, 255).uv(f1, f4).uv2(light).endVertex();
+				float uMin = featureId % 8.0F / 8.0F;
+				float vMin = featureId / 8 / 8.0F;
+				float uMax = (featureId % 8 + 1) / 8.0F;
+				float vMax = (featureId / 8 + 1) / 8.0F;
+				Matrix4f matrix4f = stack.last().pose();
+				float depth = idx * -0.004F;
+				VertexConsumer mapIconVertices = buffer.getBuffer(MAP_ICONS);
+				mapIconVertices.vertex(matrix4f, -1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
+				mapIconVertices.vertex(matrix4f, 1.0F, 1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
+				mapIconVertices.vertex(matrix4f, 1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(uMax, vMax).uv2(light).endVertex();
+				mapIconVertices.vertex(matrix4f, -1.0F, -1.0F, depth).color(255, 255, 255, 255).uv(uMin, vMax).uv2(light).endVertex();
+
+				if (this.conquered) {
+					uMin = 10f/16f;
+					vMin = 1f/16f;
+					uMax = 11f/16f;
+					vMax = 2f/16f;
+					depth -= 0.002f;
+					VertexConsumer vanillaIconVertices = buffer.getBuffer(VANILLA_ICONS);
+					vanillaIconVertices.vertex(matrix4f, -1, 0, depth).color(255, 255, 255, 255).uv(uMin, vMin).uv2(light).endVertex();
+					vanillaIconVertices.vertex(matrix4f, 0, 0, depth).color(255, 255, 255, 255).uv(uMax, vMin).uv2(light).endVertex();
+					vanillaIconVertices.vertex(matrix4f, 0, -1, depth).color(255, 255, 255, 255).uv(uMax, vMax).uv2(light).endVertex();
+					vanillaIconVertices.vertex(matrix4f, -1, -1, depth).color(255, 255, 255, 255).uv(uMin, vMax).uv2(light).endVertex();
+				}
 				stack.popPose();
 			}
 			return true;
@@ -215,12 +245,12 @@ public class TFMagicMapData extends MapItemSavedData {
 			if (this == o) return true;
 			if (o == null || getClass() != o.getClass()) return false;
 			TFMapDecoration that = (TFMapDecoration) o;
-			return featureId == that.featureId && x == that.x && y == that.y && rot == that.rot;
+			return featureId == that.featureId && x == that.x && y == that.y && rot == that.rot && conquered == that.conquered;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(featureId, x, y, rot);
+			return Objects.hash(featureId, x, y, rot, conquered);
 		}
 	}
 }
